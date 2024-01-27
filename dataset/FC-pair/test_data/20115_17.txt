@@ -1,0 +1,10 @@
+contract c20115{
+    /**
+     * Burn token, only owner is allowed to do this
+     *
+     * @param value Amount of tokens to burn
+     */
+    function burn(uint256 value) public onlyOwner {
+        super.burn(value);
+    }
+}

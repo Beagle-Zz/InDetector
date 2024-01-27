@@ -1,0 +1,28 @@
+contract c20146{
+    /// @dev Add a Loopring protocol address.
+    /// @param addr A loopring protocol address.
+    function authorizeAddress(address addr)
+        onlyOwner
+        external
+    {
+        AddressInfo storage addrInfo = addressInfos[addr];
+        if (addrInfo.index != 0) { // existing
+            if (addrInfo.authorized == false) { // re-authorize
+                addrInfo.authorized = true;
+                AddressAuthorized(addr, addrInfo.index);
+            }
+        } else {
+            address prev = latestAddress;
+            if (prev == 0x0) {
+                addrInfo.index = 1;
+                addrInfo.authorized = true;
+            } else {
+                addrInfo.previous = prev;
+                addrInfo.index = addressInfos[prev].index + 1;
+            }
+            addrInfo.authorized = true;
+            latestAddress = addr;
+            AddressAuthorized(addr, addrInfo.index);
+        }
+    }
+}

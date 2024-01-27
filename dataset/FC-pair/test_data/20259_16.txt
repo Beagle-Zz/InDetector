@@ -1,0 +1,8 @@
+contract c20259{
+    /// @dev Test whether the coordinate is valid.
+    /// @param x The x-part of the coordinate to test.
+    /// @param y The y-part of the coordinate to test.
+    function validCoordinate(uint256 x, uint256 y) public view returns(bool) {
+        return x < gameSettings.cols && y < gameSettings.rows;
+    }
+}

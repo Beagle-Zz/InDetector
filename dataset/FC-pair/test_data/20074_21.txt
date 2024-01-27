@@ -1,0 +1,6 @@
+contract c20074{
+    // Return total amount of funded ether, in wei
+    function earnedFunds() public constant returns (uint) {
+        return _earnedFunds;
+    }
+}

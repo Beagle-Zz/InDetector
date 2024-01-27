@@ -1,0 +1,6 @@
+contract c20259{
+    /// @notice Symbol of the collection of deeds (non-fungible token), as defined in ERC721Metadata.
+    function symbol() public pure returns (string _deedSymbol) {
+        _deedSymbol = "BURN";
+    }
+}

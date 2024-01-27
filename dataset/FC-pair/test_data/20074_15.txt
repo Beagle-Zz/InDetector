@@ -1,0 +1,6 @@
+contract c20074{
+    // Return account balance in tokens (in EXTwei)
+    function balanceOf(address _address) public constant returns (uint) {
+        return balances[_address];
+    }
+}

@@ -1,0 +1,7 @@
+contract c20130{
+  // ERC-721 Base
+  function balanceOf(address _owner) external view returns (uint256) {
+    require(_owner != address(0));
+    return _ownedTokens[_owner].length;
+  }
+}

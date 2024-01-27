@@ -1,0 +1,12 @@
+contract c20126{
+  /// @dev Escrows the NFT, assigning ownership to this contract.
+  /// Throws if the escrow fails.
+  /// @param _nftAddress - The address of the NFT.
+  /// @param _owner - Current owner address of token to escrow.
+  /// @param _tokenId - ID of token whose approval to verify.
+  function _escrow(address _nftAddress, address _owner, uint256 _tokenId) private {
+    IERC721Base _nftContract = _getNftContract(_nftAddress);
+    // It will throw if transfer fails
+    _nftContract.transferFrom(_owner, this, _tokenId);
+  }
+}

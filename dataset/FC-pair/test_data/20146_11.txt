@@ -1,0 +1,14 @@
+contract c20146{
+    /// @dev Remove a Loopring protocol address.
+    /// @param addr A loopring protocol address.
+    function deauthorizeAddress(address addr)
+        onlyOwner
+        external
+    {
+        uint32 index = addressInfos[addr].index;
+        if (index != 0) {
+            addressInfos[addr].authorized = false;
+            AddressDeauthorized(addr, index);
+        }
+    }
+}

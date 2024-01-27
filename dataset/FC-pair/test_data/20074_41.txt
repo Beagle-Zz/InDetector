@@ -1,0 +1,6 @@
+contract c20074{
+    // Discard existing investor
+    function denyInvestor(address a) public onlyOwner addrNotNull(a) {
+        delete allowedInvestors[a];
+    }
+}

@@ -1,0 +1,6 @@
+contract c20237{
+    // @return true if all unsold tokens are allocated
+    function allUnsoldTokensAllocated() internal view returns (bool) {
+        return unsoldAllocationCount == betexStorage.getFundersCount();
+    }
+}

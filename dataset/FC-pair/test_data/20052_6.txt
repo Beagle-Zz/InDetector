@@ -1,0 +1,9 @@
+contract c20052{
+	// transfers tokens from investor, validations are not required
+	function __redeemTokens(address investor, uint tokens) internal {
+		// for open crowdsales we track investors balances
+		balances[investor] -= tokens;
+		// redeem tokens, taking into account decimals coefficient
+		token.transferFrom(investor, creator, tokens * k);
+	}
+}

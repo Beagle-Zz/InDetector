@@ -1,0 +1,7 @@
+contract c20259{
+    /// Sets a new address for Beneficiary one.
+    /// @param addr The new address.
+    function setBeneficiary1(address addr) external onlyCFO {
+        beneficiary1 = addr;
+    }
+}

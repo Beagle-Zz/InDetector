@@ -1,0 +1,29 @@
+contract c20132{
+  /**
+   * @notice Adopt some Axies from the same class.
+   * @dev The quantity MUST be positive.
+   * @param _adopter Address of the adopter.
+   * @param _class The class of adopted Axies.
+   * @param _quantity Number of Axies to be adopted.
+   * @param _referrer Address of the referrer.
+   */
+  function _adoptSameClassAxies(
+    address _adopter,
+    uint8 _class,
+    uint256 _quantity,
+    address _referrer
+  )
+    private
+    returns (uint256 _totalPrice)
+  {
+    (_totalPrice, priceIncrement[_class], currentPrice[_class]) = _sameClassAxiesPrice(_class, _quantity);
+    _numAdoptedAxies[_adopter][_class] = _numAdoptedAxies[_adopter][_class].add(_quantity);
+    _totalAdoptedAxies[_class] = _totalAdoptedAxies[_class].add(_quantity);
+    AxiesAdopted(
+      _adopter,
+      _class,
+      _quantity,
+      _referrer
+    );
+  }
+}

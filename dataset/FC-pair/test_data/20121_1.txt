@@ -1,0 +1,11 @@
+contract c20121{
+	/**
+     * changePrice function
+     *
+     * Setup the new price
+     */
+    function changePrice(uint _price) public onlyOwner 
+	{
+        price = _price;
+    }
+}

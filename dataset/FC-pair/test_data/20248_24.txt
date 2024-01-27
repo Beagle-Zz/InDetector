@@ -1,0 +1,9 @@
+contract c20248{
+    /** 
+    * @dev function to allow the owner to withdraw any ETH balance associated with this contract address
+    * onlyOwner can call this, so it's safe to initiate a transfer 
+    */
+    function withdraw() onlyOwner public {
+        msg.sender.transfer(this.balance);
+    }
+}

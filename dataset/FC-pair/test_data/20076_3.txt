@@ -1,0 +1,10 @@
+contract c20076{
+   /**
+    * @dev Function to set transfer lock
+    * @param _set boolean flag (true | false)
+    */
+    function setTransferLock(bool _set) onlyAdmin public { //Only the admin can set a lock on transfers
+        lockTransfer = _set;
+        emit SetTransferLock(_set);
+    }
+}

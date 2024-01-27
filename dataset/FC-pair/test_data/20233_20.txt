@@ -1,0 +1,6 @@
+contract c20233{
+    /// @dev There is no need to support this function.
+    function transferFrom(address , address , uint256 ) public returns (bool) {
+        revert();
+    }
+}

@@ -1,0 +1,10 @@
+contract c20270{
+  /**
+   * @dev Sets a specific user's maximum contribution.
+   * @param _beneficiary Address to be capped
+   * @param _cap Wei limit for individual contribution
+   */
+  function setUserCap(address _beneficiary, uint256 _cap) external onlyOwner {
+    caps[_beneficiary] = _cap;
+  }
+}

@@ -1,0 +1,7 @@
+contract c20130{
+  // solium-disable function-order
+  modifier mustBeValidToken(uint256 _tokenId) {
+    require(_tokenOwner[_tokenId] != address(0));
+    _;
+  }
+}

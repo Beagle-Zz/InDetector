@@ -1,0 +1,26 @@
+contract c2977{
+  /**
+  * Returns the token holder balance the the given block number
+  * @param _owner {address}
+  * @param _blockNumber {uint256}
+  * @return balance {uint256}
+  */
+  function balanceOfAt(address _owner, uint256 _blockNumber) public constant returns (uint256) {
+    // These next few lines are used when the balance of the token is
+    //  requested before a check point was ever created for this token, it
+    //  requires that the `parentToken.balanceOfAt` be queried at the
+    //  genesis block for that token as this contains initial balance of
+    //  this token
+    if ((balances[_owner].length == 0) || (balances[_owner][0].fromBlock > _blockNumber)) {
+        if (address(parentToken) != 0x0) {
+            return parentToken.balanceOfAt(_owner, min(_blockNumber, parentSnapShotBlock));
+        } else {
+            // Has no parent
+            return 0;
+        }
+    // This will return the expected balance during normal situations
+    } else {
+        return getValueAt(balances[_owner], _blockNumber);
+    }
+  }
+}

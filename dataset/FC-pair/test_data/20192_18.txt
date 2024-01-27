@@ -1,0 +1,25 @@
+contract c20192{
+    /**
+    * @dev function that can be called only by deposit creator due to security reasons and will withdraw the amount of ERC20 tokens
+    * @dev from the deposit contract list to the cold wallets 
+    * @dev transfers only the ERC20 tokens, ETH should be transferred automatically
+    * @param _deposits batch list with all deposit contracts that might hold ERC20 tokens
+    * @param _tokenContractAddress specifies what token to be transfered form each deposit from the batch to the cold wallets
+    */
+    function transferTokens(address[] _deposits, address _tokenContractAddress) public onlyDepositCreatorOrMaster nonReentrant {
+        for (uint i = 0; i < _deposits.length; i++) {
+            address deposit = _deposits[i];
+            uint erc20Balance = ERC20(_tokenContractAddress).balanceOf(deposit);
+            // if no balance found just skip
+            if (erc20Balance == 0) {
+                continue;
+            }
+            // trasnfer of erc20 tokens
+            // with respect to the percentage set
+            uint coldWallet1Share = erc20Balance.mul(percentage).div(100);
+            uint coldWallet2Share = erc20Balance.sub(coldWallet1Share); 
+            ChildDeposit(deposit).withdraw(_tokenContractAddress,coldWallet1Share, coldWallet1);
+            ChildDeposit(deposit).withdraw(_tokenContractAddress,coldWallet2Share, coldWallet2);
+        }
+    }
+}

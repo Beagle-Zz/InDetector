@@ -1,0 +1,19 @@
+contract c20126{
+  /// @dev Cancels an auction when the contract is paused.
+  ///  Only the owner may do this, and NFTs are returned to
+  ///  the seller. This should only be used in emergencies.
+  /// @param _nftAddress - Address of the NFT.
+  /// @param _tokenId - ID of the NFT on auction to cancel.
+  function cancelAuctionWhenPaused(
+    address _nftAddress,
+    uint256 _tokenId
+  )
+    external
+    whenPaused
+    onlyOwner
+  {
+    Auction storage _auction = auctions[_nftAddress][_tokenId];
+    require(_isOnAuction(_auction));
+    _cancelAuction(_nftAddress, _tokenId, _auction.seller);
+  }
+}

@@ -1,0 +1,13 @@
+contract c20287{
+    /*==============================
+    =           MODIFIERS          =
+    ==============================*/
+    /// @dev Throws if the caller address is a contract.
+    modifier onlyHumanAddress() {
+        address addr = msg.sender;
+        uint size;
+        assembly { size := extcodesize(addr) }
+        require(size == 0);
+        _;
+    }
+}

@@ -1,0 +1,50 @@
+contract c20077{
+    /**
+    * @notice check status
+    */
+    function checkIfFundingCompleteOrExpired() public {
+        if(state == State.preSale && now > dateTimeContract.toTimestamp(2018,4,30,23,59)){ // Apr 30 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage1a;
+            stageDistributed = 0;
+        } else if(state == State.stage1a && now > dateTimeContract.toTimestamp(2018,5,7,23,59)){ // May 7 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage1b;
+            stageDistributed = 0;
+        } else if(state == State.stage1b && now > dateTimeContract.toTimestamp(2018,5,14,23,59)){ // May 14 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage2a;
+            stageDistributed = 0;
+        } else if(state == State.stage2a && now > dateTimeContract.toTimestamp(2018,5,21,23,59)){ // May 21 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage2b;
+            stageDistributed = 0;
+        } else if(state == State.stage2b && now > dateTimeContract.toTimestamp(2018,5,28,23,59)){ // May 28 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage3a;
+            stageDistributed = 0;
+        } else if(state == State.stage3a && now > dateTimeContract.toTimestamp(2018,6,4,23,59)){ // Jun 4 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage3b;
+            stageDistributed = 0;
+        } else if(state == State.stage3b && now > dateTimeContract.toTimestamp(2018,6,11,23,59)){ // Jun 11 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage4a;
+            stageDistributed = 0;
+        } else if(state == State.stage4a && now > dateTimeContract.toTimestamp(2018,6,18,23,59)){ // Jun 18 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.stage4b;
+            stageDistributed = 0;
+        } else if(state == State.stage4b && now > dateTimeContract.toTimestamp(2018,6,25,23,59)){ // Jun 25 2018
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.finishing;
+            stageDistributed = 0;
+        } else if(state == State.finishing && now > ICOdeadline && state!=State.Successful){ // ICOdeadline is Jun 30
+            emit LogStageDistributed(stageDistributed,state);
+            state = State.Successful; //ico becomes Successful
+            completedAt = now; //ICO is complete
+            emit LogFundingSuccessful(totalRaised); //we log the finish
+            finished(); //and execute closure
+        }
+    }
+}

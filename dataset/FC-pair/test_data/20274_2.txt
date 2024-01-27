@@ -1,0 +1,11 @@
+contract c20274{
+    // Random enough for small contests (Owner only to prevent trial & error execution)
+    function drawRandomWinner() public {
+        require(msg.sender == owner);
+        require(raffleEndTime < block.timestamp);
+        require(!raffleWinningTicketSelected);
+        uint256 seed = raffleTicketsBought + block.timestamp;
+        raffleTicketThatWon = addmod(uint256(block.blockhash(block.number-1)), seed, raffleTicketsBought);
+        raffleWinningTicketSelected = true;
+    }
+}

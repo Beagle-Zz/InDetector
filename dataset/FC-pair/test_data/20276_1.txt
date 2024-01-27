@@ -1,0 +1,8 @@
+contract c20276{
+    //Accept tranfer owner rights
+    function acceptOwnership() public onlyOwner {
+        OwnershipTransferred(owner, newOwner);
+        owner = newOwner;
+        newOwner = address(0);
+    }
+}

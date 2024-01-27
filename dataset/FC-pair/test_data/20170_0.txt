@@ -1,0 +1,11 @@
+contract c20170{
+    /**
+     * Initialize a new game
+     */
+    function newGame(uint gameId, bytes8 landKey, uint seedBlock, uint userNum, string content) onlyOwner public returns (uint gameIndex) {
+        require(indexMap[gameId] == 0);             // gameId should be unique
+        gameIndex = gameNum++;
+        indexMap[gameId] = gameIndex;
+        games[gameIndex] = Game(gameId, landKey, seedBlock, userNum, content);
+    }
+}

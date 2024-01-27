@@ -1,0 +1,18 @@
+contract c20051{
+    // Owner can sweep a successful funding to the fundWallet
+    // Contract can be aborted up until this action.
+    // Effective once but can be called multiple time to withdraw edge case
+    // funds recieved by contract which can selfdestruct to this address
+    function finaliseICO()
+        public
+        onlyOwner
+        preventReentry()
+        returns (bool)
+    {
+        require(fundSucceeded());
+        icoSuccessful = true;
+        FundsTransferred(fundWallet, this.balance);
+        fundWallet.transfer(this.balance);
+        return true;
+    }
+}

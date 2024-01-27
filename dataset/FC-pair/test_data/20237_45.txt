@@ -1,0 +1,10 @@
+contract c20237{
+    // schedule unsold tokens allocation using oraclize
+    function scheduleUnsoldAllocation() public {
+        require(!unsoldAllocatonScheduled);
+        // query for unsold tokens allocation with delay from the ico end time
+        bytes32 _orderId = oraclize_query(endTime.add(unsoldAllocationDelay), "URL", ethRateURL, unsoldAllocationOraclizeGasLimit); // solium-disable-line arg-overflow
+        betexStorage.addUnsoldAllocationOrder(_orderId); 
+        unsoldAllocatonScheduled = true;
+    }
+}

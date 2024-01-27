@@ -1,0 +1,13 @@
+contract c20192{
+    /**
+    * @dev creates a number of instances of ChildDeposit contracts
+    * @param _count creates a specified number of deposit contracts
+    */
+    function createChildDeposits(uint _count) public onlyDepositCreatorOrMaster {
+        for (uint i = 0; i < _count; i++) {
+            ChildDeposit childDeposit = new ChildDeposit();
+            childDeposits[address(childDeposit)] = true;
+            emit CreatedDepositEvent(address(childDeposit));    
+        }
+    }
+}

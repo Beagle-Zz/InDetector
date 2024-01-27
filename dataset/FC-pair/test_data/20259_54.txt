@@ -1,0 +1,6 @@
+contract c20259{
+    /// @notice End the game. Pay prize.
+    function endGame() external {
+        require(_processGameEnd());
+    }
+}

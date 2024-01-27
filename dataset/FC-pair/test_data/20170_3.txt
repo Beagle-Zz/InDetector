@@ -1,0 +1,8 @@
+contract c20170{
+    /**
+     * Get the number of games
+     */
+    function getGameNum() onlyOwner public view returns (uint num) {
+        num = gameNum - 1;
+    }
+}

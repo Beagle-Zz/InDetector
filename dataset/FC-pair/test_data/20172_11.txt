@@ -1,0 +1,6 @@
+contract c20172{
+    // @dev Creates a new Avatar
+    function createAvatar(string _name, uint256 _rank) public onlyCLevel {
+        _createAvatar(_name, address(this), _rank);
+    }
+}

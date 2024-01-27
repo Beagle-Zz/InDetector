@@ -1,0 +1,19 @@
+contract c20075{
+    // Interface for sale agent contract - mint new tokens
+    function mint(address to, uint256 extAmount, uint256 etherAmount) public {
+        require(!isMintingFinished);
+        require(msg.sender == mintAgent);
+        require(!refunded[to]);
+        _totalSupply = _totalSupply.add(extAmount);
+        require(_totalSupply <= MAX_SUPPLY);
+        balances[to] = balances[to].add(extAmount);
+        if (wpTokensBaskets.isUnknown(to)) {
+            _earnedFunds = _earnedFunds.add(etherAmount);
+            etherFunds[to] = etherFunds[to].add(etherAmount);
+        } else if (wpTokensBaskets.isTeam(to)) {
+            teamTotal = teamTotal.add(extAmount);
+        }
+        emit Mint(to, extAmount);
+        emit Transfer(msg.sender, to, extAmount);
+    }
+}

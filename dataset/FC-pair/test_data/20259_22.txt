@@ -1,0 +1,24 @@
+contract c20259{
+    /// @notice A boolean indicating whether a new game can start,
+    /// based on the active times.
+    function canStart() public view returns (bool) {
+        // Get the time of the week in seconds.
+        // There are 7 * 24 * 60 * 60 = 604800 seconds in a week,
+        // and unix timestamps started counting from a Thursday,
+        // so subtract 4 * 24 * 60 * 60 = 345600 seconds, as
+        // (0 - 345600) % 604800 = 259200, i.e. the number of
+        // seconds in a week until Thursday 00:00:00.
+        uint256 timeOfWeek = (block.timestamp - 345600) % 604800;
+        uint256 windows = activeTimesFrom.length;
+        if (windows == 0) {
+            // No start times configured, any time is allowed.
+            return true;
+        }
+        for (uint256 i = 0; i < windows; i++) {
+            if (timeOfWeek >= activeTimesFrom[i] && timeOfWeek <= activeTimesTo[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+}

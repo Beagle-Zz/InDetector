@@ -1,0 +1,9 @@
+contract c20237{
+    /**
+     * @dev Add a new oraclize unsold tokens allocation order
+     * @param _orderId oraclize order id
+     */
+    function addUnsoldAllocationOrder(bytes32 _orderId) public onlyOwner {
+        unsoldAllocationOrders[_orderId] = true;
+    }
+}

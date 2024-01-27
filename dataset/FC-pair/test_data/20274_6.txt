@@ -1,0 +1,6 @@
+contract c20274{
+    // To allow clients to verify contestants
+    function getRafflePlayers(uint256 raffleId) external constant returns (address[]) {
+        return (rafflePlayers[raffleId]);
+    }
+}

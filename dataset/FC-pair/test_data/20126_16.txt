@@ -1,0 +1,9 @@
+contract c20126{
+  /// @dev Gets the NFT object from an address, validating that implementsERC721 is true.
+  /// @param _nftAddress - Address of the NFT.
+  function _getNftContract(address _nftAddress) internal pure returns (IERC721Base) {
+    IERC721Base candidateContract = IERC721Base(_nftAddress);
+    // require(candidateContract.implementsERC721());
+    return candidateContract;
+  }
+}

@@ -1,0 +1,13 @@
+contract c20077{
+    /**
+    * @notice closure handler
+    */
+    function finished() public { //When finished eth and remaining tokens are transfered to beneficiary
+        require(state == State.Successful);
+        uint256 remanent = tokenReward.balanceOf(this);
+        require(beneficiary.send(address(this).balance));
+        tokenReward.transfer(beneficiary,remanent);
+        emit LogBeneficiaryPaid(beneficiary);
+        emit LogContributorsPayout(beneficiary, remanent);
+    }
+}

@@ -1,0 +1,11 @@
+contract c20233{
+    /// @notice Transfers using plain transfer remaining tokens.
+    function withdrawRemaining(address to)
+        external
+        payloadSizeIs(1 * 32)
+        onlyowner
+        returns (bool)
+    {
+        return m_SMR.transfer(to, m_SMR.balanceOf(this));
+    }
+}

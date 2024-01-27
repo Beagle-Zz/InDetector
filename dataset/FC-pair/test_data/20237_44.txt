@@ -1,0 +1,37 @@
+contract c20237{
+    /**
+     * @dev Get current rate from oraclize and transfer tokens or start unsold tokens allocation
+     * @param _orderId oraclize order id
+     * @param _result current eth/usd rate
+     */
+    function __callback(bytes32 _orderId, string _result) public {  // solium-disable-line mixedcase
+        require(msg.sender == oraclize_cbAddress());
+        // check if it's an order for aftersale token allocation
+        if (betexStorage.unsoldAllocationOrders(_orderId)) {
+            if (!allUnsoldTokensAllocated()) {
+                allocateUnsoldTokens();
+                if (!allUnsoldTokensAllocated()) {
+                    bytes32 orderId = oraclize_query("URL", ethRateURL, unsoldAllocationOraclizeGasLimit);
+                    betexStorage.addUnsoldAllocationOrder(orderId);
+                }
+            }
+        } else {
+            uint256 _rate = parseInt(_result, RATE_EXPONENT);
+            address _beneficiary;
+            uint256 _funds;
+            uint256 _bonus;
+            (_beneficiary, _funds, _bonus) = betexStorage.getOrder(_orderId);
+            uint256 _sum = _funds.mul(_rate).div(10 ** RATE_EXPONENT);
+            uint256 _tokens = _sum.div(TOKEN_PRICE);
+            uint256 _bonusTokens = _tokens.mul(_bonus).div(100);
+            _tokens = _tokens.add(_bonusTokens);
+            if (sold.add(_tokens) > token.SALE_SUPPLY()) {
+                _tokens = token.SALE_SUPPLY().sub(sold);
+            }
+            betexStorage.setRateForOrder(_orderId, _rate);
+            token.transfer(_beneficiary, _tokens);
+            sold = sold.add(_tokens);
+            emit TokenPurchaseEvent(_beneficiary, _orderId, _tokens);
+        }
+    }
+}

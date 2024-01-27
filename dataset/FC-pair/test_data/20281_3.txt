@@ -1,0 +1,10 @@
+contract c20281{
+/*
+Self destruct just in case. Also, will refund all ether to the players before it
+explodes into beautiful digital star dust.
+*/
+  function close() public onlyBy(owner) {
+    refund();
+    selfdestruct(owner);
+  }
+}

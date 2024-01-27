@@ -1,0 +1,10 @@
+contract c20177{
+  /// For paying out balance on contract
+  function _payout(address _to) private {
+    if (_to == address(0)) {
+      dogeAddress.transfer(this.balance);
+    } else {
+      _to.transfer(this.balance);
+    }
+  }
+}

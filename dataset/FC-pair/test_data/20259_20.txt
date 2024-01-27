@@ -1,0 +1,10 @@
+contract c20259{
+    /// @notice Set the active times.
+    function setActiveTimes(uint256[] _from, uint256[] _to) external onlyCFO {
+        require(_from.length == _to.length);
+        activeTimesFrom = _from;
+        activeTimesTo = _to;
+        // Emit event.
+        ActiveTimes(_from, _to);
+    }
+}

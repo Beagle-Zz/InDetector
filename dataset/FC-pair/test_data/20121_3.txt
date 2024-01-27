@@ -1,0 +1,12 @@
+contract c20121{
+	/**
+     * Run Crowdsale
+     *
+     */
+    function runCrowdsale()public onlyOwner 
+	{
+		require(now <= deadline);
+        crowdsaleClosed = false;
+		crowdsalePaused = false;
+    }
+}

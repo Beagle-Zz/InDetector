@@ -1,0 +1,22 @@
+contract c20051{
+    // Refunds can be claimed from a failed ICO
+    function refund(address _addr)
+        public
+        preventReentry()
+        returns (bool)
+    {
+        require(fundFailed());
+        uint value = etherContributed[_addr];
+        // Transfer tokens back to origin
+        // (Not really necessary but looking for graceful exit)
+        xfer(_addr, fundWallet, balances[_addr]);
+        // garbage collect
+        delete etherContributed[_addr];
+        delete kycAddresses[_addr];
+        Refunded(_addr, value);
+        if (value > 0) {
+            _addr.transfer(value);
+        }
+        return true;
+    }
+}

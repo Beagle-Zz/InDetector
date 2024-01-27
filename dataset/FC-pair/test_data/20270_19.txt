@@ -1,0 +1,10 @@
+contract c20270{
+    //@dev Can only set once
+    function set_private_sale_total(uint256 _pvt_plmt_max_in_Wei) external onlyOwner returns(bool){
+        require(!pvt_plmt_set && _pvt_plmt_max_in_Wei >= 5000 ether);//_pvt_plmt_max_in_wei is minimum the soft cap
+        pvt_plmt_set = true;
+        pvt_plmt_max_in_Wei = _pvt_plmt_max_in_Wei;
+        pvt_plmt_remaining_in_Wei = pvt_plmt_max_in_Wei;
+        PrivateSalePlacementLimitSet(pvt_plmt_max_in_Wei);
+    }
+}

@@ -1,0 +1,14 @@
+contract c20051{
+    // Owner can KYC (or revoke) addresses until close of funding
+    function addKycAddress(address _addr, bool _kyc)
+    public
+        noReentry
+        onlyOwner
+        returns (bool)
+    {
+       require(!fundFailed());
+        kycAddresses[_addr] = _kyc;
+        KYCAddress(_addr, _kyc);
+      return true;
+    }
+}

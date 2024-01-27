@@ -1,0 +1,11 @@
+contract c20052{
+	// ----------------------- internal section -----------------------
+	// allocates token source (basically links token)
+	function __allocateTokens(address _token) internal {
+		// link tokens, tokens are not owned by a crowdsale
+		// should be transferred to crowdsale after the deployment
+		token = DetailedERC20(_token);
+		// obtain decimals and calculate coefficient k
+		k = 10 ** uint(token.decimals());
+	}
+}

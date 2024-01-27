@@ -1,0 +1,19 @@
+contract c20259{
+    /// @notice Get the new timeout timestamp for a tile.
+    /// @param identifier The identifier of the tile being flipped.
+    /// @param player The address of the player flipping the tile.
+    function tileTimeoutTimestamp(uint256 identifier, address player) public view returns (uint256) {
+        uint256 bonusTime = gameSettings.timeoutBonusTime.mul(gameStates[gameIndex].addressToNumberOfTiles[player]);
+        uint256 timeoutTimestamp = block.timestamp.add(calculateBaseTimeout()).add(bonusTime);
+        uint256 currentTimeoutTimestamp = gameStates[gameIndex].identifierToTimeoutTimestamp[identifier];
+        if (currentTimeoutTimestamp == 0) {
+            // Tile has never been flipped before.
+            currentTimeoutTimestamp = gameStates[gameIndex].gameStartTimestamp.add(gameSettings.initialActivityTimer);
+        }
+        if (timeoutTimestamp >= currentTimeoutTimestamp) {
+            return timeoutTimestamp;
+        } else {
+            return currentTimeoutTimestamp;
+        }
+    }
+}

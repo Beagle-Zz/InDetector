@@ -1,0 +1,8 @@
+contract c20259{
+    /// @notice Returns the address currently assigned ownership of a given deed.
+    /// @dev Required for ERC-721 compliance.
+    function ownerOf(uint256 _identifier) external view returns (address _owner) {
+        _owner = gameStates[gameIndex].identifierToOwner[_identifier];
+        require(_owner != address(0));
+    }
+}

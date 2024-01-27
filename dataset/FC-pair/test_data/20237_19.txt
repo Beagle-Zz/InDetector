@@ -1,0 +1,9 @@
+contract c20237{
+    // standard transfer function with timelocks
+    function transfer(address _to, uint256 _value) public returns (bool) {
+        require(transferAllowed(msg.sender));
+        enforceSecondLock(msg.sender, _to);
+        preserveHolders(msg.sender, _to, _value);
+        return super.transfer(_to, _value);
+    }
+}

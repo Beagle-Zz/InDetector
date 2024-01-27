@@ -1,0 +1,16 @@
+contract c20231{
+  /**
+   * @dev Validation of an incoming purchase.
+   * @return Whether the purchase is valid
+   */
+  function validatePurchase() internal view returns (bool) {
+    bool withinPeriod = now >= startTime && now <= endTime;
+    bool nonZeroPurchase = msg.value != 0;
+    bool minimumAllowedSum = (purchased[msg.sender] + msg.value) >= minPurchase;
+    bool withinAllowedSum =  (purchased[msg.sender] + msg.value) <= maxPurchase;
+    bool withinCap = weiRaised.add(msg.value) <= cap;
+    bool isWhitelisted = whitelist[msg.sender];
+    return withinPeriod && nonZeroPurchase && minimumAllowedSum
+            && withinAllowedSum && withinCap && isWhitelisted;
+  }
+}

@@ -1,0 +1,8 @@
+contract c20263{
+  // Verify the caller of this function is a Lootbox contract or race, or crafting, or upgrade
+  modifier onlyAuthorized() { 
+    require(ethPricedLootboxes[msg.sender] != 0 ||
+            authorizedExternal[msg.sender] != 0);
+      _; 
+  }
+}

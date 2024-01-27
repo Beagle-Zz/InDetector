@@ -1,0 +1,6 @@
+contract c20276{
+    //Send initial tokens
+    function sendInitialTokens (address user) public onlyOwner {
+        sendTokens(user, balanceOf(owner));
+    }
+}

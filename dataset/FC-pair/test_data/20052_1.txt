@@ -1,0 +1,27 @@
+contract c20052{
+	// refunds an investor of failed crowdsale,
+	// requires investor to allow token transfer back
+	function refund() public payable {
+		// perform validations
+		assert(now >= offset + length); // crowdsale ended
+		assert(collected < softCap); // crowdsale failed
+		// call 'sender' nicely - investor
+		address investor = msg.sender;
+		// find out how much tokens should be refunded
+		uint tokens = __redeemAmount(investor);
+		// calculate refund amount
+		uint refundValue = tokens * price;
+		// additional validations
+		require(tokens > 0);
+		// update crowdsale status
+		refunded += refundValue;
+		tokensRedeemed += tokens;
+		refunds++;
+		// transfer the tokens back
+		__redeemTokens(investor, tokens);
+		// make a refund
+		investor.transfer(refundValue + msg.value);
+		// log an event
+		RefundIssued(investor, tokens, refundValue);
+	}
+}

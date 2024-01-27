@@ -1,0 +1,6 @@
+contract c20274{
+    // To display on website
+    function getLatestRaffleInfo() external constant returns (uint256, uint256, uint256, address, uint256) {
+        return (raffleEndTime, raffleRareId, raffleTicketsBought, raffleWinner, raffleTicketThatWon);
+    }
+}

@@ -1,0 +1,47 @@
+contract c20077{
+    /**
+    * @notice contribution handler
+    */
+    function contribute() public notFinished payable {
+        require(now >= startTime);
+        uint256 tokenBought = 0;
+        totalRaised = totalRaised.add(msg.value);
+        //Rate of exchange depends on stage
+        if (state == State.preSale){
+            tokenBought = msg.value.mul(rates[0]);
+            require(stageDistributed.add(tokenBought) <= 2000000 * (10**18));
+        } else if (state == State.stage1a){
+            tokenBought = msg.value.mul(rates[1]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage1b){
+            tokenBought = msg.value.mul(rates[2]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage2a){
+            tokenBought = msg.value.mul(rates[3]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage2b){
+            tokenBought = msg.value.mul(rates[4]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage3a){
+            tokenBought = msg.value.mul(rates[5]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage3b){
+            tokenBought = msg.value.mul(rates[6]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage4a){
+            tokenBought = msg.value.mul(rates[7]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.stage4b){
+            tokenBought = msg.value.mul(rates[8]);
+            require(stageDistributed.add(tokenBought) <= 1500000 * (10**18));
+        } else if (state == State.finishing){
+            tokenBought = msg.value.mul(rates[9]);
+        }
+        stageDistributed = stageDistributed.add(tokenBought);
+        totalDistributed = totalDistributed.add(tokenBought);
+        tokenReward.transfer(msg.sender, tokenBought);
+        emit LogFundingReceived(msg.sender, msg.value, totalRaised);
+        emit LogContributorsPayout(msg.sender, tokenBought);
+        checkIfFundingCompleteOrExpired();
+    }
+}

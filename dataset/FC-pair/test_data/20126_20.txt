@@ -1,0 +1,25 @@
+contract c20126{
+  /// @dev Adds an auction to the list of open auctions. Also fires the
+  ///  AuctionCreated event.
+  /// @param _tokenId The ID of the token to be put on auction.
+  /// @param _auction Auction to add.
+  function _addAuction(
+    address _nftAddress,
+    uint256 _tokenId,
+    Auction _auction,
+    address _seller
+  ) internal {
+    // Require that all auctions have a duration of
+    // at least one minute. (Keeps our math from getting hairy!)
+    require(_auction.duration >= 1 minutes);
+    auctions[_nftAddress][_tokenId] = _auction;
+    AuctionCreated(
+      _nftAddress,
+      _tokenId,
+      uint256(_auction.startingPrice),
+      uint256(_auction.endingPrice),
+      uint256(_auction.duration),
+      _seller
+    );
+  }
+}

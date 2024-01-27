@@ -1,0 +1,19 @@
+contract c20130{
+  // solium-enable arg-overflow
+  function approve(
+    address _approved,
+    uint256 _tokenId
+  )
+    external
+    payable
+    mustBeValidToken(_tokenId)
+    onlyTokenOwnerOrOperator(_tokenId)
+    whenNotPaused
+  {
+    address _owner = _tokenOwner[_tokenId];
+    require(_owner != _approved);
+    require(_tokenApproval[_tokenId] != _approved);
+    _tokenApproval[_tokenId] = _approved;
+    Approval(_owner, _approved, _tokenId);
+  }
+}

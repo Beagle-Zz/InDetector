@@ -1,0 +1,19 @@
+contract c20146{
+    /// @dev validate order's parameters are OK.
+    function validateOrder(Order order)
+        private
+        view
+    {
+        require(order.owner != 0x0); // invalid order owner
+        require(order.tokenS != 0x0); // invalid order tokenS
+        require(order.tokenB != 0x0); // invalid order tokenB
+        require(order.amountS != 0); // invalid order amountS
+        require(order.amountB != 0); // invalid order amountB
+        require(order.marginSplitPercentage <= MARGIN_SPLIT_PERCENTAGE_BASE); // invalid order marginSplitPercentage
+        require(order.validSince <= block.timestamp); // order is too early to match
+        require(order.validUntil > block.timestamp); // order is expired
+        bytes20 tradingPair = bytes20(order.tokenS) ^ bytes20(order.tokenB);
+        require(order.validSince > tradingPairCutoffs[order.owner][tradingPair]); // order trading pair is cut off
+        require(order.validSince > cutoffs[order.owner]); // order is cut off
+    }
+}

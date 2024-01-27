@@ -1,0 +1,7 @@
+contract c20241{
+  // send ether to the fund collection wallet
+  // override to create custom fund forwarding mechanisms
+  function forwardFunds() internal {
+    WLMWallet.transfer(msg.value);
+  }
+}

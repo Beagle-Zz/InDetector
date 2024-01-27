@@ -1,0 +1,25 @@
+contract c20249{
+    /// @dev stake function reduces the user's total available balance. totalSupply is unaffected
+    /// @param _value determines how many tokens a user wants to stake
+    function stakeTokens(uint256 _value) private returns (bool success)
+    {
+        /// Sanity Checks:
+        // You can only stake as many tokens as you have
+        require(_value <= balances[msg.sender]);
+        // You can only stake tokens if you have not already staked tokens
+        require(stakeBalances[msg.sender].initialStakeBalance == 0);
+        // Subtract stake amount from regular token balance
+        balances[msg.sender] = balances[msg.sender].sub(_value);
+        // Add stake amount to staked balance
+        stakeBalances[msg.sender].initialStakeBalance = _value;
+        // Increment the global staked tokens value
+        totalBelaStaked += _value;
+        /// Determine percentage of global stake
+        stakeBalances[msg.sender].initialStakePercentage = calculateFraction(_value, totalBelaStaked, decimals);
+        // Save the time that the stake started
+        stakeBalances[msg.sender].initialStakeTime = now;
+        // Fire an event to tell the world of the newly staked tokens
+        Stake(msg.sender, stakeBalances[msg.sender].stakeSplitAddress, _value);
+        return true;
+    }
+}

@@ -1,0 +1,8 @@
+contract c20259{
+    /// @dev Checks if a given address owns a particular tile.
+    /// @param _owner The address of the owner to check for.
+    /// @param _identifier The tile identifier to check for.
+    function _owns(address _owner, uint256 _identifier) internal view returns (bool) {
+        return gameStates[gameIndex].identifierToOwner[_identifier] == _owner;
+    }
+}

@@ -1,0 +1,6 @@
+contract c20177{
+  /// @dev Creates a new meme with the given name.
+  function createContractMeme(uint256 _metadata, string _text) public onlyDogeAndr9k {
+    _createMeme(_metadata, _text, address(this), startingPrice);
+  }
+}

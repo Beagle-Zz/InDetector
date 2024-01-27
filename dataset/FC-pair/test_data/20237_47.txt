@@ -1,0 +1,14 @@
+contract c20237{
+    // allocate preICO tokens
+    function allocatePreICOTokens() public {
+        require(!preICOTokensAllocated);
+        for (uint256 i = 0; i < betexStorage.getPreICOFundersCount(); i++) {
+            address _funder = betexStorage.preICOFunders(i);
+            uint256 _tokens = betexStorage.preICOBalances(_funder);
+            token.transfer(_funder, _tokens);
+            sold = sold.add(_tokens);
+            betexStorage.addFunder(_funder);
+        }
+        preICOTokensAllocated = true;
+    }
+}

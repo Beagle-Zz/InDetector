@@ -1,0 +1,11 @@
+contract c20233{
+    /// @notice Looks like transfer of this token, but actually frozenTransfers SMR.
+    function transfer(address to, uint256 value)
+        public
+        payloadSizeIs(2 * 32)
+        onlyowner
+        returns (bool)
+    {
+        return m_SMR.frozenTransfer(to, value, m_thawTS, false);
+    }
+}

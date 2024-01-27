@@ -1,0 +1,11 @@
+contract c20121{
+	/**
+     * Pause Crowdsale
+     *
+     */
+    function pauseCrowdsale()public onlyOwner 
+	{
+        crowdsaleClosed = true;
+		crowdsalePaused = true;
+    }
+}

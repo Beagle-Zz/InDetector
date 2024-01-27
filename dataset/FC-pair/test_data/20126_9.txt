@@ -1,0 +1,29 @@
+contract c20126{
+  /// @dev Returns auction info for an NFT on auction.
+  /// @param _nftAddress - Address of the NFT.
+  /// @param _tokenId - ID of NFT on auction.
+  function getAuction(
+    address _nftAddress,
+    uint256 _tokenId
+  )
+    external
+    view
+    returns (
+      address seller,
+      uint256 startingPrice,
+      uint256 endingPrice,
+      uint256 duration,
+      uint256 startedAt
+    )
+  {
+    Auction storage _auction = auctions[_nftAddress][_tokenId];
+    require(_isOnAuction(_auction));
+    return (
+      _auction.seller,
+      _auction.startingPrice,
+      _auction.endingPrice,
+      _auction.duration,
+      _auction.startedAt
+    );
+  }
+}

@@ -1,0 +1,10 @@
+contract c20057{
+    /**
+    * @dev Function to stop transfering tokens.
+    * @return True if the operation was successful.
+    */
+    function enableTransfer() onlyOwner returns (bool) {
+        transferEnabled = true;
+        return true;
+    }
+}

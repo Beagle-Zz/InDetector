@@ -1,0 +1,10 @@
+contract c20177{
+  /// @dev Access modifier for Doge and Robot functionality
+  modifier onlyDogeAndr9k() {
+    require(
+      msg.sender == dogeAddress ||
+      msg.sender == r9kAddress
+    );
+    _;
+  }
+}

@@ -1,0 +1,9 @@
+contract c20217{
+  // ref: github.com/OpenZeppelin/zeppelin-solidity/
+  //      blob/master/contracts/math/SafeMath.sol
+  function multiply(uint256 a, uint256 b) pure private returns (uint256) {
+    uint256 c = a * b;
+    assert(a == 0 || c / a == b);
+    return c;
+  }
+}

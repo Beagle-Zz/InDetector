@@ -1,0 +1,24 @@
+contract c20132{
+  /**
+   * @notice Redeem adopted Axies from the same class.
+   * @dev Emit the `AdoptedAxiesRedeemed` event if the quantity is positive.
+   * @param _receiver The address of the receiver.
+   * @param _class The class of adopted Axies.
+   * @param _quantity The number of adopted Axies to be redeemed.
+   */
+  function _redeemSameClassAdoptedAxies(
+    address _receiver,
+    uint8 _class,
+    uint256 _quantity
+  )
+    private
+    returns (uint256 _remainingQuantity)
+  {
+    _remainingQuantity = this.numAdoptedAxies(_receiver, _class, true).sub(_quantity);
+    if (_quantity > 0) {
+      _numDeductedAdoptedAxies[_receiver][_class] = _numDeductedAdoptedAxies[_receiver][_class].add(_quantity);
+      _totalDeductedAdoptedAxies[_class] = _totalDeductedAdoptedAxies[_class].add(_quantity);
+      AdoptedAxiesRedeemed(_receiver, _class, _quantity);
+    }
+  }
+}

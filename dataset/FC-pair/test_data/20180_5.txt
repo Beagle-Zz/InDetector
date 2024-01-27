@@ -1,0 +1,26 @@
+contract c20180{
+    /**
+     * Modify winner's betting information after receiving the prize
+     *
+     * Change hasReceivedPrize to true to process info panel
+     *
+     * @param _matchId The matchId to find msg.sender's info to modify
+     * @param _bettingPrice The betting price to find msg.sender's info to modify
+     * @param _winningPrize The winning prize to assign value to msg.sender's final betting info
+     * @param _numOfWinners The number of winners to assign value to msg.sender's final betting info
+     * @param _numOfBetters The number of betters to assign value to msg.sender's final betting info
+     */ 
+    function afterClaim(uint256 _matchId, uint _bettingPrice, uint256 _winningPrize, uint _numOfWinners, uint _numOfBetters) private {
+        uint numOfBettingInfo = betterBettingInfo[msg.sender].length;
+        for (uint i = 0; i < numOfBettingInfo; i++) {
+            if (betterBettingInfo[msg.sender][i].matchId == _matchId && betterBettingInfo[msg.sender][i].bettingPrice == _bettingPrice) {
+                betterBettingInfo[msg.sender][i].hasReceivedPrize = true;
+                betterBettingInfo[msg.sender][i].winningPrize = _winningPrize;
+                betterBettingInfo[msg.sender][i].numOfWinners = _numOfWinners;
+                betterBettingInfo[msg.sender][i].numOfBetters = _numOfBetters;
+            }
+        }    
+        betterNumWinning[msg.sender] += 1;
+        CheckPrivilegeAccomplishment(betterNumWinning[msg.sender]);        
+    }
+}

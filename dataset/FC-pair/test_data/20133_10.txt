@@ -1,0 +1,19 @@
+contract c20133{
+    /**
+     * @dev Reset a dungeon run for a given hero.
+     */
+    function revive(uint _heroId) whenNotPaused external payable {
+        // Throws if not enough fee, and any exceeding fee will be transferred back to the player.
+        require(msg.value >= reviveFee);
+        // The revive fee will do directly to jackpot.
+        jackpot += reviveFee;
+        // Reset the dungeon run.
+        delete heroIdToHealth[_heroId];
+        delete heroIdToMonster[_heroId];
+        delete heroIdToRefundedFee[_heroId];
+        // Refund exceeding fee.
+        if (msg.value > reviveFee) {
+            msg.sender.transfer(msg.value - reviveFee);
+        }
+    }
+}

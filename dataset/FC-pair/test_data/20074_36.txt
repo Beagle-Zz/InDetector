@@ -1,0 +1,11 @@
+contract c20074{
+    // Return amount of bonus tokens (in EXTwei)
+    // Receive amount of tokens (in EXTwei) that will be sale, and bonus percent
+    function bonus(uint256 _tokens, uint8 _bonus)
+        internal
+        pure
+        returns (uint256)
+    {
+        return _tokens.mul(_bonus).div(100);
+    }
+}

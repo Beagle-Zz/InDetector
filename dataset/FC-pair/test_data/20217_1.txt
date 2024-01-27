@@ -1,0 +1,4 @@
+contract c20217{
+  // edited : no bonus scheme this ICO
+  function bonus() pure private returns(uint) { return 0; }
+}

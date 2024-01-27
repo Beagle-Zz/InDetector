@@ -1,0 +1,30 @@
+contract c20051{
+    // General addresses can purchase tokens during funding
+    function proxyPurchase(address _addr)
+        payable
+        noReentry
+        returns (bool)
+    {
+        require(!fundFailed());
+        require(!icoSuccessful);
+        require(now <= END_DATE);
+        require(msg.value > 0);
+        // Non-KYC'ed funders can only contribute up to $10000 after prefund period
+        if(!kycAddresses[_addr])
+        {
+            require(now >= START_DATE);
+            require((etherContributed[_addr].add(msg.value)) <= KYC_ETH_LMT);
+        }
+        // Get ether to token conversion
+        uint tokens = ethToTokens(msg.value);
+        // transfer tokens from fund wallet
+        xfer(fundWallet, _addr, tokens);
+        // Update holder payments
+        etherContributed[_addr] = etherContributed[_addr].add(msg.value);
+        // Update funds raised
+        etherRaised = etherRaised.add(msg.value);
+        // Bail if this pushes the fund over the USD cap or Token cap
+        require(etherRaised <= MAX_ETH_FUND);
+        return true;
+    }
+}

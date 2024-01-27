@@ -1,0 +1,9 @@
+contract c20154{
+ 	/**
+ 	 * @dev Modifier to make a function callable only when the contract is not fused.
+ 	 */
+    modifier whenNotFused() {
+        require(!fused);
+        _;
+    }
+}

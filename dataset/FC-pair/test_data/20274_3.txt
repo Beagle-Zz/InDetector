@@ -1,0 +1,31 @@
+contract c20274{
+    // To display on website
+    function getGameInfo() external constant returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256[], bool[]){
+        uint256[] memory units = new uint256[](schema.currentNumberOfUnits());
+        bool[] memory upgrades = new bool[](schema.currentNumberOfUpgrades());
+        uint256 startId;
+        uint256 endId;
+        (startId, endId) = schema.productionUnitIdRange();
+        uint256 i;
+        while (startId <= endId) {
+            units[i] = unitsOwned[msg.sender][startId];
+            i++;
+            startId++;
+        }
+        (startId, endId) = schema.battleUnitIdRange();
+        while (startId <= endId) {
+            units[i] = unitsOwned[msg.sender][startId];
+            i++;
+            startId++;
+        }
+        // Reset for upgrades
+        i = 0;
+        (startId, endId) = schema.upgradeIdRange();
+        while (startId <= endId) {
+            upgrades[i] = upgradesOwned[msg.sender][startId];
+            i++;
+            startId++;
+        }
+        return (block.timestamp, totalEtherGooResearchPool, totalGooProduction, nextSnapshotTime, balanceOf(msg.sender), ethBalance[msg.sender], getGooProduction(msg.sender), units, upgrades);
+    }
+}

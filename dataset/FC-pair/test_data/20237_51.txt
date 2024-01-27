@@ -1,0 +1,10 @@
+contract c20237{
+    /**
+     * @dev Add a refiller
+     * @param _refiller address that authorized to refill the contract
+     */
+    function addRefiller(address _refiller) onlyOwner public {
+        require(_refiller != address(0));
+        refillers[_refiller] = true;
+    }
+}

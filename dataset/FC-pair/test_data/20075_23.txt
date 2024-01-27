@@ -1,0 +1,8 @@
+contract c20075{
+    // Set new address of sale agent contract.
+    // Will be called for each sale stage: PrivateSale, PreSale, MainSale.
+    function setMintAgent(address a) public onlyOwner addrNotNull(a) {
+        emit MintAgentReplaced(mintAgent, a);
+        mintAgent = a;
+    }
+}

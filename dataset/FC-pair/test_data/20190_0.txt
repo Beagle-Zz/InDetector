@@ -1,0 +1,17 @@
+contract c20190{
+    //verifies if a contract that has been deployed is a Human Standard Token.
+    //NOTE: This is a very expensive function, and should only be used in an eth_call. ~800k gas
+    function verifyEIP20(address _tokenContract) public view returns (bool) {
+        bytes memory fetchedTokenByteCode = codeAt(_tokenContract);
+        if (fetchedTokenByteCode.length != EIP20ByteCode.length) {
+            return false; //clear mismatch
+        }
+      //starting iterating through it if lengths match
+        for (uint i = 0; i < fetchedTokenByteCode.length; i++) {
+            if (fetchedTokenByteCode[i] != EIP20ByteCode[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

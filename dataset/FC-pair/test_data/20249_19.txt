@@ -1,0 +1,10 @@
+contract c20249{
+    /// @dev Determines mint total based upon how many seconds have passed
+    /// @param _timeInSeconds takes the time that has elapsed since the last minting
+    /// @return uint with the calculated number of new tokens to mint
+    function calculateMintTotal(uint _timeInSeconds, uint _mintRate) pure private returns(uint mintAmount)
+    {
+        // Calculates the amount of tokens to mint based upon the number of seconds passed
+        return(_timeInSeconds.mul(_mintRate));
+    }
+}

@@ -1,0 +1,13 @@
+contract c20172{
+    // @dev Returns the information on a certain Avatar
+    function getAvatar(uint256 _tokenId) public view returns (
+        string avatarName,
+        uint256 sellingPrice,
+        address owner
+    ) {
+        Avatar storage avatar = avatars[_tokenId];
+        avatarName = avatar.name;
+        sellingPrice = avatarIndexToPrice[_tokenId];
+        owner = avatarIndexToOwner[_tokenId];
+    }
+}

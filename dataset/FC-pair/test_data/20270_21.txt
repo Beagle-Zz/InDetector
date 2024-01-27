@@ -1,0 +1,9 @@
+contract c20270{
+    //used for private and public sale to create time locked contract before lock release time
+    //Note: TokenTimelock constructor will throw after token unlock time is reached
+    function mint_time_locked_token(address _beneficiary, uint256 _token_amount) internal returns(TokenTimelock _locked){
+        _locked = new TokenTimelock(this, _beneficiary, token_unlock_time);
+        time_locked_reclaim_addresses[_beneficiary].push(_locked);
+        assert(mint(_locked, _token_amount));
+    }
+}

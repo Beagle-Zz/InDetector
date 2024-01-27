@@ -1,0 +1,10 @@
+contract c3867{
+    /**
+    * @dev called by the owner to pause, triggers stopped state
+    */
+    function pause() onlyOwner whenNotPaused public {
+        paused = true;
+        tokenReward.stopICO();
+        emit Pause();
+    }
+}

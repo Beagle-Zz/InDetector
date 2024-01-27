@@ -1,0 +1,7 @@
+contract c20177{
+  /// @dev Access modifier for Robot functionality
+  modifier onlyr9k() {
+    require(msg.sender == r9kAddress);
+    _;
+  }
+}

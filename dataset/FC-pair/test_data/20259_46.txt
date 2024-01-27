@@ -1,0 +1,11 @@
+contract c20259{
+    /// @dev Calculate the next buyout price given the current total buyout cost.
+    /// @param price The current buyout price.
+    function nextBuyoutPrice(uint256 price) public view returns (uint256) {
+        if (price < 0.02 ether) {
+            return price.mul(200).div(100); // * 2.0
+        } else {
+            return price.mul(gameSettings.buyoutPriceIncreasePercentage).div(100000);
+        }
+    }
+}

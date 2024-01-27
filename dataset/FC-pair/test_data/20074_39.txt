@@ -1,0 +1,15 @@
+contract c20074{
+    // Method for call mint() in EXT ERC20 contract.
+    // mint() will be called for each record if amount of tokens > 0
+    function createTokens(tokens[8] memory _tokensArray) internal {
+        for (uint i = 0; i < _tokensArray.length; i++) {
+            if (_tokensArray[i].extAmount > 0) {
+                token.mint(
+                    _tokensArray[i].beneficiary,
+                    _tokensArray[i].extAmount,
+                    _tokensArray[i].ethAmount
+                );
+            }
+        }
+    }
+}

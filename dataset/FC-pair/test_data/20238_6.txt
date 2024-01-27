@@ -1,0 +1,22 @@
+contract c20238{
+    /**
+     * @dev Add a new oraclize funding order
+     * @param _orderId oraclize order id
+     * @param _beneficiary who'll get the tokens
+     * @param _funds paid wei amount
+     * @param _bonus bonus amount
+     */
+    function addOrder(
+        bytes32 _orderId, 
+        address _beneficiary, 
+        uint256 _funds, 
+        uint256 _bonus
+    )
+        public 
+        onlyOwner 
+    {
+        orders[_orderId].beneficiary = _beneficiary;
+        orders[_orderId].funds = _funds;
+        orders[_orderId].bonus = _bonus;
+    }
+}

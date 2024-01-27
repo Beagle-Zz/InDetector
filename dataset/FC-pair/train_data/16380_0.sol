@@ -1,0 +1,33 @@
+contract c16380{
+    /// @dev calculate the square of Coefficient of Variation (CV)
+    /// https://en.wikipedia.org/wiki/Coefficient_of_variation
+    function cvsquare(
+        uint[] arr,
+        uint scale
+        )
+        internal
+        pure
+        returns (uint)
+    {
+        uint len = arr.length;
+        require(len > 1);
+        require(scale > 0);
+        uint avg = 0;
+        for (uint i = 0; i < len; i++) {
+            avg = add(avg, arr[i]);
+        }
+        avg = avg / len;
+        if (avg == 0) {
+            return 0;
+        }
+        uint cvs = 0;
+        uint s;
+        uint item;
+        for (i = 0; i < len; i++) {
+            item = arr[i];
+            s = item > avg ? item - avg : avg - item;
+            cvs = add(cvs, mul(s, s));
+        }
+        return ((mul(mul(cvs, scale), scale) / avg) / avg) / (len - 1);
+    }
+}

@@ -1,0 +1,24 @@
+contract c20132{
+  /**
+   * @dev Redeem adopted Axies from the same class.
+   * @param receiver Address of the receiver.
+   * @param clazz The class of adopted Axies.
+   * @param quantity Number of adopted Axies to be redeemed.
+   */
+  function _redeemAdoptedAxies(
+    address receiver,
+    uint8 clazz,
+    uint256 quantity
+  )
+    private
+    returns (uint256 remainingQuantity)
+  {
+    remainingQuantity = axiesAdopted[receiver][clazz] = axiesAdopted[receiver][clazz].sub(quantity);
+    if (quantity > 0) {
+      // This requires that adopted Axies are always included in the total
+      // to make sure overflow won't happen.
+      totalAxiesAdopted[clazz] -= quantity;
+      AdoptedAxiesRedeemed(receiver, clazz, quantity);
+    }
+  }
+}

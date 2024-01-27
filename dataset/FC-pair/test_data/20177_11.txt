@@ -1,0 +1,34 @@
+contract c20177{
+  // Allows someone to send ether and obtain the meme
+  function purchase(uint256 _tokenId) public payable {
+    address oldOwner = memeIndexToOwner[_tokenId];
+    address newOwner = msg.sender;
+    uint256 sellingPrice = memeIndexToPrice[_tokenId];
+    // Making sure meme owner is not sending to self
+    require(oldOwner != newOwner);
+    // Safety check to prevent against an unexpected 0x0 default.
+    require(_addressNotNull(newOwner));
+    // Making sure sent amount is greater than or equal to the sellingPrice
+    require(msg.value >= sellingPrice);
+    uint256 payment = uint256(SafeMath.div(SafeMath.mul(sellingPrice, 97), 100));
+    uint256 purchaseExcess = SafeMath.sub(msg.value, sellingPrice);
+    // Update prices
+    if (sellingPrice < firstStepLimit) {
+      // first stage
+      memeIndexToPrice[_tokenId] = SafeMath.div(SafeMath.mul(sellingPrice, 200), 100);
+    } else if (sellingPrice < secondStepLimit) {
+      // second stage
+      memeIndexToPrice[_tokenId] = SafeMath.div(SafeMath.mul(sellingPrice, 150), 100);
+    } else {
+      // third stage
+      memeIndexToPrice[_tokenId] = SafeMath.div(SafeMath.mul(sellingPrice, 125), 100);
+    }
+    _transfer(oldOwner, newOwner, _tokenId);
+    // Pay previous tokenOwner if owner is not contract
+    if (oldOwner != address(this)) {
+      oldOwner.transfer(payment); //(1 - 0.05)
+    }
+    TokenSold(_tokenId, sellingPrice, memeIndexToPrice[_tokenId], oldOwner, newOwner, memes[_tokenId].metadata, memes[_tokenId].text);
+    msg.sender.transfer(purchaseExcess);
+  }
+}

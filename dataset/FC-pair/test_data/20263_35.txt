@@ -1,0 +1,8 @@
+contract c20263{
+  // Eth balance controls
+  // We can withdraw eth balance of contract.
+  function withdrawBalance() onlyOwner external {
+    require(address(this).balance > 0);
+    msg.sender.transfer(address(this).balance);
+  }
+}

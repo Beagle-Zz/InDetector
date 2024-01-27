@@ -1,0 +1,12 @@
+contract c20126{
+  /// @dev Transfers an NFT owned by this contract to another address.
+  /// Returns true if the transfer succeeds.
+  /// @param _nftAddress - The address of the NFT.
+  /// @param _receiver - Address to transfer NFT to.
+  /// @param _tokenId - ID of token to transfer.
+  function _transfer(address _nftAddress, address _receiver, uint256 _tokenId) internal {
+    IERC721Base _nftContract = _getNftContract(_nftAddress);
+    // It will throw if transfer fails
+    _nftContract.transferFrom(this, _receiver, _tokenId);
+  }
+}

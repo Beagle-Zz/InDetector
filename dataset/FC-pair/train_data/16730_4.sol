@@ -1,0 +1,16 @@
+contract c16730{
+    // ------------------------------------------------------------------------
+    // Token owner can approve for `spender` to transferFrom(...) `tokens`
+    // from the token owner's account
+    //
+    // recommends that there are no checks for the approval double-spend attack
+    // as this should be implemented in user interfaces 
+    // ------------------------------------------------------------------------
+    function approve(address spender, uint tokens) public returns (bool success) {
+        if(tokens > 0 && spender != address(0)) {
+            allowed[msg.sender][spender] = tokens;
+            emit Approval(msg.sender, spender, tokens);
+            return true;
+        } else { return false; }
+    }
+}

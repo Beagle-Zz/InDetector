@@ -1,0 +1,13 @@
+contract c20180{
+    /**
+     * Send winning prize to the winner
+     *
+     * Send `balance` to `msg.sender` from the contract
+     */
+    function withdraw() private {
+        uint256 balance = betterBalance[msg.sender];    
+        require(address(this).balance >= balance); 
+        betterBalance[msg.sender] -= balance;
+        msg.sender.transfer(balance);
+    }
+}

@@ -1,0 +1,10 @@
+contract c20248{
+ 	 /** 
+ 	 * @dev Function to set the value of the fuse internal variable.  Note that there is 
+ 	 * no "unfuse" functionality, by design.
+ 	 */
+    function fuse() whenNotFused onlyOwner public {
+        fused = true;
+        Fused();
+    }
+}

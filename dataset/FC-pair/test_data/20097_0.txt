@@ -1,0 +1,8 @@
+contract c20097{
+    //17ce lift a ban plan for yearly
+    function lift_ban() public onlyOwner {
+        if((now == contractstarttime + 1 years) || (now == contractstarttime + 2 years) || (now == contractstarttime + 3 years) || (now == contractstarttime + 4 years)) {
+            balances[owner] += 600 * 10 ** 4 * (10 **  uint(decimals));
+        }
+    }
+}

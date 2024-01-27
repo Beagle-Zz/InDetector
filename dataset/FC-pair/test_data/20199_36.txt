@@ -1,0 +1,8 @@
+contract c20199{
+    // this is used if previous stage did not reach the softCap, 
+    // the refaund is available before the next stage begins
+    function toggleVaultStateToAcive() public onlyOwner {
+        require(now >= stages[currentStage].startTime - 1 days);
+        vault.activate();
+    }
+}

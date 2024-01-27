@@ -1,0 +1,48 @@
+contract c20180{
+    /**
+     * Claim winning prize by the user
+     *
+     * Send `winningPrize` to 'msg.sender' from this contract
+     *
+     * @param _matchId The matchId to find winners
+     * @param _homeTeamScore The home team score to find matching score
+     * @param _awayTeamScore The away team score to find matching score
+     * @param _bettingPrice The betting price to find matching price
+     */  
+    function claimPrizes(uint256 _matchId, uint _homeTeamScore, uint _awayTeamScore, uint _bettingPrice) public returns (bool) {
+        uint totalNumBetters = matchBettingInfo[_matchId].length;  
+        uint numOfBetters = 0;
+        uint numOfWinners = 0;
+        uint256 winningPrize = 0;
+        uint commissionToOwner = 0;  
+        bool result = checkPrizeAlreadyReceived(msg.sender, _matchId, _bettingPrice);        
+        // Revert if the sender has already received the prize
+        if (result) {
+            revert();
+        }          
+        // Find matching scores among betters who betted for this match & price
+        for (uint j = 0; j < totalNumBetters; j++) {  
+            if (matchBettingInfo[_matchId][j].bettingPrice == _bettingPrice) {
+                numOfBetters++;
+                if (matchBettingInfo[_matchId][j].homeTeamScore == _homeTeamScore && matchBettingInfo[_matchId][j].awayTeamScore == _awayTeamScore) {          
+                    numOfWinners++;
+                }    
+            }
+        }   
+        // msg.sender is the only winner, gets all the prize and gives a 7% commission to the owner
+        if (numOfWinners == 1) {      
+            commissionToOwner = _bettingPrice * numOfBetters * 7 / 100;  
+            betterBalance[msg.sender] = (_bettingPrice * numOfBetters) - commissionToOwner;
+            winningPrize = (_bettingPrice * numOfBetters) - commissionToOwner;
+        // One more winner, divide it equally and gives a 7% commission to the owner
+        } else if (numOfWinners > 1) {
+            commissionToOwner = ((_bettingPrice * numOfBetters) / numOfWinners) * 7 / 100;  
+            betterBalance[msg.sender] = ((_bettingPrice * numOfBetters) / numOfWinners) - commissionToOwner;
+            winningPrize = ((_bettingPrice * numOfBetters) / numOfWinners) - commissionToOwner;   
+        }
+        sendCommissionToOwner(commissionToOwner);
+        withdraw();
+        afterClaim(_matchId, _bettingPrice, winningPrize, numOfWinners, numOfBetters);
+        return true;
+    }
+}

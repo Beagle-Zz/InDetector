@@ -1,0 +1,17 @@
+contract c20135{
+    /**
+     * @dev Adds a new phase
+     * @param _startDate  Start date of the phase
+     * @param _endDate    End date of the phase
+     * @param _priceUSDcDNM  Price USD cents per token
+     * @param _tokensCap     Maximum allowed emission at the phase
+     */
+    function addPhase(uint256 _startDate, uint256 _endDate, uint256 _priceUSDcDNM, uint256 _tokensCap) public onlyAdmin {
+        require(validatePhaseDates(_startDate, _endDate));
+        require(_priceUSDcDNM > 0);
+        require(_tokensCap > 0);
+        phases.push(Phase(_startDate, _endDate, _priceUSDcDNM, 0, _tokensCap));
+        uint256 index = phases.length - 1;
+        PhaseAdded(msg.sender, index, _startDate, _endDate, _priceUSDcDNM, _tokensCap);
+    }
+}

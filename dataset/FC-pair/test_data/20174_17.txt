@@ -1,0 +1,22 @@
+contract c20174{
+  /**
+   * @dev low level token purchase ***DO NOT OVERRIDE***
+   * @param _beneficiary Address performing the token purchase
+   */
+  function buyTokens(address _beneficiary) public payable {
+    //uint256 weiAmountTmp = msg.value;
+    uint256 weiAmount;
+    weiAmount = (weiRaised.add(msg.value) <= cap) ? (msg.value) : (cap.sub(weiRaised));
+    _preValidatePurchase(_beneficiary, weiAmount);
+    _setContributor(_beneficiary, weiAmount);
+    //update state
+    weiRaised = weiRaised.add(weiAmount);
+    /**
+    * return overflowed ETH to sender
+    */
+    if(weiAmount < msg.value){
+        _beneficiary.transfer(msg.value.sub(weiAmount));
+    }
+    _forwardFundsWei(weiAmount);
+  }
+}

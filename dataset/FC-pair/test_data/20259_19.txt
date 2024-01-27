@@ -1,0 +1,60 @@
+contract c20259{
+    /// @notice Sets the settings for the next game.
+    function setNextGameSettings(
+        uint256 rows,
+        uint256 cols,
+        uint256 initialActivityTimer,
+        uint256 finalActivityTimer,
+        uint256 numberOfFlipsToFinalActivityTimer,
+        uint256 timeoutBonusTime,
+        uint256 unclaimedTilePrice,
+        uint256 buyoutReferralBonusPercentage,
+        uint256 firstBuyoutPrizePoolPercentage,
+        uint256 buyoutPrizePoolPercentage,
+        uint256 buyoutDividendPercentage,
+        uint256 buyoutFeePercentage,
+        uint256 buyoutPriceIncreasePercentage
+    )
+        public
+        onlyCFO
+    {
+        // Buyout dividend must be 2% at the least.
+        // Buyout dividend percentage may be 12.5% at the most.
+        require(2000 <= buyoutDividendPercentage && buyoutDividendPercentage <= 12500);
+        // Buyout fee may be 5% at the most.
+        require(buyoutFeePercentage <= 5000);
+        if (numberOfFlipsToFinalActivityTimer == 0) {
+            require(initialActivityTimer == finalActivityTimer);
+        }
+        nextGameSettings = GameSettings({
+            rows: rows,
+            cols: cols,
+            initialActivityTimer: initialActivityTimer,
+            finalActivityTimer: finalActivityTimer,
+            numberOfFlipsToFinalActivityTimer: numberOfFlipsToFinalActivityTimer,
+            timeoutBonusTime: timeoutBonusTime,
+            unclaimedTilePrice: unclaimedTilePrice,
+            buyoutReferralBonusPercentage: buyoutReferralBonusPercentage,
+            firstBuyoutPrizePoolPercentage: firstBuyoutPrizePoolPercentage,
+            buyoutPrizePoolPercentage: buyoutPrizePoolPercentage,
+            buyoutDividendPercentage: buyoutDividendPercentage,
+            buyoutFeePercentage: buyoutFeePercentage,
+            buyoutPriceIncreasePercentage: buyoutPriceIncreasePercentage
+        });
+        NextGame(
+            rows,
+            cols,
+            initialActivityTimer,
+            finalActivityTimer,
+            numberOfFlipsToFinalActivityTimer,
+            timeoutBonusTime,
+            unclaimedTilePrice,
+            buyoutReferralBonusPercentage, 
+            firstBuyoutPrizePoolPercentage,
+            buyoutPrizePoolPercentage,
+            buyoutDividendPercentage,
+            buyoutFeePercentage,
+            buyoutPriceIncreasePercentage
+        );
+    }
+}

@@ -1,0 +1,6 @@
+contract c20204{
+    /// @dev Return all remaining tokens back to owner.
+    function returnTokens() public onlyOwner {
+        token.transfer(owner, token.balanceOf(this));
+    }
+}

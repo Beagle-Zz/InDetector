@@ -1,0 +1,7 @@
+contract c20270{
+    //override to add a checker
+    function finishMinting() onlyOwner canMint public returns (bool){
+        require(pvt_plmt_set && pvt_plmt_remaining_in_Wei == 0);
+        super.finishMinting();
+    }
+}

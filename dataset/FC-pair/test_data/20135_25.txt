@@ -1,0 +1,12 @@
+contract c20135{
+    /**
+     * @dev Function to stop minting new tokens.
+     * @return True if the operation was successful.
+     */
+    function finishMinting() onlyOwner public returns (bool) {
+        require(!mintingFinished);
+        mintingFinished = true;
+        MintFinished();
+        return true;
+    }
+}

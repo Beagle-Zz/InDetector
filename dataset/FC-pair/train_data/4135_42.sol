@@ -1,0 +1,9 @@
+contract c4135{
+  // @dev Revoke acess to deploy heroes.
+  function revokeAccessDeploy(address _address)
+    onlyOwner
+    public
+  {
+    deployAccess[_address] = false;
+  }
+}

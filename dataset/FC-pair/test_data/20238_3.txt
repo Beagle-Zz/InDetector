@@ -1,0 +1,9 @@
+contract c20238{
+    /**
+     * @return true if address is a funder address
+     * @param _funder funder's address
+     */
+    function isFunder(address _funder) public view returns(bool) {
+        return funded[_funder];
+    }
+}

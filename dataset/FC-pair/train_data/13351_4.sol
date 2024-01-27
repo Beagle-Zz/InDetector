@@ -1,0 +1,6 @@
+contract c13351{
+  /** Interface declaration. */
+  function isPricingStrategy() public constant returns (bool) {
+    return true;
+  }
+}

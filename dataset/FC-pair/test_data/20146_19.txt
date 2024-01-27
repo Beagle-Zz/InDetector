@@ -1,0 +1,41 @@
+contract c20146{
+    /// @return The smallest order's index.
+    function calculateOrderFillAmount(
+        OrderState        state,
+        OrderState        next,
+        uint              i,
+        uint              j,
+        uint              smallestIdx
+        )
+        private
+        pure
+        returns (uint newSmallestIdx)
+    {
+        // Default to the same smallest index
+        newSmallestIdx = smallestIdx;
+        uint fillAmountB = state.fillAmountS.mul(
+            state.rate.amountB
+        ) / state.rate.amountS;
+        if (state.order.buyNoMoreThanAmountB) {
+            if (fillAmountB > state.order.amountB) {
+                fillAmountB = state.order.amountB;
+                state.fillAmountS = fillAmountB.mul(
+                    state.rate.amountS
+                ) / state.rate.amountB;
+                newSmallestIdx = i;
+            }
+            state.lrcFee = state.order.lrcFee.mul(
+                fillAmountB
+            ) / state.order.amountB;
+        } else {
+            state.lrcFee = state.order.lrcFee.mul(
+                state.fillAmountS
+            ) / state.order.amountS;
+        }
+        if (fillAmountB <= next.fillAmountS) {
+            next.fillAmountS = fillAmountB;
+        } else {
+            newSmallestIdx = j;
+        }
+    }
+}

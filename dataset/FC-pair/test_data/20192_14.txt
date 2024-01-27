@@ -1,0 +1,8 @@
+contract c20192{
+    /**
+    * @dev Setter for the income percentage in the first coldwallet (not setting this the second wallet will receive all income)
+    */
+    function setColdWallet1SplitPercentage(uint _percentage) public onlyOwner onlyValidPercentage(_percentage) {
+        percentage = _percentage;
+    }
+}

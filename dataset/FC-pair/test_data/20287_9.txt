@@ -1,0 +1,65 @@
+contract c20287{
+    /**
+     * @dev To start a dungeon run, player need to call the attack function with an entranceFee.
+     *  Future attcks required no fee, player just need to send a free transaction
+     *  to the contract, before the monster flee. The lower the gas price, the larger the damage.
+     *  This function is prevented from being called by a contract, using the onlyHumanAddress modifier.
+     *  Note that each hero can only perform one dungeon run.
+     */
+    function attack(uint _heroId) whenNotPaused onlyHumanAddress external payable {
+        uint genes;
+        address owner;
+        (,,, genes, owner,,) = edCoreContract.getHeroDetails(_heroId);
+        // Throws if the hero is not owned by the player.
+        require(msg.sender == owner);
+        // Get the health and strength of the hero.
+        uint heroInitialHealth = (genes / (32 ** 12)) % 32 + 1;
+        uint heroStrength = (genes / (32 ** 8)) % 32 + 1;
+        // Get the current monster and hero current health.
+        Monster memory monster = heroIdToMonster[_heroId];
+        uint currentLevel = monster.level;
+        uint heroCurrentHealth = heroIdToHealth[_heroId];
+        // A flag determine whether the dungeon run has ended.
+        bool dungeonRunEnded;
+        // To start a run, the player need to pay an entrance fee.
+        if (currentLevel == 0) {
+            // Throws if not enough fee, and any exceeding fee will be transferred back to the player.
+            require(msg.value >= entranceFee);
+            entranceFeePool += entranceFee;
+            // Create level 1 monster, initial health is 1 * monsterHealth.
+            heroIdToMonster[_heroId] = Monster(uint64(now), 1, monsterHealth, monsterHealth);
+            monster = heroIdToMonster[_heroId];
+            // Set the hero initial health to storage.
+            heroIdToHealth[_heroId] = heroInitialHealth;
+            heroCurrentHealth = heroInitialHealth;
+            // Refund exceeding fee.
+            if (msg.value > entranceFee) {
+                msg.sender.transfer(msg.value - entranceFee);
+            }
+        } else {
+            // If the hero health is 0, the dungeon run has ended.
+            require(heroCurrentHealth > 0);
+            // If a hero failed to damage a monster before it flee, the dungeon run ends,
+            // regardless of the remaining hero health.
+            dungeonRunEnded = now > monster.creationTime + monsterFleeTime * 2 ||
+                (monster.health == monster.initialHealth && now > monster.creationTime + monsterFleeTime);
+            if (dungeonRunEnded) {
+                // Add the non-refunded fee to jackpot.
+                uint addToJackpot = entranceFee - heroIdToRefundedFee[_heroId];
+                if (addToJackpot > 0) {
+                    jackpot += addToJackpot;
+                    entranceFeePool -= addToJackpot;
+                    heroIdToRefundedFee[_heroId] += addToJackpot;
+                }
+                // Sanity check.
+                assert(addToJackpot <= entranceFee);
+            }
+            // Future attack do not require any fee, so refund all ether sent with the transaction.
+            msg.sender.transfer(msg.value);
+        }
+        if (!dungeonRunEnded) {
+            // All pre-conditions passed, call the internal attack function.
+            _attack(_heroId, genes, heroStrength, heroCurrentHealth);
+        }
+    }
+}

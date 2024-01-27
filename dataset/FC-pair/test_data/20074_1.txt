@@ -1,0 +1,10 @@
+contract c20074{
+    /**
+     * @dev Allows the current owner to transfer control of the contract to a _new.
+     * @param a The address to transfer ownership to.
+     */
+    function setOwner(address a) external onlyOwner addrNotNull(a) {
+        owner = a;
+        emit OwnershipReplaced(msg.sender, a);
+    }
+}

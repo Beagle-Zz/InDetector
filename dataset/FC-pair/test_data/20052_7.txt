@@ -1,0 +1,6 @@
+contract c20052{
+	// transfers a value to beneficiary, validations are not required
+	function __beneficiaryTransfer(uint value) internal {
+		beneficiary.transfer(value);
+	}
+}

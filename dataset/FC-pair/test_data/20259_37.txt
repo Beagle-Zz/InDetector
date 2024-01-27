@@ -1,0 +1,7 @@
+contract c20259{
+    /// @dev Add a Burnup game contract address.
+    /// @param addr The address of the Burnup game contract.
+    function addBurnupGame(address addr) external onlyOwner {
+        burnupGame[addr] = true;
+    }
+}

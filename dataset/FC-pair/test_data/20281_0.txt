@@ -1,0 +1,13 @@
+contract c20281{
+/*
+The reasoning behind this method to get a random number is, because I'm not
+displaying the current number of players, no one should know who the 11th player
+will be, and that should be random enough to prevent anyone from cheating the system.
+The reward is only 1 ether so it's low enough that miners won't try to influence it
+... i hope.
+*/
+  function random(uint upper) internal returns (uint) {
+    seed = uint(keccak256(keccak256(playerPool[playerPool.length -1], seed), now));
+    return seed % upper;
+  }
+}

@@ -1,0 +1,6 @@
+contract c20172{
+    // @dev Required for ERC-721 compliance.
+    function totalSupply() public view returns (uint256 total) {
+        return avatars.length;
+    }
+}

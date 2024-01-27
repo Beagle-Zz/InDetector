@@ -1,0 +1,8 @@
+contract c20180{
+    /**
+     * Return the current number of accounts who have reached each privileges
+     */
+    function getInfoPanel() public view returns(uint, uint, uint, uint) {      
+        return (numOfPanhandler, numOfVagabond, numOfTramp, numOfMiddleClass);    
+    }
+}

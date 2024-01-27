@@ -1,0 +1,16 @@
+contract c20177{
+  /// @notice Returns all the relevant information about a specific meme.
+  /// @param _tokenId The tokenId of the meme of interest.
+  function getMeme(uint256 _tokenId) public view returns (
+    uint256 metadata,
+    string text,
+    uint256 sellingPrice,
+    address owner
+  ) {
+    Meme storage meme = memes[_tokenId];
+    metadata = meme.metadata;
+    text = meme.text;
+    sellingPrice = memeIndexToPrice[_tokenId];
+    owner = memeIndexToOwner[_tokenId];
+  }
+}

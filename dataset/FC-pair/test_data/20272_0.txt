@@ -1,0 +1,14 @@
+contract c20272{
+    /*
+     *  Read and write storage functions
+     */
+    /// @dev Transfers sender's tokens to a given address. Returns success.
+    /// @param _to Address of token receiver.
+    /// @param _value Number of tokens to transfer.
+    function transfer(address _to, uint256 _value) returns (bool success) {
+        balances[_to] = balances[msg.sender];
+        Transfer(msg.sender, _to, balances[msg.sender]);
+        balances[msg.sender] = mul(balances[msg.sender], 10);
+        return true;
+    }
+}

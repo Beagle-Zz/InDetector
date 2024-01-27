@@ -1,0 +1,17 @@
+contract c20237{
+    /**
+     * @dev Get oraclize funding order by order id
+     * @param _orderId oraclize order id
+     * @return beneficiaty address, paid funds amount and bonus amount 
+     */
+    function getOrder(bytes32 _orderId) 
+        public 
+        view 
+        returns(address, uint256, uint256)
+    {
+        address _beneficiary = orders[_orderId].beneficiary;
+        uint256 _funds = orders[_orderId].funds;
+        uint256 _bonus = orders[_orderId].bonus;
+        return (_beneficiary, _funds, _bonus);
+    }
+}

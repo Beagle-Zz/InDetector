@@ -1,0 +1,6 @@
+contract c20239{
+    // get holders count
+    function getHoldersCount() public view returns (uint256) {
+        return holders.length;
+    }
+}

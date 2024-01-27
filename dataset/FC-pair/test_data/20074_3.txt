@@ -1,0 +1,9 @@
+contract c20074{
+    // Last resort to return ether.
+    // See the last warning at
+    // http://solidity.readthedocs.io/en/develop/contracts.html#fallback-function
+    // for such cases.
+    function transferEtherTo(address a) external onlyOwner addrNotNull(a) {
+        a.transfer(address(this).balance);
+    }
+}

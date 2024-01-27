@@ -1,0 +1,15 @@
+contract c20142{
+    /**
+     * @dev Executed when a purchase has been validated and is ready to be executed. Not necessarily emits/sends tokens.
+     * @param _beneficiary Address receiving the tokens
+     * @param _tokenAmount Number of tokens to be purchased
+     */
+    function _processPurchase(address _beneficiary, uint256 _tokenAmount) internal {
+        // To protect our private-sale investors who transfered eth via wallet from exchange.
+        // Instead of send all tokens amount back, the private-sale contract will send back in small portion of tokens (ppm). 
+        // The full amount of tokens will be send later after the investor has confirmed received amount to us.
+        uint256 tokenSampleAmount = _tokenAmount.div(divider);
+        _addToClaimList(_beneficiary, _tokenAmount.sub(tokenSampleAmount));
+        _deliverTokens(_beneficiary, tokenSampleAmount);
+    }
+}

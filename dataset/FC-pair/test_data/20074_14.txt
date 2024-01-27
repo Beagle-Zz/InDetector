@@ -1,0 +1,6 @@
+contract c20074{
+    // Return total amount of issued tokens, in EXTwei
+    function totalSupply() public constant returns (uint) {
+        return _totalSupply;
+    }
+}

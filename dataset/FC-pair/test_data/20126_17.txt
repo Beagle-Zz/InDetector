@@ -1,0 +1,27 @@
+contract c20126{
+  /// @dev Returns current price of an NFT on auction. Broken into two
+  ///  functions (this one, that computes the duration from the auction
+  ///  structure, and the other that does the price computation) so we
+  ///  can easily test that the price computation works correctly.
+  function _getCurrentPrice(
+    Auction storage _auction
+  )
+    internal
+    view
+    returns (uint256)
+  {
+    uint256 _secondsPassed = 0;
+    // A bit of insurance against negative values (or wraparound).
+    // Probably not necessary (since Ethereum guarantees that the
+    // now variable doesn't ever go backwards).
+    if (now > _auction.startedAt) {
+      _secondsPassed = now - _auction.startedAt;
+    }
+    return _computeCurrentPrice(
+      _auction.startingPrice,
+      _auction.endingPrice,
+      _auction.duration,
+      _secondsPassed
+    );
+  }
+}

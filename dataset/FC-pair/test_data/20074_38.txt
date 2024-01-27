@@ -1,0 +1,7 @@
+contract c20074{
+    // Send received ether (in wei) to beneficiary
+    function transferFunds(uint256 _value) internal {
+        beneficiary().transfer(_value);
+        earnedFunds = earnedFunds.add(_value);
+    }
+}

@@ -1,0 +1,9 @@
+contract c20074{
+    // Stop tokens minting forever.
+    function finishMinting() external onlyOwner {
+        require(!isMintingFinished);
+        isMintingFinished = true;
+        mintingStopDate = now;
+        emit MintingFinished();
+    }
+}

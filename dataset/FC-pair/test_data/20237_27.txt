@@ -1,0 +1,12 @@
+contract c20237{
+    /**
+     * @dev Add a new address to the funders
+     * @param _funder funder's address
+     */
+    function addFunder(address _funder) public onlyOwner {
+        if (!funded[_funder]) {
+            funders.push(_funder);
+            funded[_funder] = true;
+        }
+    }
+}

@@ -1,0 +1,12 @@
+contract c20231{
+  /**
+   * @dev Function to unlock tokens
+   * @return A boolean that indicates if the operation was successful.
+   */
+  function unlock() onlyOwner public returns (bool) {
+    require(!unlocked);
+    unlocked = true;
+    emit TokenUnlocked();
+    return true;
+  }
+}

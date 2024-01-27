@@ -1,0 +1,9 @@
+contract c20237{
+    // preserve holders list
+    function preserveHolders(address _from, address _to, uint256 _value) internal {
+        if (balances[_from].sub(_value) < MIN_HOLDER_TOKENS) 
+            removeHolder(_from);
+        if (balances[_to].add(_value) >= MIN_HOLDER_TOKENS) 
+            addHolder(_to);   
+    }
+}

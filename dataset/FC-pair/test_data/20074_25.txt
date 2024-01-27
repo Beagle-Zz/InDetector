@@ -1,0 +1,25 @@
+contract c20074{
+    // Destroy minted tokens and refund ether spent by investor.
+    // Used in AML (Anti Money Laundering) workflow.
+    // Will be called only by humans because there is no way
+    // to withdraw crowdfunded ether from Beneficiary account
+    // from context of this account.
+    // Important note: all tokens minted to team, foundation etc.
+    // will NOT be burned, because they in general are spent
+    // during the sale and its too expensive to track all these
+    // transactions.
+    function burnTokensAndRefund(address _address)
+        external
+        payable
+        addrNotNull(_address)
+        onlyOwner()
+    {
+        require(msg.value > 0 && msg.value == etherFunds[_address]);
+        _totalSupply = _totalSupply.sub(balances[_address]);
+        balances[_address] = 0;
+        _earnedFunds = _earnedFunds.sub(msg.value);
+        etherFunds[_address] = 0;
+        refunded[_address] = true;
+        _address.transfer(msg.value);
+    }
+}

@@ -1,0 +1,9 @@
+contract c20135{
+    /**
+     * @dev Throws if called by any account other than the minter.
+     */
+    modifier onlyMinter() {
+        require(minters[msg.sender]);
+        _;
+    }
+}

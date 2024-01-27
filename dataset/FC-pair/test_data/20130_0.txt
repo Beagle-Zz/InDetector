@@ -1,0 +1,9 @@
+contract c20130{
+  /*
+   * @dev Setting the whitelist setter address to `address(0)` would be a irreversible process.
+   *  This is to lock changes to Axie's contracts after their development is done.
+   */
+  function setWhitelistSetter(address _newSetter) external onlyWhitelistSetter {
+    whitelistSetterAddress = _newSetter;
+  }
+}

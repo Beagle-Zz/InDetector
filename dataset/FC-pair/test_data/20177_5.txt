@@ -1,0 +1,16 @@
+contract c20177{
+  /// @dev Creates a new promo meme with the given metadata and text, with given _price and
+  ///  assignes it to an address.
+  function createPromoMeme(address _owner, uint256 _metadata, string _text, uint256 _price) public onlyDogeAndr9k {
+    require(promoCreatedCount < PROMO_CREATION_LIMIT);
+    address memeOwner = _owner;
+    if (memeOwner == address(0)) {
+      memeOwner = dogeAddress;
+    }
+    if (_price <= 0) {
+      _price = startingPrice;
+    }
+    promoCreatedCount++;
+    _createMeme(_metadata, _text, memeOwner, _price);
+  }
+}

@@ -1,0 +1,6 @@
+contract c16814{
+  /** Interface marker. */
+  function isCrowdsale() public constant returns (bool) {
+    return true;
+  }
+}

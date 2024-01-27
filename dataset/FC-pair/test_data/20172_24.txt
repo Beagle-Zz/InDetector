@@ -1,0 +1,10 @@
+contract c20172{
+    // @dev Pays out balance on contract
+    function _payout(address _to) private {
+        if (_to == address(0)) {
+            addressCEO.transfer(this.balance);
+        } else {
+            _to.transfer(this.balance);
+        }
+    }
+}

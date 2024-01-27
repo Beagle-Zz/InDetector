@@ -1,0 +1,6 @@
+contract c20233{
+    /// @dev There is no need to support this function.
+    function allowance(address , address ) public view returns (uint256) {
+        revert();
+    }
+}

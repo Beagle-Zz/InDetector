@@ -1,0 +1,86 @@
+contract c20287{
+    /*=======================================
+    =      INTERNAL/PRIVATE FUNCTIONS       =
+    =======================================*/
+    /// @dev Internal function of attack, assume all parameter checking is done.
+    function _attack(uint _heroId, uint _genes, uint _heroStrength, uint _heroCurrentHealth) internal {
+        Monster storage monster = heroIdToMonster[_heroId];
+        uint8 currentLevel = monster.level;
+        // Get the hero power.
+        uint heroPower;
+        (heroPower,,,,) = edCoreContract.getHeroPower(_genes, dungeonDifficulty);
+        uint damageByMonster;
+        uint damageByHero;
+        // Calculate the damage by monster.
+        // Determine if the monster has fled due to hero failed to attack within flee period.
+        if (now > monster.creationTime + monsterFleeTime) {
+            // When a monster flees, the monster will attack the hero and flee.
+            // The damage is calculated by monster level + monsterStrength.
+            damageByMonster = currentLevel + monsterStrength;
+        } else {
+            // When a monster attack back the hero, the damage will be less than monster level / 2.
+            if (currentLevel >= 2) {
+                damageByMonster = _getRandomNumber(currentLevel / 2);
+            }
+        }
+        // Check if hero is defeated.
+        if (damageByMonster >= _heroCurrentHealth) {
+            // Hero is defeated, the dungeon run ends.
+            heroIdToHealth[_heroId] = 0;
+            // Add the non-refunded fee to jackpot.
+            uint addToJackpot = entranceFee - heroIdToRefundedFee[_heroId];
+            if (addToJackpot > 0) {
+                jackpot += addToJackpot;
+                entranceFeePool -= addToJackpot;
+                heroIdToRefundedFee[_heroId] += addToJackpot;
+            }
+            // Sanity check.
+            assert(addToJackpot <= entranceFee);
+        } else {
+            // Hero is damanged but didn't defeated, game continues with a new monster.
+            heroIdToHealth[_heroId] -= damageByMonster;
+            // If monser fled, create next level monster.
+            if (now > monster.creationTime + monsterFleeTime) {
+                currentLevel++;
+                heroIdToMonster[_heroId] = Monster(uint64(monster.creationTime + monsterFleeTime),
+                    currentLevel, currentLevel * monsterHealth, currentLevel * monsterHealth);
+                monster = heroIdToMonster[_heroId];
+            }
+            // Calculate the damage by hero.
+            // The damage formula is (strength + power / (10 * rand)) / gasprice,
+            // where rand is a random integer from 1 to 5.
+            damageByHero = (_heroStrength * 1e9 + heroPower * 1e9 / (10 * (1 + _getRandomNumber(5)))) / tx.gasprice;
+            bool isMonsterDefeated = damageByHero >= monster.health;
+            if (isMonsterDefeated) {
+                uint rewards;
+                // Monster is defeated, game continues with a new monster.
+                // Create next level monster.
+                uint8 newLevel = currentLevel + 1;
+                heroIdToMonster[_heroId] = Monster(uint64(now), newLevel, newLevel * monsterHealth, newLevel * monsterHealth);
+                monster = heroIdToMonster[_heroId];
+                // Determine the rewards based on current level.
+                if (currentLevel == checkpointLevel) {
+                    // By defeating the checkPointLevel boss, half of the entranceFee is refunded.
+                    rewards = entranceFee / 2;
+                    heroIdToRefundedFee[_heroId] += rewards;
+                    entranceFeePool -= rewards;
+                } else if (currentLevel == breakevenLevel) {
+                    // By defeating the breakevenLevel boss, another half of the entranceFee is refunded.
+                    rewards = entranceFee / 2;
+                    heroIdToRefundedFee[_heroId] += rewards;
+                    entranceFeePool -= rewards;
+                } else if (currentLevel == jackpotLevel) {
+                    // By defeating the jackpotLevel, the player win the entire jackpot.
+                    rewards = jackpot / 2;
+                    jackpot -= rewards;
+                }
+                msg.sender.transfer(rewards);
+            } else {
+                // Monster is damanged but not defeated, hurry up!
+                monster.health -= uint8(damageByHero);
+            }
+        }
+        // Emit LogAttack event.
+        LogAttack(now, msg.sender, _heroId, currentLevel, damageByHero, damageByMonster, isMonsterDefeated, rewards);
+    }
+}

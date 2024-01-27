@@ -1,0 +1,8 @@
+contract c8687{
+                // ------------------------------------------------------------------------
+                // Total supply
+                // ------------------------------------------------------------------------
+                function totalSupply() public constant returns (uint) {
+                    return _totalSupply  - balances[address(0)];
+                }
+}

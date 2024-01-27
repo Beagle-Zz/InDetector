@@ -1,0 +1,100 @@
+contract c20259{
+    /// @notice Buy the current owner out of the tile.
+    /// @param _gameIndex The index of the game to play on.
+    /// @param startNewGameIfIdle Start a new game if the current game is idle.
+    /// @param x The x-coordinate of the tile to buy.
+    /// @param y The y-coordinate of the tile to buy.
+    function buyout(uint256 _gameIndex, bool startNewGameIfIdle, uint256 x, uint256 y) public payable {
+        // Check to see if the game should end. Process payment.
+        _processGameEnd();
+        if (!gameStates[gameIndex].gameStarted) {
+            // If the game is not started, the contract must not be paused.
+            require(!paused);
+            if (allowStart) {
+                // We're allowed to start once outside of active times.
+                allowStart = false;
+            } else {
+                // This must be an active time.
+                require(canStart());
+            }
+            // If the game is not started, the player must be willing to start
+            // a new game.
+            require(startNewGameIfIdle);
+            _setGameSettings();
+            // Start the game.
+            gameStates[gameIndex].gameStarted = true;
+            // Set game started timestamp.
+            gameStates[gameIndex].gameStartTimestamp = block.timestamp;
+            // Set the initial game board timeout.
+            gameStates[gameIndex].penultimateTileTimeout = block.timestamp + gameSettings.initialActivityTimer;
+            Start(
+                gameIndex,
+                msg.sender,
+                block.timestamp,
+                gameStates[gameIndex].prizePool
+            );
+            PenultimateTileTimeout(gameIndex, gameStates[gameIndex].penultimateTileTimeout);
+        }
+        // Check the game index.
+        if (startNewGameIfIdle) {
+            // The given game index must be the current game index, or the previous
+            // game index.
+            require(_gameIndex == gameIndex || _gameIndex.add(1) == gameIndex);
+        } else {
+            // Only play on the game indicated by the player.
+            require(_gameIndex == gameIndex);
+        }
+        uint256 identifier = coordinateToIdentifier(x, y);
+        address currentOwner = gameStates[gameIndex].identifierToOwner[identifier];
+        // Tile must be unowned, or active.
+        if (currentOwner == address(0x0)) {
+            // Tile must still be flippable.
+            require(gameStates[gameIndex].gameStartTimestamp.add(gameSettings.initialActivityTimer) >= block.timestamp);
+        } else {
+            // Tile must be active.
+            require(gameStates[gameIndex].identifierToTimeoutTimestamp[identifier] >= block.timestamp);
+        }
+        // Enough Ether must be supplied.
+        uint256 price = currentPrice(identifier);
+        require(msg.value >= price);
+        // Get existing surrounding tiles.
+        uint256[] memory claimedSurroundingTiles = _claimedSurroundingTiles(identifier);
+        // Assign the buyout proceeds and retrieve the total cost.
+        _calculateAndAssignBuyoutProceeds(currentOwner, price, claimedSurroundingTiles);
+        // Set the timeout timestamp.
+        uint256 timeout = tileTimeoutTimestamp(identifier, msg.sender);
+        gameStates[gameIndex].identifierToTimeoutTimestamp[identifier] = timeout;
+        // Keep track of the last and penultimate tiles.
+        if (gameStates[gameIndex].lastTile == 0 || timeout >= gameStates[gameIndex].identifierToTimeoutTimestamp[gameStates[gameIndex].lastTile]) {
+            if (gameStates[gameIndex].lastTile != identifier) {
+                if (gameStates[gameIndex].lastTile != 0) {
+                    // Previous last tile to become inactive is now the penultimate tile.
+                    gameStates[gameIndex].penultimateTileTimeout = gameStates[gameIndex].identifierToTimeoutTimestamp[gameStates[gameIndex].lastTile];
+                    PenultimateTileTimeout(gameIndex, gameStates[gameIndex].penultimateTileTimeout);
+                }
+                gameStates[gameIndex].lastTile = identifier;
+                LastTile(gameIndex, identifier, x, y);
+            }
+        } else if (timeout > gameStates[gameIndex].penultimateTileTimeout) {
+            gameStates[gameIndex].penultimateTileTimeout = timeout;
+            PenultimateTileTimeout(gameIndex, timeout);
+        }
+        // Transfer the tile.
+        _transfer(currentOwner, msg.sender, identifier);
+        // Calculate and set the new tile price.
+        gameStates[gameIndex].identifierToBuyoutPrice[identifier] = nextBuyoutPrice(price);
+        // Increment the number of tile flips.
+        gameStates[gameIndex].numberOfTileFlips++;
+        // Emit event
+        Buyout(gameIndex, msg.sender, identifier, x, y, block.timestamp, timeout, gameStates[gameIndex].identifierToBuyoutPrice[identifier], gameStates[gameIndex].prizePool);
+        // Calculate the excess Ether sent.
+        // msg.value is greater than or equal to price,
+        // so this cannot underflow.
+        uint256 excess = msg.value - price;
+        if (excess > 0) {
+            // Refund any excess Ether (not susceptible to re-entry attack, as
+            // the owner is assigned before the transfer takes place).
+            msg.sender.transfer(excess);
+        }
+    }
+}

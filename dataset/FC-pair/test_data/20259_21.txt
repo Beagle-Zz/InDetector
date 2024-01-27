@@ -1,0 +1,8 @@
+contract c20259{
+    /// @notice Allow the game to start once outside of active times.
+    function setAllowStart(bool _allowStart) external onlyCFO {
+        allowStart = _allowStart;
+        // Emit event.
+        AllowStart(_allowStart);
+    }
+}

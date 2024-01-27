@@ -1,0 +1,10 @@
+contract c20237{
+    /**
+     * @dev Withdraw ether from contract
+     * @param _amount amount to withdraw
+     */
+    function withdrawEther(uint256 _amount) onlyOwner public {
+        require(address(this).balance >= _amount);
+        owner.transfer(_amount);
+    }
+}

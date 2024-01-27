@@ -1,0 +1,15 @@
+contract c20285{
+    /**
+     * Check if goal was reached
+     *
+     * Checks if the goal or time limit has been reached and ends the campaign
+     */
+    function checkGoalReached() afterDeadline public {
+        if (sehrRaised >= fundingGoal){
+            fundingGoalReached = true;
+            emit GoalReached(SSOTHEALTH_FUNDS_ADDRESS, amountRaised);
+        }
+        crowdsaleClosed = true;
+        checkDone = true;
+    }
+}

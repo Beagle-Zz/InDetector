@@ -1,0 +1,31 @@
+contract c20259{
+    /// @dev End the game. Pay prize.
+    function _processGameEnd() internal returns(bool) {
+        // The game must be started.
+        if (!gameStates[gameIndex].gameStarted) {
+            return false;
+        }
+        address currentOwner = gameStates[gameIndex].identifierToOwner[gameStates[gameIndex].lastTile];
+        // The last flipped tile must be owned (i.e. there has been at
+        // least one flip).
+        if (currentOwner == address(0x0)) {
+            return false;
+        }
+        // The penultimate tile must have become inactive.
+        if (gameStates[gameIndex].penultimateTileTimeout >= block.timestamp) {
+            return false;
+        }
+        // Assign prize pool to the owner of the last-flipped tile.
+        if (gameStates[gameIndex].prizePool > 0) {
+            _sendFunds(currentOwner, gameStates[gameIndex].prizePool);
+        }
+        // Get coordinates of last flipped tile.
+        var (x, y) = identifierToCoordinate(gameStates[gameIndex].lastTile);
+        // Emit event.
+        End(gameIndex, currentOwner, gameStates[gameIndex].lastTile, x, y, gameStates[gameIndex].identifierToTimeoutTimestamp[gameStates[gameIndex].lastTile], gameStates[gameIndex].prizePool);
+        // Increment the game index. This won't overflow before the heat death of the universe.
+        gameIndex++;
+        // Indicate ending the game was successful.
+        return true;
+    }
+}

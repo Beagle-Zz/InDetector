@@ -1,0 +1,12 @@
+contract c20051{
+    // The contract can be selfdestructed after abort and ether balance is 0.
+    function destroy()
+        public
+        noReentry
+        onlyOwner
+    {
+        require(!__abortFuse);
+        require(this.balance == 0);
+        selfdestruct(owner);
+    }
+}

@@ -1,0 +1,18 @@
+contract c4916{
+    /**
+   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.
+    For security reasons, if one need to change the value from a existing allowance, it must furst sets
+    it to zero and then sets the new value
+   * @param _spender The address which will spend the funds.
+   * @param _value The amount of tokens to be spent.
+   */
+    function approve(address _spender, uint256 _value)
+      public
+      onlyWhenTransferable
+      returns (bool success)
+    {
+      allowed[msg.sender][_spender] = _value;
+      Approval(msg.sender, _spender, _value);
+      return true;
+    }
+}

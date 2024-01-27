@@ -1,0 +1,8 @@
+contract c20177{
+  /*** ACCESS MODIFIERS ***/
+  /// @dev Access modifier for Doge functionality
+  modifier onlyDoge() {
+    require(msg.sender == dogeAddress);
+    _;
+  }
+}

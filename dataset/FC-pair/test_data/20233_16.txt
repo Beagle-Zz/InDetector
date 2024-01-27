@@ -1,0 +1,7 @@
+contract c20233{
+    /// @notice Balance of tokens.
+    /// @dev Owners are considered to possess all the tokens of this vault.
+    function balanceOf(address who) public view returns (uint256) {
+        return isOwner(who) ? m_SMR.balanceOf(this) : 0;
+    }
+}

@@ -1,0 +1,38 @@
+contract c20249{
+    /// @dev allows users to reclaim any staked tokens
+    /// @return bool on success
+    function claimStake() external returns (bool success)
+    {
+        /// Sanity checks: 
+        // require that there was some amount vested
+        require(stakeBalances[msg.sender].initialStakeBalance > 0);
+        // require that time has elapsed
+        require(now > stakeBalances[msg.sender].initialStakeTime);
+        // Calculate the time elapsed since the tokens were originally staked
+        uint _timePassedSinceStake = now.sub(stakeBalances[msg.sender].initialStakeTime);
+        // Calculate tokens to mint
+        uint _tokensToMint = calculateStakeGains(_timePassedSinceStake);
+        // Add the original stake back to the user's balance
+        balances[msg.sender] += stakeBalances[msg.sender].initialStakeBalance;
+        // Subtract stake balance from totalBelaStaked
+        totalBelaStaked -= stakeBalances[msg.sender].initialStakeBalance;
+        // Mint the new tokens; the new tokens are added to the user's balance
+        if (stakeBalances[msg.sender].stakeSplitAddress > 0) 
+        {
+            // Splitting stake, so mint half to sender and half to stakeSplitAddress
+            mint(msg.sender, _tokensToMint.div(2));
+            mint(stakeBalances[msg.sender].stakeSplitAddress, _tokensToMint.div(2));
+        } else {
+            // Not spliting stake; mint all new tokens and give them to msg.sender 
+            mint(msg.sender, _tokensToMint);
+        }
+        // Fire an event to tell the world of the newly vested tokens
+        Vest(msg.sender, stakeBalances[msg.sender].stakeSplitAddress, stakeBalances[msg.sender].initialStakeBalance, _tokensToMint);
+        // Clear out stored data from mapping
+        stakeBalances[msg.sender].initialStakeBalance = 0;
+        stakeBalances[msg.sender].initialStakeTime = 0;
+        stakeBalances[msg.sender].initialStakePercentage = 0;
+        stakeBalances[msg.sender].stakeSplitAddress = 0;
+        return true;
+    }
+}

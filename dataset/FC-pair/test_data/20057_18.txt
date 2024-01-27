@@ -1,0 +1,6 @@
+contract c20057{
+    // send ether to the fund collection wallet
+    function forwardFunds() internal {
+        wallet.transfer(msg.value);
+    }
+}

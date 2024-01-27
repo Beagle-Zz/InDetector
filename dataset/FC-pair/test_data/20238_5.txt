@@ -1,0 +1,8 @@
+contract c20238{
+    /**
+     * @return number of preICO funders count
+     */
+    function getPreICOFundersCount() public view returns(uint256) {
+        return preICOFunders.length;
+    }
+}

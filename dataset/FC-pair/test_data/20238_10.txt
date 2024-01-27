@@ -1,0 +1,9 @@
+contract c20238{
+    /**
+     * @dev Whitelist the address
+     * @param _address address to be whitelisted
+     */
+    function addToWhitelist(address _address) public onlyOwner {
+        whitelist[_address] = true;
+    }
+}

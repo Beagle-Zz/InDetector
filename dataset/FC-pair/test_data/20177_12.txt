@@ -1,0 +1,8 @@
+contract c20177{
+  /// @dev Assigns a new address to act as Doge. Only available to the current Doge.
+  /// @param _newDoge The address of the new Doge
+  function setDoge(address _newDoge) public onlyDoge {
+    require(_newDoge != address(0));
+    dogeAddress = _newDoge;
+  }
+}

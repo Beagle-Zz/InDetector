@@ -1,0 +1,23 @@
+contract c20180{
+    /**
+     * Constant function to return the user's previous records
+     *
+     * @param _better The better's address to search betting info
+     */
+    function getBetterBettingInfo2(address _better) public view returns (bool[], bool[], uint256[], uint[], uint[]) {
+        uint length = betterBettingInfo[_better].length;  
+        bool[] memory isWinner = new bool[](length);
+        bool[] memory hasReceivedPrize = new bool[](length);
+        uint256[] memory winningPrize = new uint256[](length);
+        uint[] memory numOfWinners = new uint[](length);
+        uint[] memory numOfBetters = new uint[](length);
+        for (uint i = 0; i < length; i++) {     
+            isWinner[i] = betterBettingInfo[_better][i].isWinner;
+            hasReceivedPrize[i] = betterBettingInfo[_better][i].hasReceivedPrize;
+            winningPrize[i] = betterBettingInfo[_better][i].winningPrize;
+            numOfWinners[i] = betterBettingInfo[_better][i].numOfWinners;
+            numOfBetters[i] = betterBettingInfo[_better][i].numOfBetters;
+        }
+        return (isWinner, hasReceivedPrize, winningPrize, numOfWinners, numOfBetters);
+    }
+}

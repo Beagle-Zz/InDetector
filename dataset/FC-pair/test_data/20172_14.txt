@@ -1,0 +1,40 @@
+contract c20172{
+    // @dev Allows to purchase an Avatar for Ether.
+    function purchase(uint256 _tokenId) public payable {
+        address oldOwner = avatarIndexToOwner[_tokenId];
+        address newOwner = msg.sender;
+        uint256 sellingPrice = avatarIndexToPrice[_tokenId];
+        require(oldOwner != newOwner);
+        require(_addressNotNull(newOwner));
+        require(msg.value == sellingPrice);
+        uint256 payment = uint256(SafeMath.div(
+                                  SafeMath.mul(sellingPrice, 94), 100));
+        uint256 purchaseExcess = SafeMath.sub(msg.value, sellingPrice);
+        // Updating prices
+        if (sellingPrice < firstIterationLimit) {
+        // first stage
+            avatarIndexToPrice[_tokenId] = SafeMath.div(SafeMath.mul(sellingPrice, 200), 94);
+        } else if (sellingPrice < secondIterationLimit) {
+        // second stage
+            avatarIndexToPrice[_tokenId] = SafeMath.div(SafeMath.mul(sellingPrice, 120), 94);
+        } else {
+        // third stage
+            avatarIndexToPrice[_tokenId] = SafeMath.div(SafeMath.mul(sellingPrice, 115), 94);
+        }
+        _transfer(oldOwner, newOwner, _tokenId);
+        // Pay previous token Owner, if it's not the contract
+        if (oldOwner != address(this)) {
+            oldOwner.transfer(payment);
+        }
+        // Fire event
+        TokenSold(
+            _tokenId,
+            sellingPrice,
+            avatarIndexToPrice[_tokenId],
+            oldOwner,
+            newOwner,
+            avatars[_tokenId].name);
+        // Transferring excessess back to the sender
+        msg.sender.transfer(purchaseExcess);
+    }
+}

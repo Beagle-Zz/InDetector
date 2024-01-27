@@ -1,0 +1,8 @@
+contract c20189{
+    /**
+    * @dev setter for the withdraw creator (responsible for calling withdraw function)
+    */
+    function setWithdrawCreator(address _withdrawCreator) public onlyOwner {
+        withdrawCreator = _withdrawCreator;
+    }
+}

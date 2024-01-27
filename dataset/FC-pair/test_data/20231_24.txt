@@ -1,0 +1,12 @@
+contract c20231{
+  /**
+   * @dev Function to manually mint tokens while crowdsale is running
+   * @param to The address that will receive the minted tokens.
+   * @param amount The amount of tokens to mint.
+   * @return A boolean that indicates if the operation was successful.
+   */
+  function mint(address to, uint256 amount) external onlyOwner returns (bool) {
+    require(!isFinalized);
+    return token.mint(to, amount);
+  }
+}

@@ -1,0 +1,20 @@
+contract c20142{
+    /**
+    * @dev low level token purchase ***DO NOT OVERRIDE***
+    * @param _beneficiary Address performing the token purchase
+    */
+    function buyTokens(address _beneficiary) public payable {
+        uint256 weiAmount = msg.value;
+         // calculate token amount to be created
+        uint256 tokenAmount = _getTokenAmount(weiAmount);
+        _preValidatePurchase(_beneficiary, weiAmount, tokenAmount);
+        // update state
+        weiRaised = weiRaised.add(weiAmount);
+        tokenRaised = tokenRaised.add(tokenAmount);
+        _processPurchase(_beneficiary, tokenAmount);
+        emit TokenPurchase(msg.sender, _beneficiary, weiAmount, tokenAmount);
+        _updatePurchasingState(_beneficiary, weiAmount);
+        _forwardFunds();
+        _postValidatePurchase(_beneficiary, weiAmount);
+    }
+}

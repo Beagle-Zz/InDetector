@@ -1,0 +1,11 @@
+contract c20174{
+  /**
+   * @dev Allows the "TOKEN owner" to transfer control of the contract to a newOwner.
+   * @param newOwner The address to transfer ownership to.
+   */
+  function transferTokenOwnership(address newOwner) public onlyOwner {
+    require(newOwner != address(0));
+    OwnershipTransferred(owner, newOwner);
+    MintableToken(token).transferOwnership(newOwner);
+  }
+}

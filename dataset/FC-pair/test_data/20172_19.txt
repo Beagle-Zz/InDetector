@@ -1,0 +1,14 @@
+contract c20172{
+    // @dev Third-party initiates transfer of token from address _from to
+    // address _to.
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) public {
+        require(_owns(_from, _tokenId));
+        require(_approved(_to, _tokenId));
+        require(_addressNotNull(_to));
+        _transfer(_from, _to, _tokenId);
+    }
+}

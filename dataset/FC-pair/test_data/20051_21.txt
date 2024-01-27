@@ -1,0 +1,18 @@
+contract c20051{
+//
+// ERC20 overloaded functions
+//
+    function transfer(address _to, uint _amount)
+        public
+        preventReentry
+        returns (bool)
+    {
+        // ICO must be successful
+        require(icoSuccessful);
+        super.transfer(_to, _amount);
+        if (_to == deposito)
+            // Notify the deposito contract it has been sent tokens
+            require(Notify(deposito).notify(msg.sender, _amount));
+        return true;
+    }
+}

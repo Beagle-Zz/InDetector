@@ -1,0 +1,22 @@
+contract c20075{
+    // Transfer tokens from one account to another,
+    // using permissions defined with approve() method.
+    function transferFrom(address from, address to, uint value)
+        public
+        addrNotNull(to)
+        returns (bool)
+    {
+        if (balances[from] < value)
+            return false;
+        if (allowance(from, msg.sender) < value)
+            return false;
+        if (isFrozen(wpTokensBaskets.typeOf(from), value))
+            return false;
+        balances[from] = balances[from].sub(value);
+        balances[to] = balances[to].add(value);
+        allowed[from][msg.sender] = allowed[from][msg.sender].sub(value);
+        saveTeamSpent(from, value);
+        emit Transfer(from, to, value);
+        return true;
+    }
+}

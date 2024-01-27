@@ -1,0 +1,18 @@
+contract c20180{
+    /**
+     * Load the number of participants for the same match and betting price
+     *
+     * @param _matchId The matchId to find number of participants
+     * @param _bettingPrice The betting price to find number of participants
+     */
+    function getNumOfBettersForMatchAndPrice(uint _matchId, uint _bettingPrice) public view returns(uint) {
+        uint numOfBetters = matchBettingInfo[_matchId].length;    
+        uint count = 0;
+        for (uint i = 0; i < numOfBetters; i++) {   
+            if (matchBettingInfo[_matchId][i].bettingPrice == _bettingPrice) {
+                count++;
+            }
+        }
+        return count;    
+    }
+}

@@ -1,0 +1,10 @@
+contract c20237{
+    /**
+     * @dev Set oraclize gas limit
+     * @param _gasLimit a new oraclize gas limit
+     */
+    function setOraclizeGasLimit(uint256 _gasLimit) onlyOwner public {
+        require(_gasLimit > 0);
+        oraclizeGasLimit = _gasLimit;
+    }
+}

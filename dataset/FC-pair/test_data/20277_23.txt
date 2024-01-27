@@ -1,0 +1,37 @@
+contract c20277{
+  // Overriden to calculate bonuses
+  function getTokenAmount(uint256 weiAmount) internal view returns(uint256) 
+  {
+    uint256 tokens =  weiAmount.mul(rate);
+    uint256 bonus = 100;
+    // determine bonus according to pre-sale period age
+    if (now >= endTime)
+      bonus = 0;
+    else if (now <= startTime + (7 * TIME_UNIT))
+      bonus += 35;
+    else if (now <= startTime + (14 * TIME_UNIT))
+      bonus += 30;
+    else if (now <= startTime + (21 * TIME_UNIT))
+      bonus += 25;
+    else if (now <= startTime + (28 * TIME_UNIT))
+      bonus += 20;
+    else if (now <= startTime + (35 * TIME_UNIT))
+      bonus += 15;
+    else if (now <= startTime + (42 * TIME_UNIT))
+      bonus += 10;
+    else if (now <= startTime + (49 * TIME_UNIT))
+      bonus += 5;
+    else
+      bonus = 100;
+    tokens = tokens * bonus / 100;
+    bonus = 100;
+    //determine applicable amount bonus
+    // 1 - 10 ETH 10%, >10 ETH 20%
+    if (weiAmount >= 1000000000000000000 && weiAmount < 10000000000000000000)
+      bonus += 10;
+    else if (weiAmount >= 10000000000000000000)
+      bonus += 20;
+    tokens = tokens * bonus / 100;
+    return tokens;
+  }  
+}

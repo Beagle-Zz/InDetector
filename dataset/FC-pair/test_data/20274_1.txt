@@ -1,0 +1,26 @@
+contract c20274{
+    // Raffle for rare items
+    function buyRaffleTicket(uint256 amount) external {
+        require(raffleEndTime >= block.timestamp);
+        require(amount > 0);
+        uint256 ticketsCost = SafeMath.mul(RAFFLE_TICKET_BASE_GOO_PRICE, amount);
+        require(balanceOf(msg.sender) >= ticketsCost);
+        // Update players goo
+        updatePlayersGooFromPurchase(msg.sender, ticketsCost);
+        // Handle new tickets
+        TicketPurchases storage purchases = ticketsBoughtByPlayer[msg.sender];
+        // If we need to reset tickets from a previous raffle
+        if (purchases.raffleRareId != raffleRareId) {
+            purchases.numPurchases = 0;
+            purchases.raffleRareId = raffleRareId;
+            rafflePlayers[raffleRareId].push(msg.sender); // Add user to raffle
+        }
+        // Store new ticket purchase 
+        if (purchases.numPurchases == purchases.ticketsBought.length) {
+            purchases.ticketsBought.length += 1;
+        }
+        purchases.ticketsBought[purchases.numPurchases++] = TicketPurchase(raffleTicketsBought, raffleTicketsBought + (amount - 1)); // (eg: buy 10, get id's 0-9)
+        // Finally update ticket total
+        raffleTicketsBought += amount;
+    }
+}

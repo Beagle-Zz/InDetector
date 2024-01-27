@@ -1,0 +1,12 @@
+contract c20259{
+    /// @notice Get the price for the given tile.
+    /// @param _deedId The identifier of the tile to get the price for.
+    function currentPrice(uint256 _deedId) public view returns (uint256 price) {
+        address currentOwner = gameStates[gameIndex].identifierToOwner[_deedId];
+        if (currentOwner == 0x0) {
+            price = gameSettings.unclaimedTilePrice;
+        } else {
+            price = gameStates[gameIndex].identifierToBuyoutPrice[_deedId];
+        }
+    }
+}

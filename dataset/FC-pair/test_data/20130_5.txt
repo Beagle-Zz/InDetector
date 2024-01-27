@@ -1,0 +1,6 @@
+contract c20130{
+  // ERC-721 Enumerable
+  function totalSupply() external view returns (uint256) {
+    return _totalTokens;
+  }
+}

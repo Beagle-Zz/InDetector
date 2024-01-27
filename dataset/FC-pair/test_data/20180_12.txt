@@ -1,0 +1,10 @@
+contract c20180{
+    /**
+     * Get the number of winnings of the user
+     *
+     * @param _better The address of the user
+     */
+    function getBetterNumOfWinnings(address _better) public view returns(uint) {
+        return betterNumWinning[_better];    
+    }
+}

@@ -1,0 +1,15 @@
+contract c20239{
+    /**
+     * @dev set ICO address and allocate sale supply to it
+     */
+    function setICO(address _icoAddress) public onlyOwner {
+        require(_icoAddress != address(0));
+        require(icoAddress == address(0));
+        require(totalSupply_ == TOTAL_SUPPLY.sub(SALE_SUPPLY));
+        // Allocate tokens to the ico contract
+        balances[_icoAddress] = SALE_SUPPLY;
+        emit Transfer(0x0, _icoAddress, SALE_SUPPLY);
+        icoAddress = _icoAddress;
+        totalSupply_ = TOTAL_SUPPLY;
+    }
+}

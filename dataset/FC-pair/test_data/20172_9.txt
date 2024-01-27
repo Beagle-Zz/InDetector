@@ -1,0 +1,11 @@
+contract c20172{
+    // @dev Grants another address the right to transfer a token via 
+    // takeOwnership() and transferFrom()
+    function approve(address _to, uint256 _tokenId) public {
+        // Check the ownership
+        require(_owns(msg.sender, _tokenId));
+        avatarIndexToApproved[_tokenId] = _to;
+        // Fire the event
+        Approval(msg.sender, _to, _tokenId);
+    }
+}

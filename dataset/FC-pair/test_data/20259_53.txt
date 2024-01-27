@@ -1,0 +1,19 @@
+contract c20259{
+    /// @notice Spice up the prize pool.
+    /// @param _gameIndex The index of the game to add spice to.
+    /// @param message An optional message to be sent along with the spice.
+    function spiceUp(uint256 _gameIndex, string message) external payable {
+        // Check to see if the game should end. Process payment.
+        _processGameEnd();
+        // Check the game index.
+        require(_gameIndex == gameIndex);
+        // Game must be live or unpaused.
+        require(gameStates[gameIndex].gameStarted || !paused);
+        // Funds must be sent.
+        require(msg.value > 0);
+        // Add funds to the prize pool.
+        gameStates[gameIndex].prizePool = gameStates[gameIndex].prizePool.add(msg.value);
+        // Emit event.
+        SpiceUpPrizePool(gameIndex, msg.sender, msg.value, message, gameStates[gameIndex].prizePool);
+    }
+}

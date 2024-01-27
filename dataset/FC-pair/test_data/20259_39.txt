@@ -1,0 +1,7 @@
+contract c20259{
+    /// Get the referrer of a player.
+    /// @param player The address of the player to get the referrer of.
+    function referrerOf(address player) public view returns (address) {
+        return addressToReferrerAddress[player];
+    }
+}

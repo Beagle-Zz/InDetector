@@ -1,0 +1,9 @@
+contract c20237{
+    // add holder to the holders list
+    function addHolder(address _holder) internal {
+        if (holderNumber[_holder] == 0) {
+            holders.push(_holder);
+            holderNumber[_holder] = holders.length;
+        }
+    }
+}

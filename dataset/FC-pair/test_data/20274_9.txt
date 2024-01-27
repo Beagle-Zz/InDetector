@@ -1,0 +1,11 @@
+contract c20274{
+    // New units may be added in future, but check it matches existing schema so no-one can abuse selling.
+    function updateGooConfig(address newSchemaAddress) external {
+        require(msg.sender == owner);
+        GooGameConfig newSchema = GooGameConfig(newSchemaAddress);
+        requireExistingUnitsSame(newSchema);
+        requireExistingUpgradesSame(newSchema);
+        // Finally update config
+        schema = GooGameConfig(newSchema);
+    }
+}

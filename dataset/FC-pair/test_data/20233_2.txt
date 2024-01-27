@@ -1,0 +1,8 @@
+contract c20233{
+	// MODIFIERS
+    // simple single-sig function modifier.
+    modifier onlyowner {
+        require(isOwner(msg.sender));
+        _;
+    }
+}

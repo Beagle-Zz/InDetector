@@ -1,0 +1,6 @@
+contract c20130{
+  // solium-disable arg-overflow
+  function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) external payable {
+    _transferFrom(_from, _to, _tokenId, _data, true);
+  }
+}

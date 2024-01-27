@@ -1,0 +1,7 @@
+contract c20172{
+    // @dev Access to the C-level in general.
+    modifier onlyCLevel() {
+        require(msg.sender == addressCEO || msg.sender == addressCOO);
+        _;
+    }
+}

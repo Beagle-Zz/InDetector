@@ -1,0 +1,42 @@
+contract c20259{
+    /// @dev Find the _claimed_ tiles surrounding a tile.
+    /// @param _deedId The identifier of the tile to get the surrounding tiles for.
+    function _claimedSurroundingTiles(uint256 _deedId) internal view returns (uint256[] memory) {
+        var (x, y) = identifierToCoordinate(_deedId);
+        // Find all claimed surrounding tiles.
+        uint256 claimed = 0;
+        // Create memory buffer capable of holding all tiles.
+        uint256[] memory _tiles = new uint256[](8);
+        // Loop through all neighbors.
+        for (int256 dx = -1; dx <= 1; dx++) {
+            for (int256 dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) {
+                    // Skip the center (i.e., the tile itself).
+                    continue;
+                }
+                uint256 nx = uint256(int256(x) + dx);
+                uint256 ny = uint256(int256(y) + dy);
+                if (nx >= gameSettings.cols || ny >= gameSettings.rows) {
+                    // This coordinate is outside the game bounds.
+                    continue;
+                }
+                // Get the coordinates of this neighboring identifier.
+                uint256 neighborIdentifier = coordinateToIdentifier(
+                    nx,
+                    ny
+                );
+                if (gameStates[gameIndex].identifierToOwner[neighborIdentifier] != address(0x0)) {
+                    _tiles[claimed] = neighborIdentifier;
+                    claimed++;
+                }
+            }
+        }
+        // Memory arrays cannot be resized, so copy all
+        // tiles from the buffer to the tile array.
+        uint256[] memory tiles = new uint256[](claimed);
+        for (uint256 i = 0; i < claimed; i++) {
+            tiles[i] = _tiles[i];
+        }
+        return tiles;
+    }
+}

@@ -1,0 +1,8 @@
+contract c20270{
+    //Crowdsale contract mints and stores tokens in time locked contracts during crowdsale.
+    //Ownership is transferred back to the owner of crowdsale contract once crowdsale is finished(finalize())
+    function create_public_sale_token(address _beneficiary, uint256 _token_amount) external onlyOwner returns(bool){
+        assert(mint_time_locked_token(_beneficiary, _token_amount) != address(0));
+        return true;
+    }
+}

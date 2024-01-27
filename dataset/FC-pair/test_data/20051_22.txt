@@ -1,0 +1,16 @@
+contract c20051{
+//
+// Contract managment functions
+//
+    // To initiate an ownership change
+    function changeOwner(address _newOwner)
+        public
+        noReentry
+        onlyOwner
+        returns (bool)
+    {
+        ChangeOwnerTo(_newOwner);
+        newOwner = _newOwner;
+        return true;
+    }
+}

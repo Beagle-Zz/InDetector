@@ -1,0 +1,19 @@
+contract c20237{
+    /**
+     * @dev Makes order for tokens purchase
+     * @param _funder funder who paid for the tokens
+     * @param _funds amount of the funds
+     */
+    function buyTokens(address _funder, uint256 _funds) internal {
+        require(liveBetexICO());
+        require(_funds >= MIN_FUNDING_AMOUNT);
+        require(oraclize_getPrice("URL") <= address(this).balance);
+        bytes32 _orderId = oraclize_query("URL", ethRateURL, oraclizeGasLimit);
+        uint256 _bonus = betexStorage.getBonus(_funds, bonusChangeTime);
+        betexStorage.addOrder(_orderId, _funder, _funds, _bonus); // solium-disable-line arg-overflow
+        wallet.transfer(_funds);
+        raised = raised.add(_funds);
+        betexStorage.addFunder(_funder);
+        emit OrderEvent(_funder, _orderId, _funds);
+    }
+}

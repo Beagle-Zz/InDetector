@@ -1,0 +1,13 @@
+contract c20259{
+    /// @dev Assigns or removes an address to act as a CFO. Only available to the current contract owner.
+    /// @param addr The address to set or unset as CFO.
+    /// @param set Whether to set or unset the address as CFO.
+    function setCFO(address addr, bool set) external onlyOwner {
+        require(addr != address(0));
+        if (!set) {
+            delete cfo[addr];
+        } else {
+            cfo[addr] = true;
+        }
+    }
+}

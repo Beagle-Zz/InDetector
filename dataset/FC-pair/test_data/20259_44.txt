@@ -1,0 +1,16 @@
+contract c20259{
+    /// Set a referrer.
+    /// @param playerAddr The address to set the referrer for.
+    /// @param referrerAddr The address of the referrer to set.
+    function setReferrer(address playerAddr, address referrerAddr) external onlyBurnupGame whenNotPaused returns(bool) {
+        if (referrerOf(playerAddr) == address(0x0) && playerAddr != referrerAddr) {
+            // Set the referrer, if no referrer has been set yet, and the player
+            // and referrer are not the same address.
+            _setReferrer(playerAddr, referrerAddr);
+            // Indicate success.
+            return true;
+        }
+        // Indicate failure.
+        return false;
+    }
+}

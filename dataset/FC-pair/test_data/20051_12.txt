@@ -1,0 +1,7 @@
+contract c20051{
+    // Returns the USD value of ether at the set USD/ETH rate
+    function ethToUsd(uint _wei) public constant returns (uint)
+    {
+        return USD_PER_ETH.mul(_wei).div(1 ether);
+    }
+}

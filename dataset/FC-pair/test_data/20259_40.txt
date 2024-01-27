@@ -1,0 +1,10 @@
+contract c20259{
+    /// Set the referrer for a player.
+    /// @param playerAddr The address of the player to set the referrer for.
+    /// @param referrerAddr The address of the referrer to set.
+    function _setReferrer(address playerAddr, address referrerAddr) internal {
+        addressToReferrerAddress[playerAddr] = referrerAddr;
+        // Emit event.
+        SetReferrer(playerAddr, referrerAddr);
+    }
+}

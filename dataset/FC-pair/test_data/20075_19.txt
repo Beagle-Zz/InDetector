@@ -1,0 +1,11 @@
+contract c20075{
+    // Return amount of tokens (in EXTwei) which allowed to
+    // be transferred by non-owner spender
+    function allowance(address _owner, address spender)
+        public
+        constant
+        returns (uint)
+    {
+        return allowed[_owner][spender];
+    }
+}

@@ -1,0 +1,6 @@
+contract c20075{
+    // Return token symbol name
+    function symbol() public pure returns (string) {
+        return SYMBOL;
+    }
+}

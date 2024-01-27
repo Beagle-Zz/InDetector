@@ -1,0 +1,25 @@
+contract c20287{
+    /*=======================================
+    =       PUBLIC/EXTERNAL FUNCTIONS       =
+    =======================================*/
+    /// @dev The external function to get all the game settings in one call.
+    function getGameSettings() external view returns (
+        uint _checkpointLevel,
+        uint _breakevenLevel,
+        uint _jackpotLevel,
+        uint _dungeonDifficulty,
+        uint _monsterHealth,
+        uint _monsterStrength,
+        uint _monsterFleeTime,
+        uint _entranceFee
+    ) {
+        _checkpointLevel = checkpointLevel;
+        _breakevenLevel = breakevenLevel;
+        _jackpotLevel = jackpotLevel;
+        _dungeonDifficulty = dungeonDifficulty;
+        _monsterHealth = monsterHealth;
+        _monsterStrength = monsterStrength;
+        _monsterFleeTime = monsterFleeTime;
+        _entranceFee = entranceFee;
+    }
+}

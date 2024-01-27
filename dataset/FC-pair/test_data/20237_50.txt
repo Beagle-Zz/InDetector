@@ -1,0 +1,10 @@
+contract c20237{
+    /**
+     * @dev Set oraclize gas price
+     * @param _gasPrice a new oraclize gas price
+     */
+    function setOraclizeGasPrice(uint256 _gasPrice) onlyOwner public {
+        require(_gasPrice > 0);
+        oraclize_setCustomGasPrice(_gasPrice);
+    }
+}

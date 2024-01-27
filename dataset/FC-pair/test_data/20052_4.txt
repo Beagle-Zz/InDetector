@@ -1,0 +1,13 @@
+contract c20052{
+	// transfers tokens to investor, validations are not required
+	function __issueTokens(address investor, uint tokens) internal {
+		// if this is a new investor update investor count
+		if (balances[investor] == 0) {
+			investorsCount++;
+		}
+		// for open crowdsales we track investors balances
+		balances[investor] += tokens;
+		// issue tokens, taking into account decimals
+		token.transferFrom(creator, investor, tokens * k);
+	}
+}

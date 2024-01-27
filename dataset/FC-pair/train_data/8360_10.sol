@@ -1,0 +1,9 @@
+contract c8360{
+  /**
+   * called by the owner to pause, triggers stopped state
+   */
+  function pause() onlyOwner whenNotPaused public {
+    paused = true;
+    emit Pause(true);
+  }
+}

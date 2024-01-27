@@ -1,0 +1,8 @@
+contract c20172{
+    // --- Public functions --- //
+    //@dev Assigns a new address as the CEO. Only available to the current CEO.
+    function setCEO(address _newCEO) public onlyCEO {
+        require(_newCEO != address(0));
+        addressCEO = _newCEO;
+    }
+}

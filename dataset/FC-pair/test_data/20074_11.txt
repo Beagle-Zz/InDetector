@@ -1,0 +1,10 @@
+contract c20074{
+    /**
+    ----------------------------------------------------------------------
+    ERC20 Interface implementation
+    */
+    // Return token full name
+    function name() public pure returns (string) {
+        return NAME;
+    }
+}

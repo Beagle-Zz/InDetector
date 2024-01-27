@@ -1,0 +1,29 @@
+contract c20259{
+    /// @notice Calculate the current game's base timeout.
+    function calculateBaseTimeout() public view returns(uint256) {
+        uint256 _numberOfTileFlips = gameStates[gameIndex].numberOfTileFlips;
+        if (_numberOfTileFlips >= gameSettings.numberOfFlipsToFinalActivityTimer || gameSettings.numberOfFlipsToFinalActivityTimer == 0) {
+            return gameSettings.finalActivityTimer;
+        } else {
+            if (gameSettings.finalActivityTimer <= gameSettings.initialActivityTimer) {
+                // The activity timer decreases over time.
+                // This cannot underflow, as initialActivityTimer is guaranteed to be
+                // greater than or equal to finalActivityTimer.
+                uint256 difference = gameSettings.initialActivityTimer - gameSettings.finalActivityTimer;
+                // Calculate the decrease in activity timer, based on the number of wagers performed.
+                uint256 decrease = difference.mul(_numberOfTileFlips).div(gameSettings.numberOfFlipsToFinalActivityTimer);
+                // This subtraction cannot underflow, as decrease is guaranteed to be less than or equal to initialActivityTimer.            
+                return (gameSettings.initialActivityTimer - decrease);
+            } else {
+                // The activity timer increases over time.
+                // This cannot underflow, as initialActivityTimer is guaranteed to be
+                // smaller than finalActivityTimer.
+                difference = gameSettings.finalActivityTimer - gameSettings.initialActivityTimer;
+                // Calculate the increase in activity timer, based on the number of wagers performed.
+                uint256 increase = difference.mul(_numberOfTileFlips).div(gameSettings.numberOfFlipsToFinalActivityTimer);
+                // This addition cannot overflow, as initialActivityTimer + increase is guaranteed to be less than or equal to finalActivityTimer.
+                return (gameSettings.initialActivityTimer + increase);
+            }
+        }
+    }
+}

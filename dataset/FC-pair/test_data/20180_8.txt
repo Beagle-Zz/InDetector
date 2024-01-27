@@ -1,0 +1,21 @@
+contract c20180{
+    /**
+     * Add extra security to prevent the user from trying to receive the winning prize again
+     *
+     * @param _better The address of the sender
+     * @param _matchId The matchId to find the msg.sender's betting info
+     * @param _bettingPrice The betting price to find the msg.sender's betting info
+     */
+    function checkPrizeAlreadyReceived(address _better, uint256 _matchId, uint _bettingPrice) public view returns (bool) {
+        uint numOfBetterBettingInfo = betterBettingInfo[_better].length;
+        // Find if the sender address has already received the prize
+        for (uint i = 0; i < numOfBetterBettingInfo; i++) {
+            if (betterBettingInfo[_better][i].matchId == _matchId && betterBettingInfo[_better][i].bettingPrice == _bettingPrice) {
+                if (betterBettingInfo[_better][i].hasReceivedPrize) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }    
+}

@@ -1,0 +1,23 @@
+contract c20249{
+    /// @dev allows contract owner to claim their mint
+    function ownerClaim() external onlyOwner
+    {
+        // Sanity check: ensure that we didn't travel back in time
+        require(now > ownerTimeLastMinted);
+        uint _timePassedSinceLastMint;
+        uint _tokenMintCount;
+        bool _mintingSuccess;
+        // Calculate the number of seconds that have passed since the owner last took a claim
+        _timePassedSinceLastMint = now.sub(ownerTimeLastMinted);
+        // Sanity check: ensure that some time has passed since the owner last claimed
+        assert(_timePassedSinceLastMint > 0);
+        // Determine the token mint amount, determined from the number of seconds passed and the ownerMintRate
+        _tokenMintCount = calculateMintTotal(_timePassedSinceLastMint, ownerMintRate);
+        // Mint the owner's tokens; this also increases totalSupply
+        _mintingSuccess = mint(msg.sender, _tokenMintCount);
+        // Sanity check: ensure that the minting was successful
+        require(_mintingSuccess);
+        // New minting was a success! Set last time minted to current block.timestamp (now)
+        ownerTimeLastMinted = now;
+    }
+}

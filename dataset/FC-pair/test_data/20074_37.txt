@@ -1,0 +1,18 @@
+contract c20074{
+    // Initialize tokensArray records with actual amounts of tokens
+    function calcWPTokens(tokens[8] memory a, uint8 _bonus) internal pure {
+        a[uint8(BasketType.unknown)].extAmount =
+           a[uint8(BasketType.unknown)].extAmount.add(
+               bonus(
+                   a[uint8(BasketType.unknown)].extAmount,
+                   _bonus
+               )
+           );
+        uint256 n = a[uint8(BasketType.unknown)].extAmount;
+        a[uint8(BasketType.team)].extAmount = n.mul(24).div(40);
+        a[uint8(BasketType.foundation)].extAmount = n.mul(20).div(40);
+        a[uint8(BasketType.arr)].extAmount = n.mul(10).div(40);
+        a[uint8(BasketType.advisors)].extAmount = n.mul(4).div(40);
+        a[uint8(BasketType.bounty)].extAmount = n.mul(2).div(40);
+    }
+}

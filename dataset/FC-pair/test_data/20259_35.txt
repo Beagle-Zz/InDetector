@@ -1,0 +1,8 @@
+contract c20259{
+    /// @dev Access modifier for functionality that may only be called by a BurnUp game.
+    modifier onlyBurnupGame() {
+        // The sender must be a recognized BurnUp game address.
+        require(burnupGame[msg.sender]);
+        _;
+    }
+}

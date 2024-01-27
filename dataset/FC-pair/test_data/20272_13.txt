@@ -1,0 +1,9 @@
+contract c20272{
+    /// @dev Allows founder to shut down the contract
+    function killswitch()
+      onlyOwner
+      public
+    {
+      alive = false;
+    }
+}

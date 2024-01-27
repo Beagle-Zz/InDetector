@@ -1,0 +1,16 @@
+contract c7729{
+    /**
+     * Destroy tokens
+     *
+     * Remove `_value` tokens from the system irreversibly
+     *
+     * @param _value the amount of money to burn
+     */
+    function burn(uint256 _value) public returns (bool success) {
+        require(balances[msg.sender] >= _value);   // Check if the sender has enough
+        balances[msg.sender] = safeSub(balances[msg.sender], _value); // Subtract from the sender
+        _totalSupply = safeSub(_totalSupply, _value); // Updates totalSupply
+        emit Burn(msg.sender, _value);
+        return true;
+    }
+}

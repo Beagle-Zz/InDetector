@@ -1,0 +1,9 @@
+contract c20192{
+    /**
+    * @dev add an address that is responsible for creating deposits 
+    */
+    function removeDepositCreator(address _depositCreator) public onlyOwner {
+        require(_depositCreator != address(0));
+        depositCreators [_depositCreator] = false;
+    }
+}

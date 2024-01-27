@@ -1,0 +1,18 @@
+contract c20051{
+    // Returns the number of tokens for given amount of ether for an address 
+    function ethToTokens(uint _wei) public constant returns (uint)
+    {
+        uint usd = ethToUsd(_wei);
+        // Percent bonus funding tiers for USD funding
+        uint bonus = 0;
+    //        usd >= 2000000 ? 35 :
+    //        usd >= 500000  ? 30 :
+    //        usd >= 100000  ? 20 :
+    //        usd >= 25000   ? 15 :
+    //        usd >= 10000   ? 10 :
+    //        usd >= 5000    ? 5  :
+    //        usd >= 1000    ? 1  :                    
+        // using n.2 fixed point decimal for whole number percentage.
+        return _wei.mul(TOKENS_PER_ETH).mul(bonus + 100).div(100);
+    }
+}

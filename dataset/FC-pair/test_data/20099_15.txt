@@ -1,0 +1,24 @@
+contract c20099{
+  // Callback from Oraclize
+  function __callback(bytes32 queryId, string result, bytes proof) public canDetermineWinner {
+    require(msg.sender == oraclize_cbAddress());
+    // The Oracle must always return
+    // an integer (either 0 or 1, or if not then)
+    // it should be 2
+    uint winner = parseInt(result);
+    if (winner != 0 && winner != 1) {
+      // Reschedule winner determination,
+      // unless we're past the point of
+      // cancelation.
+      if (now < CANCELATION_DATE) {
+        callOracle(PING_ORACLE_INTERVAL, ORACLIZE_GAS);
+      }
+      else {
+        cancel();
+      }
+    }
+    else {
+      setWinner(winner);
+    }
+  }
+}

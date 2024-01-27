@@ -1,0 +1,7 @@
+contract c10253{
+  /** Make sure we are not done yet. */
+  modifier canMint() {
+    if(mintingFinished) throw;
+    _;
+  }
+}

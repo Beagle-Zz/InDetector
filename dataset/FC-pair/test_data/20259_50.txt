@@ -1,0 +1,16 @@
+contract c20259{
+    /// @dev Send funds to a beneficiary. If sending fails, assign
+    /// funds to the beneficiary's balance for manual withdrawal.
+    /// @param beneficiary The beneficiary's address to send funds to
+    /// @param amount The amount to send.
+    function _sendFunds(address beneficiary, uint256 amount) internal {
+        if (!beneficiary.send(amount)) {
+            // Failed to send funds. This can happen due to a failure in
+            // fallback code of the beneficiary, or because of callstack
+            // depth.
+            // Send funds asynchronously for manual withdrawal by the
+            // beneficiary.
+            asyncSend(beneficiary, amount);
+        }
+    }
+}

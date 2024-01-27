@@ -1,0 +1,6 @@
+contract c20270{
+    //@dev Overrides delivery by minting tokens upon purchase and store in the time locked contract.
+    function _deliverTokens(address _beneficiary, uint256 _tokenAmount) internal {
+        require(NebulaToken(token).create_public_sale_token(_beneficiary, _tokenAmount));
+    }
+}

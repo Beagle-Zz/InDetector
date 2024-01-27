@@ -1,0 +1,6 @@
+contract c20297{
+    /// @dev Helper function to return a min betwen the two uints
+    function min(uint a, uint b) internal pure returns (uint) {
+        return a < b ? a : b;
+    }
+}

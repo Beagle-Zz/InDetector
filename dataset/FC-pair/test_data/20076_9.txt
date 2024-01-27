@@ -1,0 +1,13 @@
+contract c20076{
+    /**
+    * @dev Mint token to own address.
+    * @param _mintedAmount amount to mint.
+    */
+    function mintToken(uint256 _mintedAmount) onlyAdmin supplyLock public {
+        require(totalSupply.add(_mintedAmount) < 250000000 * (10**18)); //Max supply ever
+        balances[msg.sender] = SafeMath.add(balances[msg.sender], _mintedAmount);
+        totalSupply = SafeMath.add(totalSupply, _mintedAmount);
+        emit Transfer(0, this, _mintedAmount);
+        emit Transfer(this, msg.sender, _mintedAmount);
+    }
+}

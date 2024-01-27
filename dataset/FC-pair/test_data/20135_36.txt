@@ -1,0 +1,22 @@
+contract c20135{
+    /**
+     * @dev Checks if dates overlap with existing phases of the contract.
+     * @param _startDate  Start date of the phase
+     * @param _endDate    End date of the phase
+     * @return true if provided dates valid
+     */
+    function validatePhaseDates(uint256 _startDate, uint256 _endDate) view public returns (bool) {
+        if (_endDate <= _startDate) {
+            return false;
+        }
+        for (uint i = 0; i < phases.length; i++) {
+            if (_startDate >= phases[i].startDate && _startDate <= phases[i].endDate) {
+                return false;
+            }
+            if (_endDate >= phases[i].startDate && _endDate <= phases[i].endDate) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

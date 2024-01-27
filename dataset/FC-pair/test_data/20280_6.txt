@@ -1,0 +1,37 @@
+contract c20280{
+    // @notice Function to participate in contribution period
+    //  Amounts from the same address should be added up
+    //  If cap is reached, end time should be modified
+    //  Funds should be transferred into multisig wallet
+    // @param contributor Address
+    function contributeWithAddress(address contributor) public payable whenNotPaused {
+        require(msg.value >= minContribAmount);
+        require(isContribPeriodRunning());
+        uint contribValue = msg.value;
+        uint excessContribValue = 0;
+        uint oldTotalContributed = totalContributed;
+        totalContributed = oldTotalContributed.add(contribValue);
+        uint newTotalContributed = totalContributed;
+        // cap was reached
+        if (newTotalContributed >=  totalLendingAmount &&
+            oldTotalContributed < totalLendingAmount)
+        {
+            capReached = true;
+            fundingEndTime = now;
+            onCapReached(fundingEndTime);
+            // Everything above hard cap will be sent back to contributor
+            excessContribValue = newTotalContributed.sub(totalLendingAmount);
+            contribValue = contribValue.sub(excessContribValue);
+            totalContributed = totalLendingAmount;
+        }
+        if (investors[contributor].amount == 0) {
+            investorsKeys.push(contributor);
+        }
+        investors[contributor].amount = investors[contributor].amount.add(contribValue);
+        if (excessContribValue > 0) {
+            msg.sender.transfer(excessContribValue);
+            excessContributionReturned(msg.sender, excessContribValue);
+        }
+        onContribution(newTotalContributed, contributor, contribValue, investorsKeys.length);
+    }
+}

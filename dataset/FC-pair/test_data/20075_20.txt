@@ -1,0 +1,10 @@
+contract c20075{
+    /**
+    ----------------------------------------------------------------------
+    Other methods
+    */
+    // Return account funds in ether (in wei)
+    function etherFundsOf(address _address) public constant returns (uint) {
+        return etherFunds[_address];
+    }
+}

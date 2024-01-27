@@ -1,0 +1,10 @@
+contract c20237{
+    /**
+     * @dev Set eth/usd rate for the specified oraclize order
+     * @param _orderId oraclize order id
+     * @param _rate eth/usd rate
+     */
+    function setRateForOrder(bytes32 _orderId, uint256 _rate) public onlyOwner {
+        orders[_orderId].rate = _rate;
+    }
+}

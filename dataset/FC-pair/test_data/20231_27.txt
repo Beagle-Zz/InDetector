@@ -1,0 +1,9 @@
+contract c20231{
+  /**
+   * @dev Checks whether the crowdsale has ended.
+   * @return Whether the crowdsale has ended
+   */
+  function hasEnded() public view returns (bool) {
+    return now > endTime || capReached();
+  }
+}

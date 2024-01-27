@@ -1,0 +1,8 @@
+contract c20051{
+    // Funding succeeds if not aborted, minimum funds are raised before end date
+    function fundSucceeded() public constant returns (bool)
+    {
+        return !fundFailed()
+            && etherRaised >= MIN_ETH_FUND;
+    }
+}

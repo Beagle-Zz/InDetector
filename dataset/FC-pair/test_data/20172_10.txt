@@ -1,0 +1,6 @@
+contract c20172{
+    // @dev Checks the balanse of the address, ERC-721 compliance
+    function balanceOf(address _owner) public view returns (uint256 balance) {
+        return ownershipTokenCount[_owner];
+    }
+}

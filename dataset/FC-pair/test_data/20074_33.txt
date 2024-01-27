@@ -1,0 +1,6 @@
+contract c20074{
+    // Return truth if there are tokens which can be purchased.
+    function isActive() public view returns (bool) {
+        return canPurchase(minBuyingAmount);
+    }
+}

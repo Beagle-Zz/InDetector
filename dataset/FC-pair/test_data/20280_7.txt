@@ -1,0 +1,16 @@
+contract c20280{
+    // @notice Function to participate in contribution period
+    //  Amounts from the same address should be added up
+    //  If cap is reached, end time should be modified
+    //  Funds should be transferred into multisig wallet
+    // @param contributor Address
+    function finishContributionPeriod(uint256 _initialFiatPerEthRate) onlyOwner {
+        require(capReached == true);
+        initialFiatPerEthRate = _initialFiatPerEthRate;
+        borrower.transfer(totalContributed);
+        state = LendingState.AwaitingReturn;
+        StateChange(uint(state));
+        totalLendingFiatAmount = totalLendingAmount.mul(initialFiatPerEthRate);
+        borrowerReturnFiatAmount = totalLendingFiatAmount.mul(lendingInterestRatePercentage).div(100);
+    }
+}

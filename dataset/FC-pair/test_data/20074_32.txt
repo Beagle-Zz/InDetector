@@ -1,0 +1,6 @@
+contract c20074{
+    // Return address of crowdfunding beneficiary address.
+    function beneficiary() public view returns (address) {
+        return _beneficiary.beneficiary();
+    }
+}

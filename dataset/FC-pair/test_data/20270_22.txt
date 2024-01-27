@@ -1,0 +1,10 @@
+contract c20270{
+    //Release all tokens held by time locked contracts to the beneficiary address stored in the contract
+    //Note: requirement is checked in time lock contract
+    function release_all(address _beneficiary) external returns(bool){
+        require(time_locked_reclaim_addresses[_beneficiary].length > 0);
+        TokenTimelock[] memory _locks = time_locked_reclaim_addresses[_beneficiary];
+        for(uint256 i = 0 ; i < _locks.length; ++i) _locks[i].release();
+        return true;
+    }
+}

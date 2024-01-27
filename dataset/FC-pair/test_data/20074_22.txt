@@ -1,0 +1,6 @@
+contract c20074{
+    // Return true if given address have been refunded
+    function isRefunded(address _address) public view returns (bool) {
+        return refunded[_address];
+    }
+}

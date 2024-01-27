@@ -1,0 +1,11 @@
+contract c20135{
+    /**
+     * @dev Set new wallet to collect ethers
+     * @param _newWallet EOA or the contract adderess of the new receiver
+     */
+    function setWallet(address _newWallet) onlyAdmin public {
+        require(_newWallet != address(0));
+        wallet = _newWallet;
+        WalletChanged(_newWallet);
+    }
+}

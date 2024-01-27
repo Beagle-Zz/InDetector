@@ -1,0 +1,28 @@
+contract c20132{
+  /**
+   * @dev Adopt some Axies from the same class.
+   * @param adopter Address of the adopter.
+   * @param clazz The class of adopted Axies.
+   * @param quantity Number of Axies to be adopted, this should be positive.
+   * @param referrer Address of the referrer.
+   */
+  function _adoptAxies(
+    address adopter,
+    uint8 clazz,
+    uint256 quantity,
+    address referrer
+  )
+    private
+    returns (uint256 totalPrice)
+  {
+    (totalPrice, priceIncrements[clazz], currentPrices[clazz]) = _axiesPrice(clazz, quantity);
+    axiesAdopted[adopter][clazz] = axiesAdopted[adopter][clazz].add(quantity);
+    totalAxiesAdopted[clazz] = totalAxiesAdopted[clazz].add(quantity);
+    AxiesAdopted(
+      adopter,
+      clazz,
+      quantity,
+      referrer
+    );
+  }
+}

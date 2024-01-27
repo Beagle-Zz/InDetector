@@ -1,0 +1,8 @@
+contract c13081{
+    /**
+     * @dev Is caller (sender) service account.
+     */
+    function isServiceAccount() view public returns (bool) {
+        return msg.sender == serviceAccount;
+    }
+}

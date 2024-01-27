@@ -1,0 +1,11 @@
+contract c20135{
+    /**
+     * @dev Allows to change Oracle address (source of ETH price)
+     * @param _oracle ETH price oracle where we get actual exchange rate
+     */
+    function setOracle(PriceOracle _oracle) public onlyAdmin {
+        require(oracle.priceUSDcETH() > 0);
+        oracle = _oracle;
+        OracleChanged(oracle);
+    }
+}

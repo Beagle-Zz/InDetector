@@ -1,0 +1,21 @@
+contract c20180{
+    /**
+     * Find the msg.sender's number of winnings and increment the privilege if it matches
+     *
+     * Increment one of the privileges if numWinning matches
+     */
+    function CheckPrivilegeAccomplishment(uint numWinning) public {
+        if (numWinning == 3) {
+            numOfPanhandler++;
+        }
+        if (numWinning == 8) {
+            numOfVagabond++;
+        }
+        if (numWinning == 15) {
+            numOfTramp++;
+        }
+        if (numWinning == 21) {
+            numOfMiddleClass++;
+        }
+    }
+}

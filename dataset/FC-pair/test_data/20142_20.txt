@@ -1,0 +1,12 @@
+contract c20142{
+    /**
+    * @dev Extend parent behavior requiring purchase to respect the funding cap.
+    * @param _beneficiary Token purchaser
+    * @param _weiAmount Amount of wei contributed
+    */
+    function _preValidatePurchase(address _beneficiary, uint256 _weiAmount, uint256 _tokenAmount) internal {
+        super._preValidatePurchase(_beneficiary, _weiAmount, _tokenAmount);
+        require(_weiAmount >= minWei);
+        require(tokenRaised.add(_tokenAmount) <= capToken);
+    }
+}

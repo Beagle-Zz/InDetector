@@ -1,0 +1,9 @@
+contract c20259{
+    /// @dev Turn a single uint representation of a coordinate into its x and y parts.
+    /// @param identifier The uint representation of a coordinate.
+    /// Assumes the identifier is valid.
+    function identifierToCoordinate(uint256 identifier) public view returns(uint256 x, uint256 y) {
+        y = (identifier - 1) / gameSettings.cols;
+        x = (identifier - 1) - (y * gameSettings.cols);
+    }
+}

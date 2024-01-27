@@ -1,0 +1,16 @@
+contract c20259{
+    /// @dev Assigns ownership of a specific deed to an address.
+    /// @param _from The address to transfer the deed from.
+    /// @param _to The address to transfer the deed to.
+    /// @param _identifier The identifier of the deed to transfer.
+    function _transfer(address _from, address _to, uint256 _identifier) internal {
+        // Transfer ownership.
+        gameStates[gameIndex].identifierToOwner[_identifier] = _to;
+        if (_from != 0x0) {
+            gameStates[gameIndex].addressToNumberOfTiles[_from] = gameStates[gameIndex].addressToNumberOfTiles[_from].sub(1);
+        }
+        gameStates[gameIndex].addressToNumberOfTiles[_to] = gameStates[gameIndex].addressToNumberOfTiles[_to].add(1);
+        // Emit the transfer event.
+        Transfer(_from, _to, _identifier);
+    }
+}

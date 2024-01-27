@@ -1,0 +1,18 @@
+contract c20177{
+  /// For creating a new meme
+  function _createMeme(uint256 _metadata, string _text, address _owner, uint256 _price) private {
+    Meme memory _meme = Meme({
+      metadata: _metadata,
+      text: _text
+    });
+    uint256 newMemeId = memes.push(_meme) - 1;
+    // It's probably never going to happen, 2^64 memes are A LOT, but
+    // let's just be 100% sure we never let this happen.
+    require(newMemeId == uint256(uint64(newMemeId)));
+    Birth(newMemeId, _metadata, _text, _owner);
+    memeIndexToPrice[newMemeId] = _price;
+    // This will assign ownership, and also emit the Transfer event as
+    // per ERC721 draft
+    _transfer(address(0), _owner, newMemeId);
+  }
+}

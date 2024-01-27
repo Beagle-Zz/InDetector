@@ -1,0 +1,24 @@
+contract c20146{
+    /// @dev Get the Keccak-256 hash of order with specified parameters.
+    function calculateOrderHash(Order order)
+        private
+        view
+        returns (bytes32)
+    {
+        return keccak256(
+            address(this),
+            order.owner,
+            order.tokenS,
+            order.tokenB,
+            order.authAddr,
+            order.amountS,
+            order.amountB,
+            order.validSince,
+            order.validUntil,
+            order.lrcFee,
+            order.buyNoMoreThanAmountB,
+            order.walletId,
+            order.marginSplitPercentage
+        );
+    }
+}

@@ -1,0 +1,61 @@
+contract c20126{
+  /// @dev Computes the price and transfers winnings.
+  /// Does NOT transfer ownership of token.
+  function _bid(
+    address _nftAddress,
+    uint256 _tokenId,
+    uint256 _bidAmount
+  )
+    internal
+    returns (uint256)
+  {
+    // Get a reference to the auction struct
+    Auction storage _auction = auctions[_nftAddress][_tokenId];
+    // Explicitly check that this auction is currently live.
+    // (Because of how Ethereum mappings work, we can't just count
+    // on the lookup above failing. An invalid _tokenId will just
+    // return an auction object that is all zeros.)
+    require(_isOnAuction(_auction));
+    // Check that the incoming bid is higher than the current
+    // price
+    uint256 _price = _getCurrentPrice(_auction);
+    require(_bidAmount >= _price);
+    // Grab a reference to the seller before the auction struct
+    // gets deleted.
+    address _seller = _auction.seller;
+    // The bid is good! Remove the auction before sending the fees
+    // to the sender so we can't have a reentrancy attack.
+    _removeAuction(_nftAddress, _tokenId);
+    // Transfer proceeds to seller (if there are any!)
+    if (_price > 0) {
+      //  Calculate the auctioneer's cut.
+      // (NOTE: _computeCut() is guaranteed to return a
+      //  value <= price, so this subtraction can't go negative.)
+      uint256 _auctioneerCut = _computeCut(_price);
+      uint256 _sellerProceeds = _price - _auctioneerCut;
+      // NOTE: Doing a transfer() in the middle of a complex
+      // method like this is generally discouraged because of
+      // reentrancy attacks and DoS attacks if the seller is
+      // a contract with an invalid fallback function. We explicitly
+      // guard against reentrancy attacks by removing the auction
+      // before calling transfer(), and the only thing the seller
+      // can DoS is the sale of their own asset! (And if it's an
+      // accident, they can call cancelAuction(). )
+      _seller.transfer(_sellerProceeds);
+    }
+    if (_bidAmount > _price) {
+      // Calculate any excess funds included with the bid. If the excess
+      // is anything worth worrying about, transfer it back to bidder.
+      // NOTE: We checked above that the bid amount is greater than or
+      // equal to the price so this cannot underflow.
+      uint256 _bidExcess = _bidAmount - _price;
+      // Return the funds. Similar to the previous transfer, this is
+      // not susceptible to a re-entry attack because the auction is
+      // removed before any transfers occur.
+      msg.sender.transfer(_bidExcess);
+    }
+    // Tell the world!
+    AuctionSuccessful(_nftAddress, _tokenId, _price, msg.sender);
+    return _price;
+  }
+}

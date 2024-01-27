@@ -1,0 +1,12 @@
+contract c20142{
+    /**
+    * @dev Checks whether the cap has been reached. 
+    * @return Whether the cap was reached
+    */
+    function capReached() public view returns (bool) {
+        if(tokenRaised >= capToken) return true;
+        uint256 minTokens = rate.getTokenAmount(minWei);
+        if(capToken - tokenRaised <= minTokens) return true;
+        return false;
+    }
+}

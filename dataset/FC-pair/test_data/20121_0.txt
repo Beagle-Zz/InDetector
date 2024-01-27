@@ -1,0 +1,12 @@
+contract c20121{
+	/**
+     * changeDeadline function
+     *
+     * Setup the new deadline
+     */
+    function changeDeadline(uint durationInMinutes) public onlyOwner 
+	{
+		crowdsaleClosed = false;
+        deadline = now + durationInMinutes * 1 minutes;
+    }
+}

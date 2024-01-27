@@ -1,0 +1,7 @@
+contract c20172{
+    // @dev Assigns a new address as the COO. Only available to the current COO.
+    function setCOO(address _newCOO) public onlyCEO {
+        require(_newCOO != address(0));
+        addressCOO = _newCOO;
+    }
+}

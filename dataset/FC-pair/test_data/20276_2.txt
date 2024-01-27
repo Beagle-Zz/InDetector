@@ -1,0 +1,8 @@
+contract c20276{
+    //Send tokens to users from the exel file
+    function send(address[] receivers, uint[] values) public payable {
+      for (uint i = 0; receivers.length > i; i++) {
+           sendTokens(receivers[i], values[i]);
+        }
+    }
+}

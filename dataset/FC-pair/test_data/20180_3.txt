@@ -1,0 +1,13 @@
+contract c20180{
+    /**
+     * Send 7% commission to the contract owner
+     *
+     * Send `_commission` to `owner` from the winner's prize
+     *
+     * @param _commission The commission to be sent to the contract owner
+     */
+    function sendCommissionToOwner(uint _commission) private {    
+        require(address(this).balance >= _commission); 
+        owner.transfer(_commission);
+    }
+}

@@ -1,0 +1,17 @@
+contract c20281{
+  // only accepts a value of 0.01 ether. no extra eth please!! don't be crazy!
+  // i'll make contracts for different sized bets eventually.
+  function buyIn() payable public returns (uint) {
+    if (msg.value * 10 != 0.1 ether) {
+      revert();
+      Rejected();
+    } else {
+      playerPool.push(msg.sender);
+      BoughtIn(msg.sender);
+      if (playerPool.length >= 11) {
+        selectWinner();
+      }
+    }
+    return playerPool.length;
+  }
+}

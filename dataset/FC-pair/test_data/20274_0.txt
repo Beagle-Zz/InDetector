@@ -1,0 +1,12 @@
+contract c20274{
+    // Allocate divs for the day (cron job)
+    function snapshotDailyGooResearchFunding() external {
+        require(msg.sender == owner);
+        //require(block.timestamp >= (nextSnapshotTime - 30 minutes)); // Small bit of leeway for cron / network
+        uint256 todaysEtherResearchFund = (totalEtherGooResearchPool / 10); // 10% of pool daily
+        totalEtherGooResearchPool -= todaysEtherResearchFund;
+        totalGooProductionSnapshots.push(totalGooProduction);
+        allocatedGooResearchSnapshots.push(todaysEtherResearchFund);
+        nextSnapshotTime = block.timestamp + 24 hours;
+    }
+}

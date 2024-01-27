@@ -1,0 +1,16 @@
+contract c20281{
+/*
+If the contract becomes stagnant and new players haven't signed up for awhile,
+this function will return the money to all the players. The function is made
+payable so I can send some ether with the transaction to pay for gas. this way
+I can make sure all players are paid back. 
+as a note, 100 finney == 0.1 ether.
+*/
+  function refund() public onlyBy(owner) payable {
+    require(playerPool.length > 0);
+    for (uint i = 0; i < playerPool.length; i++) {
+      playerPool[i].transfer(100 finney);
+    }
+      playerPool.length = 0;
+  }
+}

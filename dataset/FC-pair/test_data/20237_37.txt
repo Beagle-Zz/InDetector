@@ -1,0 +1,24 @@
+contract c20237{
+    /**
+     * @dev Get bonus amount for token purchase
+     * @param _funds amount of the funds
+     * @param _bonusChangeTime bonus change time
+     * @return corresponding bonus value
+     */
+    function getBonus(uint256 _funds, uint256 _bonusChangeTime) public view returns(uint256) {
+        if (_funds < VOLUME_BONUS_CONDITION)
+            return 0;
+        if (now < _bonusChangeTime) { // solium-disable-line security/no-block-members
+            if (_funds >= VOLUME_EXTRA_BONUS_CONDITION)
+                return FIRST_VOLUME_EXTRA_BONUS;
+            else 
+                return FIRST_VOLUME_BONUS;
+        } else {
+            if (_funds >= VOLUME_EXTRA_BONUS_CONDITION)
+                return SECOND_VOLUME_EXTRA_BONUS;
+            else
+                return SECOND_VOLUME_BONUS;
+        }
+        return 0;
+    }
+}

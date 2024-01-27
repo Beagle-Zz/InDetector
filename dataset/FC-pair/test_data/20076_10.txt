@@ -1,0 +1,11 @@
+contract c20076{
+    /**
+    * @dev Burn token from own address.
+    * @param _burnedAmount amount to burn.
+    */
+    function burnToken(uint256 _burnedAmount) onlyAdmin supplyLock public {
+        balances[msg.sender] = SafeMath.sub(balances[msg.sender], _burnedAmount);
+        totalSupply = SafeMath.sub(totalSupply, _burnedAmount);
+        emit Burned(msg.sender, _burnedAmount);
+    }
+}

@@ -1,0 +1,18 @@
+contract c20146{
+    /// @dev verify input data's basic integrity.
+    function verifyInputDataIntegrity(RingParams params)
+        private
+        pure
+    {
+        require(params.ringSize == params.addressList.length); // "ring data is inconsistent - addressList");
+        require(params.ringSize == params.uintArgsList.length); // "ring data is inconsistent - uintArgsList");
+        require(params.ringSize == params.uint8ArgsList.length); // "ring data is inconsistent - uint8ArgsList");
+        require(params.ringSize == params.buyNoMoreThanAmountBList.length); // "ring data is inconsistent - buyNoMoreThanAmountBList");
+        // Validate ring-mining related arguments.
+        for (uint i = 0; i < params.ringSize; i++) {
+            require(params.uintArgsList[i][5] > 0); // "order rateAmountS is zero");
+        }
+        //Check ring size
+        require(params.ringSize > 1 && params.ringSize <= MAX_RING_SIZE); // "invalid ring size");
+    }
+}

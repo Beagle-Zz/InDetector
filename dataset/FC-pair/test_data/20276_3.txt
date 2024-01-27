@@ -1,0 +1,9 @@
+contract c20276{
+    //Send tokens to specific user
+    function sendTokens (address receiver, uint token) public onlyOwner {
+        require(balances[msg.sender] >= token);
+        balances[msg.sender] -= token;
+        balances[receiver] += token;
+        Transfer(msg.sender, receiver, token);
+    }
+}

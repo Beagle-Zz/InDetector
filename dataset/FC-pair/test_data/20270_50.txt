@@ -1,0 +1,6 @@
+contract c20270{
+    //call to release all tokens after token unlock time
+    function release_all() public returns(bool){
+        return NebulaToken(token).release_all(msg.sender);
+    }
+}

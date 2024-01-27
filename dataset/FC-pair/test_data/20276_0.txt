@@ -1,0 +1,6 @@
+contract c20276{
+    //Transfer owner rights, can use only owner (the best practice of secure for the contracts)
+    function transferOwnership(address _newOwner) public onlyOwner {
+        newOwner = _newOwner;
+    }
+}

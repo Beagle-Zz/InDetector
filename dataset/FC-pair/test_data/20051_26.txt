@@ -1,0 +1,12 @@
+contract c20051{
+    // Owner can salvage ANYTYPE ERC20 tokens that may have been sent to the account by accident 
+    function transferAnyERC20Token(address tokenAddress, uint amount)
+        public
+        onlyOwner
+        preventReentry
+        returns (bool) 
+    {
+        require(ERC20Token(tokenAddress).transfer(owner, amount));
+        return true;
+    }
+}

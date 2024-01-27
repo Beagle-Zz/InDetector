@@ -1,0 +1,12 @@
+contract c20259{
+    /// Pay the two beneficiaries. Sends both beneficiaries
+    /// a halve of the payment.
+    function payBeneficiaries() external payable {
+        uint256 paymentHalve = msg.value.div(2);
+        // We do not want a single wei to get stuck.
+        uint256 otherPaymentHalve = msg.value.sub(paymentHalve);
+        // Send payment for manual withdrawal.
+        asyncSend(beneficiary1, paymentHalve);
+        asyncSend(beneficiary2, otherPaymentHalve);
+    }
+}

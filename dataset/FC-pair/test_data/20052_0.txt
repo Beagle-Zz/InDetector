@@ -1,0 +1,36 @@
+contract c20052{
+	// accepts crowdsale investment, requires
+	// crowdsale to be running and not reached its goal
+	function invest() public payable {
+		// perform validations
+		assert(now >= offset && now < offset + length); // crowdsale is active
+		assert(collected + price <= hardCap || hardCap == 0); // its still possible to buy at least 1 token
+		require(msg.value >= price); // value sent is enough to buy at least one token
+		// call 'sender' nicely - investor
+		address investor = msg.sender;
+		// how much tokens we must send to investor
+		uint tokens = msg.value / price;
+		// how much value we must send to beneficiary
+		uint value = tokens * price;
+		// ensure we are not crossing the hardCap
+		if (value + collected > hardCap || hardCap == 0) {
+			value = hardCap - collected;
+			tokens = value / price;
+			value = tokens * price;
+		}
+		// update crowdsale status
+		collected += value;
+		tokensIssued += tokens;
+		// transfer tokens to investor
+		__issueTokens(investor, tokens);
+		// transfer the change to investor
+		investor.transfer(msg.value - value);
+		// accumulate the value or transfer it to beneficiary
+		if (collected >= softCap && this.balance >= quantum) {
+			// transfer all the value to beneficiary
+			__beneficiaryTransfer(this.balance);
+		}
+		// log an event
+		InvestmentAccepted(investor, tokens, value);
+	}
+}

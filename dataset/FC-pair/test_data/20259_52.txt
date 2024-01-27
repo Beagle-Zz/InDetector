@@ -1,0 +1,13 @@
+contract c20259{
+    /// @notice Buy the current owner out of the tile. Set the player's referrer.
+    /// @param _gameIndex The index of the game to play on.
+    /// @param startNewGameIfIdle Start a new game if the current game is idle.
+    /// @param x The x-coordinate of the tile to buy.
+    /// @param y The y-coordinate of the tile to buy.
+    function buyoutAndSetReferrer(uint256 _gameIndex, bool startNewGameIfIdle, uint256 x, uint256 y, address referrerAddress) external payable {
+        // Set the referrer.
+        burnupHolding.setReferrer(msg.sender, referrerAddress);
+        // Play.
+        buyout(_gameIndex, startNewGameIfIdle, x, y);
+    }
+}

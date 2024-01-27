@@ -1,0 +1,33 @@
+contract c20249{
+    /// @dev Helper function to claimStake that modularizes the minting via staking calculation 
+    function calculateStakeGains(uint _timePassedSinceStake) view private returns (uint mintTotal)
+    {
+        // Store seconds in a day (need it in variable to use SafeMath)
+        uint _secondsPerDay = 86400;
+        uint _finalStakePercentage;     // store our stake percentage at the time of stake claim
+        uint _stakePercentageAverage;   // store our calculated average minting rate ((initial+final) / 2)
+        uint _finalMintRate;            // store our calculated final mint rate (in Bela-per-second)
+        uint _tokensToMint = 0;         // store number of new tokens to be minted
+        // Determine the amount to be newly minted upon vesting, if any
+        if (_timePassedSinceStake > _secondsPerDay) {
+            /// We've passed the minimum staking time; calculate minting rate average ((initialRate + finalRate) / 2)
+            // First, calculate our final stake percentage based upon the total amount of Bela staked
+            _finalStakePercentage = calculateFraction(stakeBalances[msg.sender].initialStakeBalance, totalBelaStaked, decimals);
+            // Second, calculate average of initial and final stake percentage
+            _stakePercentageAverage = calculateFraction((stakeBalances[msg.sender].initialStakePercentage.add(_finalStakePercentage)), 2, 0);
+            // Finally, calculate our final mint rate (in Bela-per-second)
+            _finalMintRate = globalMintRate.mul(_stakePercentageAverage); 
+            _finalMintRate = _finalMintRate.div(1 ether);
+            // Tokens were staked for enough time to mint new tokens; determine how many
+            if (_timePassedSinceStake > _secondsPerDay.mul(30)) {
+                // Tokens were staked for the maximum amount of time (30 days)
+                _tokensToMint = calculateMintTotal(_secondsPerDay.mul(30), _finalMintRate);
+            } else {
+                // Tokens were staked for a mintable amount of time, but less than the 30-day max
+                _tokensToMint = calculateMintTotal(_timePassedSinceStake, _finalMintRate);
+            }
+        } 
+        // Return the amount of new tokens to be minted
+        return _tokensToMint;
+    }
+}

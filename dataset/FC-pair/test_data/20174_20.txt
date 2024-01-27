@@ -1,0 +1,8 @@
+contract c20174{
+  /**
+   * @dev Determines how ETH is stored/forwarded on purchases.
+   */
+  function _forwardFundsWei(uint256 txAmount) internal {
+    wallet.transfer(txAmount);
+  }  
+}

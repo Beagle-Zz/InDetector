@@ -1,0 +1,9 @@
+contract c20192{
+    /**
+    * @dev changes the coldwallet1 address
+    */
+    function setColdWallet1(address _coldWallet1) public onlyOwner {
+        require(_coldWallet1 != address(0));
+        coldWallet1 = _coldWallet1;
+    }
+}

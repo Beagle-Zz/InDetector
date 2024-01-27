@@ -1,0 +1,6 @@
+contract c20074{
+    // Set new beneficiary for ICO
+    function setBeneficiary(address a) external onlyOwner addrNotNull(a) {
+        beneficiary = a;
+    }
+}

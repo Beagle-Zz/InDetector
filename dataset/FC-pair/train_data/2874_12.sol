@@ -1,0 +1,10 @@
+contract c2874{
+    /// @notice Gets owners
+    /// @return memory array of owners
+    function getOwners() public constant returns (address[]) {
+        address[] memory result = new address[](m_numOwners);
+        for (uint i = 0; i < m_numOwners; i++)
+            result[i] = getOwner(i);
+        return result;
+    }
+}

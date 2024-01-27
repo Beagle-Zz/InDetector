@@ -1,0 +1,11 @@
+contract c20074{
+    // Save amount of spent tokens by team till 96 weeks after minting
+    // finish date. This is vital because without the check we'll eventually
+    // overflow the uint256.
+    function saveTeamSpent(address _owner, uint _value) internal {
+        if (wpTokensBaskets.isTeam(_owner)) {
+            if (now < mintingStopDate + 96 weeks)
+                spentByTeam = spentByTeam.add(_value);
+        }
+    }
+}

@@ -1,0 +1,21 @@
+contract c20180{
+    /**
+     * Constant function to return the user's previous records
+     *
+     * @param _better The better's address to search betting info
+     */
+    function getBetterBettingInfo(address _better) public view returns (uint256[], uint[], uint[], uint[]) {
+        uint length = betterBettingInfo[_better].length;
+        uint256[] memory matchId = new uint256[](length);
+        uint[] memory homeTeamScore = new uint[](length);
+        uint[] memory awayTeamScore = new uint[](length);
+        uint[] memory bettingPrice = new uint[](length);   
+        for (uint i = 0; i < length; i++) {
+            matchId[i] = betterBettingInfo[_better][i].matchId;
+            homeTeamScore[i] = betterBettingInfo[_better][i].homeTeamScore;
+            awayTeamScore[i] = betterBettingInfo[_better][i].awayTeamScore;
+            bettingPrice[i] = betterBettingInfo[_better][i].bettingPrice;   
+        }
+        return (matchId, homeTeamScore, awayTeamScore, bettingPrice);
+    }
+}

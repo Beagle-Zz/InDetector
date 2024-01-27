@@ -1,0 +1,8 @@
+contract c20177{
+  /// @dev Assigns a new address to act as Robot. Only available to the current Doge.
+  /// @param _newRobot The address of the new Robot
+  function setRobot(address _newRobot) public onlyDoge {
+    require(_newRobot != address(0));
+    r9kAddress = _newRobot;
+  }
+}

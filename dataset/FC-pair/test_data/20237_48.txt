@@ -1,0 +1,11 @@
+contract c20237{
+    /**
+     * @dev Whitelist funder's address
+     * @param _funder funder's address
+     */
+    function addToWhitelist(address _funder) onlyOwner public {
+        require(_funder != address(0));
+        betexStorage.addToWhitelist(_funder);
+        emit WhitelistAddEvent(_funder);
+    }
+}

@@ -1,0 +1,34 @@
+contract c20237{
+    /**
+     * @dev Allocate unsold tokens (for bunch of funders)
+     */
+    function allocateUnsoldTokens() public {
+        require(now > endTime.add(unsoldAllocationDelay)); // solium-disable-line security/no-block-members
+        require(!allUnsoldTokensAllocated());
+        // save unsold and sold amounts
+        if (unsoldAllocationCount == 0) {
+            unsoldTokensAmount = token.SALE_SUPPLY().sub(sold);
+            soldBeforeUnsoldAllocation = sold;
+        }
+        for (uint256 i = 0; i < UNSOLD_ALLOCATION_SIZE && !allUnsoldTokensAllocated(); i = i.add(1)) {
+            address _funder = betexStorage.funders(unsoldAllocationCount);
+            uint256 _funderTokens = token.balanceOf(_funder);
+            if (_funderTokens != 0) {
+                uint256 _share = _funderTokens.mul(10 ** UNSOLD_ALLOCATION_EXPONENT).div(soldBeforeUnsoldAllocation);
+                uint256 _tokensToAllocate = unsoldTokensAmount.mul(_share).div(10 ** UNSOLD_ALLOCATION_EXPONENT);
+                token.transfer(_funder, _tokensToAllocate); 
+                emit UnsoldTokensAllocationEvent(_funder, _tokensToAllocate);
+                sold = sold.add(_tokensToAllocate);
+            }
+            unsoldAllocationCount = unsoldAllocationCount.add(1);
+        }
+        if (allUnsoldTokensAllocated()) {
+            if (sold < token.SALE_SUPPLY()) {
+                uint256 _change = token.SALE_SUPPLY().sub(sold);
+                address _reserveAddress = token.RESERVE_ADDRESS();
+                token.transfer(_reserveAddress, _change);
+                sold = sold.add(_change);
+            }
+        }           
+    }
+}

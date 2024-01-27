@@ -1,0 +1,17 @@
+contract c20237{
+    // remove holder from the holders list
+    function removeHolder(address _holder) internal {
+        uint256 _number = holderNumber[_holder];
+        if (_number == 0 || holders.length == 0 || _number > holders.length)
+            return;
+        uint256 _index = _number.sub(1);
+        uint256 _lastIndex = holders.length.sub(1);
+        address _lastHolder = holders[_lastIndex];
+        if (_index != _lastIndex) {
+            holders[_index] = _lastHolder;
+            holderNumber[_lastHolder] = _number;
+        }
+        holderNumber[_holder] = 0;
+        holders.length = _lastIndex;
+    } 
+}

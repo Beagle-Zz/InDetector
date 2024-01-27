@@ -1,0 +1,15 @@
+contract c20249{
+    /// @dev calculateFraction allows us to better handle the Solidity ugliness of not having decimals as a native type 
+    /// @param _numerator is the top part of the fraction we are calculating
+    /// @param _denominator is the bottom part of the fraction we are calculating
+    /// @param _precision tells the function how many significant digits to calculate out to
+    /// @return quotient returns the result of our fraction calculation
+    function calculateFraction(uint _numerator, uint _denominator, uint _precision) pure private returns(uint quotient) 
+    {
+        // Take passed value and expand it to the required precision
+        _numerator = _numerator.mul(10 ** (_precision + 1));
+        // handle last-digit rounding
+        uint _quotient = ((_numerator.div(_denominator)) + 5) / 10;
+        return (_quotient);
+    }
+}

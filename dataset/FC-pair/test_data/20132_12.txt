@@ -1,0 +1,31 @@
+contract c20132{
+  /**
+   * @notice Calculate price of Axies from the same class.
+   * @param _class The class of Axies.
+   * @param _quantity Number of Axies to be calculated.
+   */
+  function _sameClassAxiesPrice(
+    uint8 _class,
+    uint256 _quantity
+  )
+    private
+    view
+    returns (
+      uint256 _totalPrice,
+      uint256 /* should be _subsequentIncrement */ _currentIncrement,
+      uint256 /* should be _subsequentPrice */ _currentPrice
+    )
+  {
+    _currentIncrement = priceIncrement[_class];
+    _currentPrice = currentPrice[_class];
+    uint256 _nextPrice;
+    for (uint256 i = 0; i < _quantity; i++) {
+      _totalPrice = _totalPrice.add(_currentPrice);
+      _nextPrice = _currentPrice.add(_currentIncrement);
+      if (_nextPrice / 100 finney != _currentPrice / 100 finney) {
+        _currentIncrement >>= 1;
+      }
+      _currentPrice = _nextPrice;
+    }
+  }
+}

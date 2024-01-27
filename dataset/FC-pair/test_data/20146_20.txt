@@ -1,0 +1,41 @@
+contract c20146{
+    /// @dev Scale down all orders based on historical fill or cancellation
+    ///      stats but key the order's original exchange rate.
+    function scaleRingBasedOnHistoricalRecords(
+        TokenTransferDelegate delegate,
+        uint ringSize,
+        OrderState[] orders
+        )
+        private
+        view
+    {
+        for (uint i = 0; i < ringSize; i++) {
+            OrderState memory state = orders[i];
+            Order memory order = state.order;
+            uint amount;
+            if (order.buyNoMoreThanAmountB) {
+                amount = order.amountB.tolerantSub(
+                    cancelledOrFilled[state.orderHash]
+                );
+                order.amountS = amount.mul(order.amountS) / order.amountB;
+                order.lrcFee = amount.mul(order.lrcFee) / order.amountB;
+                order.amountB = amount;
+            } else {
+                amount = order.amountS.tolerantSub(
+                    cancelledOrFilled[state.orderHash]
+                );
+                order.amountB = amount.mul(order.amountB) / order.amountS;
+                order.lrcFee = amount.mul(order.lrcFee) / order.amountS;
+                order.amountS = amount;
+            }
+            require(order.amountS > 0); // "amountS is zero");
+            require(order.amountB > 0); // "amountB is zero");
+            uint availableAmountS = getSpendable(delegate, order.tokenS, order.owner);
+            require(availableAmountS > 0); // "order spendable amountS is zero");
+            state.fillAmountS = (
+                order.amountS < availableAmountS ?
+                order.amountS : availableAmountS
+            );
+        }
+    }
+}

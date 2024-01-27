@@ -1,0 +1,12 @@
+contract c20263{
+  /**
+  * @dev Query if a contract implements an interface
+  * @param _interfaceID interfaceID being checked
+  * @return bool if the current contract supports the queried interface
+  */
+  function supportsInterface(bytes4 _interfaceID) external view returns (bool) {
+    return _interfaceID == 0x01ffc9a7 || // ERC165
+           _interfaceID == 0x80ac58cd || // ERC721
+           _interfaceID == 0x780e9d63; // ERC721Enumerable
+  }
+}

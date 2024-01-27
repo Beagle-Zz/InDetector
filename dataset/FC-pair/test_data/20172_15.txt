@@ -1,0 +1,6 @@
+contract c20172{
+    // @dev Queries the price of a token.
+    function priceOf(uint256 _tokenId) public view returns (uint256 price) {
+        return avatarIndexToPrice[_tokenId];
+    }
+}

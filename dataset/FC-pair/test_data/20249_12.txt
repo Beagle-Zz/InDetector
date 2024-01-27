@@ -1,0 +1,12 @@
+contract c20249{
+    /// @dev staking function which allows users to split the interest earned with another address
+    function stakeBelaSplit(uint _stakeAmount, address _stakeSplitAddress) external
+    {
+        // Require that a Bela split actually be split with an address
+        require(_stakeSplitAddress > 0);
+        // Store split address into stake mapping
+        stakeBalances[msg.sender].stakeSplitAddress = _stakeSplitAddress;
+        // Require that tokens are staked successfully
+        require(stakeTokens(_stakeAmount));
+    }
+}

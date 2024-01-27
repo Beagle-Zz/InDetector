@@ -1,0 +1,6 @@
+contract c20074{
+    // Register new investor
+    function allowInvestor(address a) public onlyOwner addrNotNull(a) {
+        allowedInvestors[a] = true;
+    }
+}

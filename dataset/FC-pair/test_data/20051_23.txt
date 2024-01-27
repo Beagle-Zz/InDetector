@@ -1,0 +1,13 @@
+contract c20051{
+    // To accept ownership. Required to prove new address can call the contract.
+    function acceptOwnership()
+        public
+        noReentry
+        returns (bool)
+    {
+        require(msg.sender == newOwner);
+        ChangedOwner(owner, newOwner);
+        owner = newOwner;
+        return true;
+    }
+}

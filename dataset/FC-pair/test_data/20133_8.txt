@@ -1,0 +1,68 @@
+contract c20133{
+    /// @dev The external function to get the dungeon run details in one call.
+    function getRunDetails(uint _heroId) external view returns (
+        uint _heroPower,
+        uint _heroStrength,
+        uint _heroInitialHealth,
+        uint _heroHealth,
+        uint _monsterCreationTime,
+        uint _monsterLevel,
+        uint _monsterInitialHealth,
+        uint _monsterHealth,
+        uint _gameState // 0: NotStarted | 1: NewMonster | 2: Active | 3: RunEnded
+    ) {
+        uint genes;
+        address owner;
+        (,,, genes, owner,,) = edCoreContract.getHeroDetails(_heroId);
+        (_heroPower,,,,) = edCoreContract.getHeroPower(genes, dungeonDifficulty);
+        _heroStrength = (genes / (32 ** 8)) % 32 + 1;
+        _heroInitialHealth = (genes / (32 ** 12)) % 32 + 1;
+        _heroHealth = heroIdToHealth[_heroId];
+        Monster memory monster = heroIdToMonster[_heroId];
+        _monsterCreationTime = monster.creationTime;
+        // Dungeon run is ended if either hero is defeated (health exhausted),
+        // or hero failed to damage a monster before it flee.
+        bool _dungeonRunEnded = monster.level > 0 && (
+            _heroHealth == 0 || 
+            now > _monsterCreationTime + monsterFleeTime * 2 ||
+            (monster.health == monster.initialHealth && now > monster.creationTime + monsterFleeTime)
+        );
+        // Calculate hero and monster stats based on different game state.
+        if (monster.level == 0) {
+            // Dungeon run not started yet.
+            _heroHealth = _heroInitialHealth;
+            _monsterLevel = 1;
+            _monsterInitialHealth = monsterHealth;
+            _monsterHealth = _monsterInitialHealth;
+            _gameState = 0;
+        } else if (_dungeonRunEnded) {
+            // Dungeon run ended.
+            _monsterLevel = monster.level;
+            _monsterInitialHealth = monster.initialHealth;
+            _monsterHealth = monster.health;
+            _gameState = 3;
+        } else if (now > _monsterCreationTime + monsterFleeTime) {
+            // Previous monster just fled, new monster awaiting.
+            if (monster.level + monsterStrength > _heroHealth) {
+                _heroHealth = 0;
+                _monsterLevel = monster.level;
+                _monsterInitialHealth = monster.initialHealth;
+                _monsterHealth = monster.health;
+                _gameState = 2;
+            } else {
+                _heroHealth -= monster.level + monsterStrength;
+                _monsterCreationTime += monsterFleeTime;
+                _monsterLevel = monster.level + 1;
+                _monsterInitialHealth = _monsterLevel * monsterHealth;
+                _monsterHealth = _monsterInitialHealth;
+                _gameState = 1;
+            }
+        } else {
+            // Active monster.
+            _monsterLevel = monster.level;
+            _monsterInitialHealth = monster.initialHealth;
+            _monsterHealth = monster.health;
+            _gameState = 2;
+        }
+    }
+}

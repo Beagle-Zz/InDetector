@@ -1,0 +1,9 @@
+contract c20142{
+    /**
+     * @dev Checks whether the period in which the crowdsale is opened.
+     * @return Whether crowdsale period has elapsed
+     */
+    function hasOpening() public view returns (bool) {
+        return (now >= openingTime && now <= closingTime);
+    }
+}

@@ -1,0 +1,14 @@
+contract c20126{
+  /// @dev Cancels an auction that hasn't been won yet.
+  ///  Returns the NFT to original owner.
+  /// @notice This is a state-modifying function that can
+  ///  be called while the contract is paused.
+  /// @param _nftAddress - Address of the NFT.
+  /// @param _tokenId - ID of token on auction
+  function cancelAuction(address _nftAddress, uint256 _tokenId) external {
+    Auction storage _auction = auctions[_nftAddress][_tokenId];
+    require(_isOnAuction(_auction));
+    require(msg.sender == _auction.seller);
+    _cancelAuction(_nftAddress, _tokenId, _auction.seller);
+  }
+}

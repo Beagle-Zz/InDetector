@@ -1,0 +1,9 @@
+contract c20192{
+    /**
+    * @dev function created to emit the ETH transfer event from the child contract only
+    * @param _amount ETH amount 
+    */
+    function fireDepositToChildEvent(uint _amount) public onlyChildContract {
+        emit DepositToChildEvent(msg.sender, _amount);
+    }
+}

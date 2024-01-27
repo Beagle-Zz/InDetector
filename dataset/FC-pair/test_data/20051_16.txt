@@ -1,0 +1,18 @@
+contract c20051{
+//
+// ICO functions
+//
+    // The fundraising can be aborted any time before funds are swept to the
+    // fundWallet.
+    // This will force a fail state and allow refunds to be collected.
+    function abort()
+        public
+        noReentry
+        onlyOwner
+        returns (bool)
+    {
+        require(!icoSuccessful);
+        delete __abortFuse;
+        return true;
+    }
+}

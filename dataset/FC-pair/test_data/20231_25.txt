@@ -1,0 +1,13 @@
+contract c20231{
+  /**
+   * @dev Must be called after crowdsale ends, to do some extra finalization work.
+   */
+  function finishPresale() external onlyOwner {
+    require(!isFinalized);
+    require(hasEnded());
+    emit Finalized();
+    isFinalized = true;
+    // transfer ownership of the token to the owner of the presale contract
+    token.transferOwnership(owner);
+  }
+}

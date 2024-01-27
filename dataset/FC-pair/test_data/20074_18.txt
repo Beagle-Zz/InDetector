@@ -1,0 +1,11 @@
+contract c20074{
+    // Allow to transfer given amount of tokens (in EXTwei)
+    // to account which is not owner.
+    function approve(address spender, uint value) public returns (bool) {
+        if (msg.sender == spender)
+            return false;
+        allowed[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
+}

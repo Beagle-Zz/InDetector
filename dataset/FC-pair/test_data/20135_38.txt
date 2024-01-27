@@ -1,0 +1,14 @@
+contract c20135{
+    /**
+     * @dev Delete phase by its index
+     * @param index Index of the phase
+     */
+    function delPhase(uint256 index) public onlyAdmin {
+        if (index >= phases.length) return;
+        for (uint i = index; i<phases.length-1; i++){
+            phases[i] = phases[i+1];
+        }
+        phases.length--;
+        PhaseDeleted(msg.sender, index);
+    }
+}

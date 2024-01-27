@@ -1,0 +1,8 @@
+contract c20126{
+  /// @dev Cancels an auction unconditionally.
+  function _cancelAuction(address _nftAddress, uint256 _tokenId, address _seller) internal {
+    _removeAuction(_nftAddress, _tokenId);
+    _transfer(_nftAddress, _seller, _tokenId);
+    AuctionCancelled(_nftAddress, _tokenId);
+  }
+}

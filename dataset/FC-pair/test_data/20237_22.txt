@@ -1,0 +1,11 @@
+contract c20237{
+    // enforce second lock on receiver
+    function enforceSecondLock(address _from, address _to) internal {
+        if (now < secondUnlockTime) { // solium-disable-line security/no-block-members
+            if (_from == TEAM_ADDRESS || _from == BROKER_RESERVE_ADDRESS) {
+                require(balances[_to] == uint256(0) || blockedTillSecondUnlock[_to]);
+                blockedTillSecondUnlock[_to] = true;
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+contract c20259{
+    /// @dev Assign the proceeds of the buyout.
+    function _assignBuyoutProceeds(
+        address currentOwner,
+        uint256[] memory claimedSurroundingTiles,
+        uint256 fee,
+        uint256 currentOwnerWinnings,
+        uint256 totalDividendPerBeneficiary,
+        uint256 referralBonus,
+        uint256 prizePoolFunds
+    )
+        internal
+    {
+        if (currentOwner != 0x0) {
+            // Send the current owner's winnings.
+            _sendFunds(currentOwner, currentOwnerWinnings);
+        } else {
+            // There is no current owner. Split the winnings to the prize pool and fees.
+            uint256 prizePoolPart = currentOwnerWinnings.mul(gameSettings.firstBuyoutPrizePoolPercentage).div(100000);
+            prizePoolFunds = prizePoolFunds.add(prizePoolPart);
+            fee = fee.add(currentOwnerWinnings.sub(prizePoolPart));
+        }
+        // Assign dividends to owners of surrounding tiles.
+        for (uint256 i = 0; i < claimedSurroundingTiles.length; i++) {
+            address beneficiary = gameStates[gameIndex].identifierToOwner[claimedSurroundingTiles[i]];
+            _sendFunds(beneficiary, totalDividendPerBeneficiary);
+        }
+        /// Distribute the referral bonuses (if any) for an address.
+        address referrer1 = burnupHolding.referrerOf(msg.sender);
+        if (referrer1 != 0x0) {
+            _sendFunds(referrer1, referralBonus);
+            address referrer2 = burnupHolding.referrerOf(referrer1);
+            if (referrer2 != 0x0) {
+                _sendFunds(referrer2, referralBonus);
+            } else {
+                // There is no second-level referrer.
+                fee = fee.add(referralBonus);
+            }
+        } else {
+            // There are no first and second-level referrers.
+            fee = fee.add(referralBonus.mul(2));
+        }
+        // Send the fee to the holding contract.
+        burnupHolding.payBeneficiaries.value(fee)();
+        // Increase the prize pool.
+        gameStates[gameIndex].prizePool = gameStates[gameIndex].prizePool.add(prizePoolFunds);
+    }
+}

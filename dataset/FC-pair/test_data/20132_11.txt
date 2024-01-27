@@ -1,0 +1,20 @@
+contract c20132{
+  /**
+   * @dev This must be called only once after the owner of the presale contract
+   *  has been updated to this contract.
+   */
+  function initialize(address _presaleAddress) external onlyOwner whenNotInitialized {
+    // Set the presale address.
+    presaleContract = AxiePresale(_presaleAddress);
+    presaleContract.pause();
+    // Restore price increments from the old contract.
+    priceIncrement[CLASS_BEAST] = presaleContract.priceIncrements(CLASS_BEAST);
+    priceIncrement[CLASS_AQUATIC] = presaleContract.priceIncrements(CLASS_AQUATIC);
+    priceIncrement[CLASS_PLANT] = presaleContract.priceIncrements(CLASS_PLANT);
+    // Restore current prices from the old contract.
+    currentPrice[CLASS_BEAST] = presaleContract.currentPrices(CLASS_BEAST);
+    currentPrice[CLASS_AQUATIC] = presaleContract.currentPrices(CLASS_AQUATIC);
+    currentPrice[CLASS_PLANT] = presaleContract.currentPrices(CLASS_PLANT);
+    paused = false;
+  }
+}

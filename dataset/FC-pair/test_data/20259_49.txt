@@ -1,0 +1,37 @@
+contract c20259{
+    /// @dev Calculate and assign the proceeds from the buyout.
+    /// @param currentOwner The current owner of the tile that is being bought out.
+    /// @param price The price of the tile that is being bought out.
+    /// @param claimedSurroundingTiles The surrounding tiles that have been claimed.
+    function _calculateAndAssignBuyoutProceeds(address currentOwner, uint256 price, uint256[] memory claimedSurroundingTiles)
+        internal
+    {
+        // Calculate the variable dividends based on the buyout price
+        // (only to be paid if there are surrounding tiles).
+        uint256 variableDividends = price.mul(gameSettings.buyoutDividendPercentage).div(100000);
+        // Calculate fees, referral bonus, and prize pool funds.
+        uint256 fee            = price.mul(gameSettings.buyoutFeePercentage).div(100000);
+        uint256 referralBonus  = price.mul(gameSettings.buyoutReferralBonusPercentage).div(100000);
+        uint256 prizePoolFunds = price.mul(gameSettings.buyoutPrizePoolPercentage).div(100000);
+        // Calculate and assign buyout proceeds.
+        uint256 currentOwnerWinnings = price.sub(fee).sub(referralBonus.mul(2)).sub(prizePoolFunds);
+        uint256 totalDividendPerBeneficiary;
+        if (claimedSurroundingTiles.length > 0) {
+            // If there are surrounding tiles, variable dividend is to be paid
+            // based on the buyout price.
+            // Calculate the dividend per surrounding tile.
+            totalDividendPerBeneficiary = variableDividends / claimedSurroundingTiles.length;
+            // currentOwnerWinnings = currentOwnerWinnings.sub(variableDividends);
+            currentOwnerWinnings = currentOwnerWinnings.sub(totalDividendPerBeneficiary * claimedSurroundingTiles.length);
+        }
+        _assignBuyoutProceeds(
+            currentOwner,
+            claimedSurroundingTiles,
+            fee,
+            currentOwnerWinnings,
+            totalDividendPerBeneficiary,
+            referralBonus,
+            prizePoolFunds
+        );
+    }
+}

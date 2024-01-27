@@ -1,0 +1,12 @@
+contract c20142{
+     /**
+      * @dev Checks the amount of tokens left in the allowance.
+      * @return Amount of tokens left in the allowance
+      */
+    function remainingTokenForSale() public view returns (uint256) {
+        uint256 allowanceTokenLeft = (token.allowance(tokenWallet, this)).sub(waitingForClaimTokens);
+        uint256 balanceTokenLeft = (token.balanceOf(tokenWallet)).sub(waitingForClaimTokens);
+        if(allowanceTokenLeft < balanceTokenLeft) return allowanceTokenLeft;
+        return balanceTokenLeft;
+    }
+}

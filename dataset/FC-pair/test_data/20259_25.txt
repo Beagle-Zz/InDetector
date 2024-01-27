@@ -1,0 +1,44 @@
+contract c20259{
+    /// @dev Set the current game settings.
+    function _setGameSettings() internal {
+        if (gameSettings.rows != nextGameSettings.rows) {
+            gameSettings.rows = nextGameSettings.rows;
+        }
+        if (gameSettings.cols != nextGameSettings.cols) {
+            gameSettings.cols = nextGameSettings.cols;
+        }
+        if (gameSettings.initialActivityTimer != nextGameSettings.initialActivityTimer) {
+            gameSettings.initialActivityTimer = nextGameSettings.initialActivityTimer;
+        }
+        if (gameSettings.finalActivityTimer != nextGameSettings.finalActivityTimer) {
+            gameSettings.finalActivityTimer = nextGameSettings.finalActivityTimer;
+        }
+        if (gameSettings.numberOfFlipsToFinalActivityTimer != nextGameSettings.numberOfFlipsToFinalActivityTimer) {
+            gameSettings.numberOfFlipsToFinalActivityTimer = nextGameSettings.numberOfFlipsToFinalActivityTimer;
+        }
+        if (gameSettings.timeoutBonusTime != nextGameSettings.timeoutBonusTime) {
+            gameSettings.timeoutBonusTime = nextGameSettings.timeoutBonusTime;
+        }
+        if (gameSettings.unclaimedTilePrice != nextGameSettings.unclaimedTilePrice) {
+            gameSettings.unclaimedTilePrice = nextGameSettings.unclaimedTilePrice;
+        }
+        if (gameSettings.buyoutReferralBonusPercentage != nextGameSettings.buyoutReferralBonusPercentage) {
+            gameSettings.buyoutReferralBonusPercentage = nextGameSettings.buyoutReferralBonusPercentage;
+        }
+        if (gameSettings.firstBuyoutPrizePoolPercentage != nextGameSettings.firstBuyoutPrizePoolPercentage) {
+            gameSettings.firstBuyoutPrizePoolPercentage = nextGameSettings.firstBuyoutPrizePoolPercentage;
+        }
+        if (gameSettings.buyoutPrizePoolPercentage != nextGameSettings.buyoutPrizePoolPercentage) {
+            gameSettings.buyoutPrizePoolPercentage = nextGameSettings.buyoutPrizePoolPercentage;
+        }
+        if (gameSettings.buyoutDividendPercentage != nextGameSettings.buyoutDividendPercentage) {
+            gameSettings.buyoutDividendPercentage = nextGameSettings.buyoutDividendPercentage;
+        }
+        if (gameSettings.buyoutFeePercentage != nextGameSettings.buyoutFeePercentage) {
+            gameSettings.buyoutFeePercentage = nextGameSettings.buyoutFeePercentage;
+        }
+        if (gameSettings.buyoutPriceIncreasePercentage != nextGameSettings.buyoutPriceIncreasePercentage) {
+            gameSettings.buyoutPriceIncreasePercentage = nextGameSettings.buyoutPriceIncreasePercentage;
+        }
+    }
+}

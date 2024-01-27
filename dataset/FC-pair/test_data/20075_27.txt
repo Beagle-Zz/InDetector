@@ -1,0 +1,64 @@
+contract c20075{
+    /**
+    ----------------------------------------------------------------------
+    Tokens freeze logic, according to ICO White Paper
+    */
+    // Return truth if given _value amount of tokens (in EXTwei)
+    // cannot be transferred from account due to spend restrictions
+    // defined in ICO White Paper.
+    // !!!Caveat of current implementaion!!!
+    // Say,
+    //  1. There was 100 tokens minted to the team basket;
+    //  2. Minting was finished and 24 weeks elapsed, and now
+    //    team can spend up to 25 tokens till next 24 weeks;
+    //  3. Someone transfers another 100 tokens to the team basket;
+    //  4. ...
+    // Problem is, actually, you can't spend any of these extra 100
+    // tokens until 96 weeks will elapse since minting finish date.
+    // That's because after next 24 weeks will be unlocked only
+    // 25 tokens more (25% of *minted* tokens) and so on.
+    // So, DO NOT send tokens to the team basket until 96 weeks elapse!
+    function isFrozen(
+        BasketType _basketType,
+        uint _value
+    )
+        public view returns (bool)
+    {
+        if (!isMintingFinished) {
+            // Allow spend only after minting is finished
+            return true;
+        }
+        if (_basketType == BasketType.foundation) {
+            // Allow to spend foundation tokens only after
+            // 48 weeks after minting is finished
+            return now < mintingStopDate + 48 weeks;
+        }
+        if (_basketType == BasketType.team) {
+            // Team allowed to spend tokens:
+            //  25%  - after minting finished date + 24 weeks;
+            //  50%  - after minting finished date + 48 weeks;
+            //  75%  - after minting finished date + 72 weeks;
+            //  100% - after minting finished date + 96 weeks.
+            if (mintingStopDate + 96 weeks <= now) {
+                return false;
+            }
+            if (now < mintingStopDate + 24 weeks)
+                return true;
+            // Calculate fraction as percents multipled to 10^10.
+            // Without this owner will be able to spend fractions
+            // less than 1% per transaction.
+            uint fractionSpent =
+                spentByTeam.add(_value).mul(1000000000000).div(teamTotal);
+            if (now < mintingStopDate + 48 weeks) {
+                return 250000000000 < fractionSpent;
+            }
+            if (now < mintingStopDate + 72 weeks) {
+                return 500000000000 < fractionSpent;
+            }
+            // from 72 to 96 weeks elapsed
+            return 750000000000 < fractionSpent;
+        }
+        // No restrictions for other token holders
+        return false;
+    }
+}

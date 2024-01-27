@@ -1,0 +1,6 @@
+contract c20074{
+    // Return truth if given address is not registered as token basket.
+    function isUnknown(address a) public view returns (bool) {
+        return types[a] == BasketType.unknown;
+    }
+}

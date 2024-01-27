@@ -1,0 +1,15 @@
+contract c20213{
+    /**
+     * @dev Updates in-contract price upon external bot request.
+     *      New price is checked for validity (the single-request change is limited to 10%)
+     * @param _priceUSDcETH Requested ETHereum price in USD cents.
+     */
+    function setPrice(uint256 _priceUSDcETH) public onlyRole(ROLE_BOT) {
+        // don't allow to change price more than 10%
+        // to avoid typos
+        assert(_priceUSDcETH < priceUSDcETH.mul(110).div(100));
+        assert(_priceUSDcETH > priceUSDcETH.mul(90).div(100));
+        priceUSDcETH = _priceUSDcETH;
+        PriceUpdate(priceUSDcETH);
+    }
+}

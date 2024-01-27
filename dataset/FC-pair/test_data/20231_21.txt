@@ -1,0 +1,9 @@
+contract c20231{
+  //
+  // Overriding basic ERC-20 specification that lets people transfer/approve tokens.
+  //
+  function transfer(address to, uint256 value) public returns (bool) {
+    require(unlocked);
+    return super.transfer(to, value);
+  }
+}

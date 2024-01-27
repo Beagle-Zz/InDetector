@@ -1,0 +1,7 @@
+contract c20051{
+    // Returns the USD value of ether raised at the set USD/ETH rate
+    function usdRaised() public constant returns (uint)
+    {
+        return ethToUsd(etherRaised);
+    }
+}

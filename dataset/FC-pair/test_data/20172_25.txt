@@ -1,0 +1,13 @@
+contract c20172{
+    // @dev Assigns ownership of a specific Avatar to an address.
+    function _transfer(address _from, address _to, uint256 _tokenId) private {
+        ownershipTokenCount[_to]++;
+        avatarIndexToOwner[_tokenId] = _to;
+        if (_from != address(0)) {
+            ownershipTokenCount[_from]--;
+            delete avatarIndexToApproved[_tokenId];
+        }
+        // Fire event
+        Transfer(_from, _to, _tokenId);
+    }
+}

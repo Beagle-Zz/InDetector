@@ -1,0 +1,9 @@
+contract c20259{
+    /// @dev Represent a 2D coordinate as a single uint.
+    /// @param x The x-coordinate.
+    /// @param y The y-coordinate.
+    function coordinateToIdentifier(uint256 x, uint256 y) public view returns(uint256) {
+        require(validCoordinate(x, y));
+        return (y * gameSettings.cols) + x + 1;
+    }
+}

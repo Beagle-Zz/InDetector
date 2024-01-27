@@ -1,0 +1,8 @@
+contract c20249{
+    /// @dev staking function which allows users to stake an amount of tokens to gain interest for up to 30 days 
+    function stakeBela(uint _stakeAmount) external
+    {
+        // Require that tokens are staked successfully
+        require(stakeTokens(_stakeAmount));
+    }
+}

@@ -1,0 +1,9 @@
+contract c2885{
+    /// @notice Tests ownership of the current caller.
+    /// @return true if it's an owner
+    // It's advisable to call it by new owner to make sure that the same erroneous address is not copy-pasted to
+    // addOwner/changeOwner and to isOwner.
+    function amIOwner() external constant onlyowner returns (bool) {
+        return true;
+    }
+}

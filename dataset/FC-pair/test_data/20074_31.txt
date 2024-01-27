@@ -1,0 +1,9 @@
+contract c20074{
+    // Return truth if purchase with given _value of ether
+    // (in wei) can be made
+    function canPurchase(uint256 _value) public view returns (bool) {
+        return start <= now && now <= stop &&
+            minBuyingAmount <= _value &&
+            toEXTwei(_value) <= remainingSupply;
+    }
+}

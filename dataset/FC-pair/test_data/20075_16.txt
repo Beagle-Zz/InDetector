@@ -1,0 +1,18 @@
+contract c20075{
+    // Transfer tokens to another account
+    function transfer(address to, uint value)
+        public
+        addrNotNull(to)
+        returns (bool)
+    {
+        if (balances[msg.sender] < value)
+            return false;
+        if (isFrozen(wpTokensBaskets.typeOf(msg.sender), value))
+            return false;
+        balances[msg.sender] = balances[msg.sender].sub(value);
+        balances[to] = balances[to].add(value);
+        saveTeamSpent(msg.sender, value);
+        emit Transfer(msg.sender, to, value);
+        return true;
+    }
+}

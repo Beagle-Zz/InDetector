@@ -1,0 +1,15 @@
+contract c20170{
+    /**
+     * Get game info by index
+     * Only can be called by newOwner
+     */
+    function getGameInfoByIndex(uint gameIndex) onlyOwner public view returns (uint gameId, bytes8 landKey, uint seedBlock, uint userNum, string content) {
+        require(gameIndex < gameNum);               // should exist
+        require(gameIndex >= 1);                    // should exist
+        gameId = games[gameIndex].gameId;
+        landKey = games[gameIndex].landKey;
+        seedBlock = games[gameIndex].seedBlock;
+        userNum = games[gameIndex].userNum;
+        content = games[gameIndex].content;
+    }
+}

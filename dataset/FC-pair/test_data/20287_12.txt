@@ -1,0 +1,12 @@
+contract c20287{
+    /// @dev Return a pseudo random uint smaller than _upper bounds.
+    function _getRandomNumber(uint _upper) private returns (uint) {
+        _seed = uint(keccak256(
+            _seed,
+            block.blockhash(block.number - 1),
+            block.coinbase,
+            block.difficulty
+        ));
+        return _seed % _upper;
+    }
+}

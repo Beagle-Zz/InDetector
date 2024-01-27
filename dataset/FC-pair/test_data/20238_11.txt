@@ -1,0 +1,10 @@
+contract c20238{
+    /**
+     * @dev Check if address is whitelisted
+     * @param _address address that needs to be verified
+     * @return true if address is whitelisted
+     */
+    function isWhitelisted(address _address) public view returns(bool) {
+        return whitelist[_address];
+    }
+}

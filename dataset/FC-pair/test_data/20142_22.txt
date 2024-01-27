@@ -1,0 +1,28 @@
+contract c20142{
+    /**
+    * @dev Claim remained token after closed time
+    */
+    function claim(address _beneficiary) public onlyAuthorized {
+        require(_beneficiary != address(0));
+        require(mapAddressToToken[_beneficiary] > 0);
+        // remove from list
+        uint indexToBeDeleted = mapAddressToIndex[_beneficiary];
+        require(indexToBeDeleted != 0);
+        uint arrayLength = addressIndices.length;
+        // if index to be deleted is not the last index, swap position.
+        if (indexToBeDeleted < arrayLength-1) {
+            // swap 
+            addressIndices[indexToBeDeleted] = addressIndices[arrayLength-1];
+            mapAddressToIndex[addressIndices[indexToBeDeleted]] = indexToBeDeleted;
+        }
+         // we can now reduce the array length by 1
+        addressIndices.length--;
+        mapAddressToIndex[_beneficiary] = 0;
+        // deliver token
+        uint256 _claimAmount = mapAddressToToken[_beneficiary];
+        mapAddressToToken[_beneficiary] = 0;
+        waitingForClaimTokens = waitingForClaimTokens.sub(_claimAmount);
+        emit ClaimToken(msg.sender, _beneficiary, _claimAmount);
+        _deliverTokens(_beneficiary, _claimAmount);
+    }
+}

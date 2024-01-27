@@ -1,0 +1,21 @@
+contract c20233{
+    /// @notice replaces an owner `_from` with another `_to`.
+    /// @param _from address of owner to replace
+    /// @param _to address of new owner
+    // All pending operations will be canceled!
+    function changeOwner(address _from, address _to)
+        external
+        ownerExists(_from)
+        ownerDoesNotExist(_to)
+        onlymanyowners(keccak256(msg.data))
+    {
+        assertOwnersAreConsistent();
+        clearPending();
+        uint ownerIndex = checkOwnerIndex(m_ownerIndex[_from]);
+        m_owners[ownerIndex] = _to;
+        m_ownerIndex[_from] = 0;
+        m_ownerIndex[_to] = ownerIndex;
+        assertOwnersAreConsistent();
+        OwnerChanged(_from, _to);
+    }
+}

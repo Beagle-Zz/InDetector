@@ -1,0 +1,7 @@
+contract c20259{
+    /// @dev Remove a Burnup game contract address.
+    /// @param addr The address of the Burnup game contract.
+    function removeBurnupGame(address addr) external onlyOwner {
+        delete burnupGame[addr];
+    }
+}

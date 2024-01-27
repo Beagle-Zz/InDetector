@@ -1,0 +1,6 @@
+contract c20237{
+    // @return true if the ICO is alive
+    function liveBetexICO() internal view returns (bool) {
+        return now >= startTime && now <= endTime && sold < token.SALE_SUPPLY(); // solium-disable-line security/no-block-members
+    }
+}

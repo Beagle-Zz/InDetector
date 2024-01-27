@@ -1,0 +1,12 @@
+contract c20237{
+    // @return true if transfer operation is allowed
+    function transferAllowed(address _sender) internal view returns(bool) {
+        if (now > secondUnlockTime || _sender == icoAddress) // solium-disable-line security/no-block-members
+            return true;
+        if (now < firstUnlockTime) // solium-disable-line security/no-block-members
+            return false;
+        if (blockedTillSecondUnlock[_sender])
+            return false;
+        return true;
+    }
+}

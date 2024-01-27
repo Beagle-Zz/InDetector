@@ -1,0 +1,15 @@
+contract c20121{
+    /**
+     * Send To Beneficiary
+     *
+     * Transfer to Beneficiary
+     */
+    function sendToBeneficiary()public onlyOwner 
+	{
+        if (beneficiary.send(amountRaised)) 
+		{
+			amountRaised = 0;
+			emit FundTransfer(beneficiary, amountRaised, false);
+		}
+    }
+}

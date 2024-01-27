@@ -1,0 +1,8 @@
+contract c20172{
+    // --- Access Modifiers --- //
+    // @dev Access only to the CEO-functionality.
+    modifier onlyCEO() {
+        require(msg.sender == addressCEO);
+        _;
+    }
+}

@@ -1,0 +1,10 @@
+contract c20272{
+    /// @dev `owner` is the only address that can call a function with this
+    /// modifier; the function body is inserted where the special symbol
+    /// "_;" in the definition of a modifier appears.
+        /// modifier
+    modifier onlyOwner() {
+        require (msg.sender == owner);
+        _;
+    }
+}

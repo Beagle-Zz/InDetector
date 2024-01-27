@@ -1,0 +1,27 @@
+contract c20132{
+  /**
+   * @dev Calculate price of Axies from the same class.
+   * @param clazz The class of Axies.
+   * @param quantity Number of Axies to be calculated.
+   */
+  function _axiesPrice(
+    uint8 clazz,
+    uint256 quantity
+  )
+    private
+    view
+    returns (uint256 totalPrice, uint256 priceIncrement, uint256 currentPrice)
+  {
+    priceIncrement = priceIncrements[clazz];
+    currentPrice = currentPrices[clazz];
+    uint256 nextPrice;
+    for (uint256 i = 0; i < quantity; i++) {
+      totalPrice = totalPrice.add(currentPrice);
+      nextPrice = currentPrice.add(priceIncrement);
+      if (nextPrice / 100 finney != currentPrice / 100 finney) {
+        priceIncrement >>= 1;
+      }
+      currentPrice = nextPrice;
+    }
+  }
+}

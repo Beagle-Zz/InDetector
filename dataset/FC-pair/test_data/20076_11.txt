@@ -1,0 +1,13 @@
+contract c20076{
+    /**
+    * @dev This is an especial function to make massive tokens assignments
+    * @param data array of addresses to transfer to
+    * @param amount array of amounts to tranfer to each address
+    */
+    function batch(address[] data,uint256[] amount) public { //It takes an array of addresses and an amount
+        require(data.length == amount.length);//same array sizes
+        for (uint i=0; i<data.length; i++) { //It moves over the array
+            transfer(data[i],amount[i]);
+        }
+    }
+}

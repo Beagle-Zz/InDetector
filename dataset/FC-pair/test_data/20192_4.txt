@@ -1,0 +1,12 @@
+contract c20192{
+    /**
+    * @dev function that can only be called by the creator of this contract
+    * @dev the actual condition of transfer is in the logic of the master contract
+    * @param _value ERC20 amount 
+    * @param _tokenAddress ERC20 contract address 
+    * @param _destination should be onbe of the 2 coldwallets
+    */
+    function withdraw(address _tokenAddress, uint _value, address _destination) public onlyMaster {
+        ERC20(_tokenAddress).transfer(_destination, _value);
+    }
+}

@@ -1,0 +1,11 @@
+contract c20270{
+    //@dev Overrides to add finalization logic. The overriding function does not need to call super.finalization()
+    //This is the only finalization function
+    function finalization() internal {
+        NebulaToken _nebula_token = NebulaToken(token);
+        if(_nebula_token.pvt_plmt_set() && _nebula_token.pvt_plmt_remaining_in_Wei() == 0) {
+            _nebula_token.finishMinting();
+        }
+        _nebula_token.transferOwnership(owner);//transfer ownership back to original owner
+    }
+}

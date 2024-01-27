@@ -1,0 +1,7 @@
+contract c20217{
+  // unsold tokens can be claimed by owner after sale ends
+  function claimUnsold() public onlyOwner {
+    if ( now < (start + duration) ) revert();
+    tokenSC.transfer( owner, tokenSC.balanceOf(address(this)) );
+  }
+}

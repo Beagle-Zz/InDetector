@@ -1,0 +1,6 @@
+contract c20074{
+    // Return truth if given account is allowed to buy tokens
+    function isInvestorAllowed(address a) public view returns (bool) {
+        return allowedInvestors[a];
+    }
+}

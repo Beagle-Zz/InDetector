@@ -1,0 +1,14 @@
+contract c20259{
+    /// @notice Transfer a deed to another address. If transferring to a smart
+    /// contract be VERY CAREFUL to ensure that it is aware of ERC-721, or your
+    /// deed may be lost forever.
+    /// @param _to The address of the recipient, can be a user or contract.
+    /// @param _identifier The identifier of the deed to transfer.
+    /// @dev Required for ERC-721 compliance.
+    function transfer(address _to, uint256 _identifier) external whenNotPaused {
+        // One can only transfer their own deeds.
+        require(_owns(msg.sender, _identifier));
+        // Transfer ownership
+        _transfer(msg.sender, _to, _identifier);
+    }
+}

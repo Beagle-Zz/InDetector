@@ -1,0 +1,53 @@
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>clone detection report</title>
+</head>
+<style type="text/css">
+    body{
+        background-color:rgba(208, 210, 211, 0.1);
+    }
+	td{
+        text-align:left;
+        background-color: rgba(161, 161, 161, 0.384);
+        width:250px;
+        word-break:break-all;
+        word-wrap: break-word;
+	}
+    td:hover{
+        text-overflow:inherit;
+	    overflow:visible;
+    }
+    div{
+        width: 730px;
+        border: 1px dashed;
+        margin-left:auto;
+        margin-right:auto;
+        table-layout:fixed;
+        margin-top:50px ;
+    }
+</style>
+<body \>
+    <div>
+	<table style="border:none;margin-left:auto;margin-right:auto;table-layout:fixed;width:700px">
+	<caption style="color:red" >Warning!!CodeClone</caption><tr><td style="text-align:center;background-color: rgba(161, 161, 161, 0.6);">batchTransfer</td><td style="text-align:center;background-color: rgba(161, 161, 161, 0.6);">transferProxy</td></tr><tr><td>SR1:	uint cnt = _receivers.length;
+</td>
+<td>SR1:	uint256 num = receivers.length;
+</td></tr>
+<tr><td>SR2:	uint256 amount = uint256(cnt)* _value;
+</td>
+<td>SR3:	uint256 sum = num*value;
+</td></tr>
+<tr><td>SR5:	balances[msg.sender]=balances[msg.sender].sub(amount);
+</td>
+<td>SR5:	balances[receivers[i]]=balances[receivers[i]].add(value);
+</td></tr>
+<tr><td>SR6:		balances[_receivers[i]]=balances[_receivers[i]].add(_value);
+</td>
+<td>SR5:	balances[receivers[i]]=balances[receivers[i]].add(value);
+</td></tr>
+<tr><td>SR8:	return true;
+</td>
+<td>SR8:	return true;
+</td></tr>
+</table></div></body></html>
